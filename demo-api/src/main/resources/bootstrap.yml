@@ -21,3 +21,4 @@ spring:
       discovery:
         server-addr: 121.4.69.234:3000
         group: DEFAULT_GROUP
+        namespace: 960fbcbb-1ca8-4232-bdc5-67bac8536a35
