@@ -1,4 +1,4 @@
-package com.alice.zhang.demoapi.common.redis;
+package com.alice.zhang.demoapi.common.redis.config;
 
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.context.annotation.Bean;

@@ -9,12 +9,4 @@
         <result column="name" property="name"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.alice.zhang.demoapi.demo.module.entity.User">
-        insert into user(age,info,name) values(#{age},#{info},#{name})
-    </insert>
-
-    <insert id="insert_sql">
-        ${sql}
-    </insert>
-
 </mapper>

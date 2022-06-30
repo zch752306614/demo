@@ -32,14 +32,18 @@ public class AsyncController {
     @SneakyThrows
     @GetMapping("/open/somethings")
     public String somethings() {
-        CompletableFuture<String> createOrder = asyncService.doSomething1("create order");
-        CompletableFuture<String> reduceAccount = asyncService.doSomething2("reduce account");
-        CompletableFuture<String> saveLog = asyncService.doSomething3("save log");
+        int count = 10;
+        for (int i = 0; i < count; i++) {
+            CompletableFuture<String> createOrder = asyncService.doSomething1("create order");
+            CompletableFuture<String> reduceAccount = asyncService.doSomething2("reduce account");
+            CompletableFuture<String> saveLog = asyncService.doSomething3("save log");
 
-        // 等待所有任务都执行完
-        CompletableFuture.allOf(createOrder, reduceAccount, saveLog).join();
-        // 获取每个任务的返回结果
-        return createOrder.get() + reduceAccount.get() + saveLog.get();
+            // 等待所有任务都执行完
+            CompletableFuture.allOf(createOrder, reduceAccount, saveLog).join();
+            // 获取每个任务的返回结果
+            System.out.println(createOrder.get() + reduceAccount.get() + saveLog.get());
+        }
+        return "success";
     }
 
 }

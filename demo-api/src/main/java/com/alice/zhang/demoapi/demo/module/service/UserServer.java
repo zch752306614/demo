@@ -11,6 +11,4 @@ public interface UserServer {
 
     int insert(User user);
 
-    int insert_sql(String sql);
-
 }

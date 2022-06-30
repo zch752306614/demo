@@ -23,9 +23,4 @@ public class UserServerImpl implements UserServer {
         return userMapper.insert(user);
     }
 
-    @Override
-    public int insert_sql(String sql) {
-        return userMapper.insert_sql(sql);
-    }
-
 }

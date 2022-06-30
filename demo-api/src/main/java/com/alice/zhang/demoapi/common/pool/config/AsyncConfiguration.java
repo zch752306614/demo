@@ -1,4 +1,4 @@
-package com.alice.zhang.demoapi.config;
+package com.alice.zhang.demoapi.common.pool.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

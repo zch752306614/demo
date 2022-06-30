@@ -1,17 +1,16 @@
 package com.alice.zhang.demoapi.demo.module.dao;
 
 import com.alice.zhang.demoapi.demo.module.entity.User;
-import org.apache.ibatis.annotations.Param;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
- * @author Alice
- * @version 1.0
- * @date 2020/8/8 9:06
+ * @Description TODO
+ * @ClassName UserMapper
+ * @DateTime 2022/6/30 18:54
+ * @Author ZhangChenhuang
  */
-public interface UserMapper {
+public interface UserMapper extends BaseMapper<User> {
 
-    int insert(User user);
 
-    int insert_sql(@Param("sql") String sql);
 
 }
