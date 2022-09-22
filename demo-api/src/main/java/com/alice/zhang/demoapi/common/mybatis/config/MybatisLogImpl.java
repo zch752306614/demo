@@ -1,6 +1,6 @@
 package com.alice.zhang.demoapi.common.mybatis.config;
 
-import com.alice.zhang.demoapi.common.consts.SysConstant;
+import com.alice.zhang.demoapi.common.consts.SysConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.logging.Log;
 
@@ -38,7 +38,7 @@ public class MybatisLogImpl implements Log {
 
     @Override
     public void debug(String s) {
-        if (s.contains(SysConstant.MYBATIS_IGNORE)) {
+        if (s.contains(SysConstants.MYBATIS_IGNORE)) {
             log.info(s);
         }
     }

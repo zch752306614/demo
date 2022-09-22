@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping(value = "/test")
-public class MyTest {
+public class MyTestController {
 
     @Resource
     private UserServer userServer;
