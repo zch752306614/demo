@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+    <!--控制台输出-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%X{trace_uuid}] [%p] [%logger:%line] --%mdc{client} %msg%n</Pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.alibaba.nacos.client.naming">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="com.baomidou.mybatisplus.core.metadata.TableInfoHelper">
+        <level value="ERROR"/>
+    </logger>
+
+    <!-- 日志输出级别 -->
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>
