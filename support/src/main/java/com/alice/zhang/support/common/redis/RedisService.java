@@ -12,7 +12,10 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author hongzhiqin
+ * @Description redis工具
+ * @Author ZhangChenhuang
+ * @ClassName RedisService
+ * @DateTime 2022/10/20 0020 15:42
  */
 @Service
 public class RedisService {

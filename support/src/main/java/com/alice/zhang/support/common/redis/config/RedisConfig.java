@@ -9,8 +9,10 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * redis
- * @author hongzhiqin
+ * @Description redis配置类
+ * @Author ZhangChenhuang
+ * @ClassName RedisConfig
+ * @DateTime 2022/10/20 0020 15:42
  */
 @Configuration
 public class RedisConfig extends CachingConfigurerSupport {

@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.alice.zhang.support"},
+@ComponentScan(basePackages = {"com.alice.zhang"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM)})
 public class DemoApiApplication {
 
