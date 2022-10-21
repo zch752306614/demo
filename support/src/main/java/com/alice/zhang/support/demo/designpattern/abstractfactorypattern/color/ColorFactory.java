@@ -1,7 +1,7 @@
 package com.alice.zhang.support.demo.designpattern.abstractfactorypattern.color;
 
-import com.alice.zhang.support.demo.designpattern.abstractfactorypattern.AbstractFactory;
 import com.alice.zhang.support.demo.designpattern.abstractfactorypattern.shape.Shape;
+import com.alice.zhang.support.demo.designpattern.abstractfactorypattern.AbstractFactory;
 
 public class ColorFactory extends AbstractFactory {
     @Override

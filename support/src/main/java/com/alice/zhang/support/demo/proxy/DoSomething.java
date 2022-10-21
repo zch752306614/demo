@@ -1,9 +1,9 @@
 package com.alice.zhang.support.demo.proxy;
 
-import com.alice.zhang.support.demo.proxy.cglibProxy.CglibProxy;
-import com.alice.zhang.support.demo.proxy.jdkProxy.JDKProxy;
 import com.alice.zhang.support.demo.proxy.service.GirlService;
 import com.alice.zhang.support.demo.proxy.service.impl.GirlServiceImpl;
+import com.alice.zhang.support.demo.proxy.cglibProxy.CglibProxy;
+import com.alice.zhang.support.demo.proxy.jdkProxy.JDKProxy;
 import com.alice.zhang.support.demo.proxy.staticProxy.StaticProxy;
 
 import java.lang.reflect.Proxy;

@@ -1,4 +1,4 @@
-package com.alice.zhang;
+package com.alice.zhang.novel;
 
 import com.alice.zhang.support.common.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;

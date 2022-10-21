@@ -25,10 +25,10 @@ import org.springframework.web.client.RestTemplate;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.alice.zhang"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM)})
-public class DemoApiApplication {
+public class SupportApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DemoApiApplication.class, args);
+        SpringApplication.run(SupportApplication.class, args);
     }
 
     @Bean
