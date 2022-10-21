@@ -4,7 +4,7 @@ spring:
   application:
     name: blog
   profiles:
-    active: zch
+    active: @profiles.active@
   cloud:
     config:
       enabled: false
@@ -22,3 +22,31 @@ spring:
         server-addr: 121.4.69.234:3000
         group: DEFAULT_GROUP
         namespace: 960fbcbb-1ca8-4232-bdc5-67bac8536a35
+
+---
+spring:
+  profiles: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 121.4.69.234:3000
+        file-extension: yml
+        namespace: 960fbcbb-1ca8-4232-bdc5-67bac8536a35
+      discovery:
+        server-addr: 121.4.69.234:3000
+        group: DEFAULT_GROUP
+        namespace: 960fbcbb-1ca8-4232-bdc5-67bac8536a35
+
+---
+spring:
+  profiles: prod
+  cloud:
+    nacos:
+      config:
+        server-addr: 121.4.69.234:3000
+        file-extension: yml
+        namespace: 54a76ef4-ef12-4812-9634-8b1c7b3e2d44
+      discovery:
+        server-addr: 121.4.69.234:3000
+        group: DEFAULT_GROUP
+        namespace: 54a76ef4-ef12-4812-9634-8b1c7b3e2d44

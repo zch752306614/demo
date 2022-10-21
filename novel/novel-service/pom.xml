@@ -23,11 +23,6 @@
 
     </dependencies>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <build>
         <plugins>
             <plugin>
@@ -64,6 +59,13 @@
                     <include>**/*.xml</include>
                 </includes>
                 <filtering>false</filtering>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>bootstrap.yml</include>
+                </includes>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
