@@ -1,4 +1,4 @@
-package com.alice.zhang.blog;
+package com.alice.zhang.novel;
 
 import com.alice.zhang.support.common.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @Description 启动类
  * @Author ZhangChenhuang
- * @DateTime 2022/10/20 0020 16:02
+ * @DateTime 2022/9/23 0023 17:26
  */
 @EnableAsync
 @SpringBootApplication
@@ -25,9 +25,9 @@ import org.springframework.web.client.RestTemplate;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.alice.zhang"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM)})
-public class BlogApplication {
+public class NovelApplication {
     public static void main(String[] args) {
-        SpringApplication.run(BlogApplication.class, args);
+        SpringApplication.run(NovelApplication.class, args);
     }
 
     @Bean

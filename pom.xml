@@ -17,6 +17,7 @@
         <module>support</module>
         <module>blog</module>
         <module>novel</module>
+        <module>zuul</module>
     </modules>
 
     <properties>

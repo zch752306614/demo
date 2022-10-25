@@ -1,4 +1,4 @@
-package com.alice.zhang.novel;
+package com.alice.zhang.zuul;
 
 import com.alice.zhang.support.common.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
@@ -23,11 +23,11 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableTransactionManagement
-@ComponentScan(basePackages = {"com.alice.zhang.support"},
+@ComponentScan(basePackages = {"com.alice.zhang"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM)})
-public class NovelApiApplication {
+public class ZuulApplication {
     public static void main(String[] args) {
-        SpringApplication.run(NovelApiApplication.class, args);
+        SpringApplication.run(ZuulApplication.class, args);
     }
 
     @Bean
