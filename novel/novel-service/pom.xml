@@ -28,7 +28,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.alice.zhang.novel.NovelApplication</mainClass>
+                    <mainClass>com.alice.zhang.NovelApplication</mainClass>
                     <fork>true</fork>
                 </configuration>
             </plugin>
