@@ -65,21 +65,21 @@
         </plugins>
         <resources>
             <resource>
-                <directory>support-service/src/main/java</directory>
+                <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
                 <filtering>false</filtering>
             </resource>
             <resource>
-                <directory>support-service/src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>bootstrap.yml</include>
                 </includes>
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>support-service/src/main/resources</directory>
+                <directory>src/main/resources</directory>
                 <includes>
                     <include>**</include>
                 </includes>

@@ -1,7 +1,7 @@
 package com.alice.zhang.blog.demo.fallback;
 
 import com.alice.zhang.blog.demo.BlogDemoApi;
-import com.alice.zhang.common.dto.ResponseInfo;
+import com.alice.zhang.support.common.dto.ResponseInfo;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 

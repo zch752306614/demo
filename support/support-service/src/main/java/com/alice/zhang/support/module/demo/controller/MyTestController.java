@@ -1,8 +1,8 @@
 package com.alice.zhang.support.module.demo.controller;
 
 import com.alice.zhang.blog.demo.BlogDemoApi;
-import com.alice.zhang.common.dto.ResponseInfo;
 import com.alice.zhang.novel.demo.NovelDemoApi;
+import com.alice.zhang.support.common.dto.ResponseInfo;
 import com.alice.zhang.support.module.demo.entity.User;
 import com.alice.zhang.support.module.demo.service.UserServer;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
 package com.alice.zhang.novel.demo.fallback;
 
-import com.alice.zhang.common.dto.ResponseInfo;
+import com.alice.zhang.support.common.dto.ResponseInfo;
 import com.alice.zhang.novel.demo.NovelDemoApi;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
