@@ -1,4 +1,4 @@
-package com.alice.zhang.novel;
+package com.alice.zhang.support;
 
 import com.alice.zhang.common.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;
@@ -25,9 +25,10 @@ import org.springframework.web.client.RestTemplate;
 @EnableTransactionManagement
 @ComponentScan(basePackages = {"com.alice.zhang"},
         excludeFilters = {@ComponentScan.Filter(type = FilterType.CUSTOM)})
-public class NovelApplication {
+public class SupportApplication {
+
     public static void main(String[] args) {
-        SpringApplication.run(NovelApplication.class, args);
+        SpringApplication.run(SupportApplication.class, args);
     }
 
     @Bean
@@ -42,4 +43,5 @@ public class NovelApplication {
     public SpringContextHolder springUtils() {
         return new SpringContextHolder();
     }
+
 }

@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>com.alice.zhang</groupId>
-            <artifactId>support</artifactId>
+            <artifactId>support-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
