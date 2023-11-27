@@ -1,10 +1,10 @@
-package com.alice.novel;
+package com.alice.novel.module;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
-import com.baomidou.mybatisplus.generator.config.converts.OracleTypeConvert;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 
@@ -23,22 +23,22 @@ public class Generator {
     private static String canonicalPath = "";
 
     //基本包名
-    private static final String basePackage = "com.posppay.newpay.modules.xposp";
+    private static final String basePackage = "com.alice.novel.module.common";
     //作者
     private static final String authorName = "fuhw";
     //要生成的表名
-    private static final String[] tables = {"T_PAY_LIMIT"};
+    private static final String[] tables = {"T_NOVEL_CONTENT"};
     //table前缀
     private static final String prefix = "T_";
 
     //数据库类型
-    private static final DbType dbType = DbType.ORACLE;
+    private static final DbType dbType = DbType.MYSQL;
     //数据库配置四要素
-    private static final String driverName = "oracle.jdbc.OracleDriver";
+    private static final String driverName = "com.mysql.cj.jdbc.Driver";
 
-    private static final String url = "jdbc:oracle:thin:@121.4.69.234:3306:novel";
-    private static final String username = "shsaas_service";
-    private static final String password = "g#UH3ka9KAZl";
+    private static final String url = "jdbc:mysql://121.4.69.234:3306/novel";
+    private static final String username = "root";
+    private static final String password = "520399";
 
 
     public static void main(String[] args) {
@@ -61,7 +61,7 @@ public class Generator {
                 .setUrl(url)
                 .setUsername(username)
                 .setPassword(password)
-                .setTypeConvert(new OracleTypeConvert() {
+                .setTypeConvert(new MySqlTypeConvert() {
                     // 自定义数据库表字段类型转换【可选】
                     //@Override
                     //public DbColumnType processTypeConvert(String fieldType) {
