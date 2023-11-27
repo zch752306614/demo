@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan({"com.alice.zhang.**.entity", "com.alice.zhang.**.dao"})
+@MapperScan({"com.alice.**.entity", "com.alice.**.dao"})
 public class MybatisPlusConfig {
 
     @Bean

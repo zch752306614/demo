@@ -21,7 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableAsync
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"com.alice.zhang"})
+@EnableFeignClients(basePackages = {"com.alice"})
 @EnableTransactionManagement
 public class SupportApplication {
 

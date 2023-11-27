@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>support</artifactId>
-        <groupId>com.alice.zhang</groupId>
+        <groupId>com.alice</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
@@ -15,19 +15,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.alice.zhang</groupId>
+            <groupId>com.alice</groupId>
             <artifactId>support-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.alice.zhang</groupId>
+            <groupId>com.alice</groupId>
             <artifactId>blog-api-feign</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.alice.zhang</groupId>
+            <groupId>com.alice</groupId>
             <artifactId>novel-api-feign</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
@@ -40,7 +40,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.alice.zhang.SupportApplication</mainClass>
+                    <mainClass>com.alice.SupportApplication</mainClass>
                     <fork>true</fork>
                 </configuration>
             </plugin>
