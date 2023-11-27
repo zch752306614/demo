@@ -1,6 +1,6 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.common.util.FileReadAndWrite;
+import com.alice.novel.module.common.util.FileReadAndWriteUtil;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -62,7 +62,7 @@ public class ExcelController {
                     // 获取信息集合
                     Map<String, String> data = getNovelInfo(url);
                     String localUrl = "D:\\小说\\斗罗大陆4\\" + data.get("title") + ".txt";
-                    FileReadAndWrite.fileWrite(localUrl, data.get("content"));
+                    FileReadAndWriteUtil.fileWrite(localUrl, data.get("content"));
                     System.out.println(data.get("title") + "写入成功！");
                 }
             }

@@ -75,4 +75,9 @@ public class URLInfoDTO {
      */
     private String titleSeparator;
 
+    /**
+     * 小说作者
+     */
+    private String novelAuthor;
+
 }

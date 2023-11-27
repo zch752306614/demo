@@ -17,4 +17,8 @@ public class SysConstants {
     public static final String CONTENT_ERROR_FILTER = "内容缺失或章节不存在！请稍后重新尝试！\n";
 
     public static final String TITLE_ERROR_FILTER = "1/1";
+
+    public static final String IS_YES = "1";
+
+    public static final String IS_NO = "0";
 }

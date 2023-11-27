@@ -1,6 +1,10 @@
 package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
+import com.alice.novel.module.common.dao.NovelChapterDao;
+import com.alice.novel.module.common.dao.NovelInfoDao;
+import com.alice.novel.module.common.entity.NovelChapter;
+import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.novel.dto.URLInfoDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
@@ -17,7 +21,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +33,11 @@ import java.util.Map;
  */
 @Service("reptileService")
 public class ReptileServiceImpl implements ReptileService {
+
+    @Resource
+    private NovelInfoDao novelInfoDao;
+    @Resource
+    private NovelChapterDao novelChapterDao;
 
     /**
      * 提取信息
@@ -134,7 +146,8 @@ public class ReptileServiceImpl implements ReptileService {
         }
         int errorCount = 0;
         int chapterCount = 0;
-        String url = "";
+        String url;
+        List<NovelChapter> novelChapterList = new ArrayList<>();
         for (int index = urlInfoDTO.getStartIndex(); index <= endIndex; index += urlInfoDTO.getInterval()) {
             if (errorCount > 10) {
                 break;
@@ -183,11 +196,31 @@ public class ReptileServiceImpl implements ReptileService {
                     errorCount++;
                     continue;
                 }
+
             }
+            NovelChapter novelChapter = NovelChapter.builder()
+                    .chapterContent(content.toString())
+                    .chapterName(title)
+                    .chapterNumber(chapterCount)
+                    .chapterWordsCount(content.toString().length())
+                    .build();
+
+            novelChapterList.add(novelChapter);
             chapterCount++;
             errorCount = 0;
             System.out.println(title);
-            System.out.println(content);
+//            System.out.println(content);
+        }
+        NovelInfo novelInfo = NovelInfo.builder()
+                .novelName(urlInfoDTO.getNovelName())
+                .novelAuthor(urlInfoDTO.getNovelAuthor())
+                .novelChapterCount(chapterCount)
+                .completedFlag(SysConstants.IS_YES)
+                .build();
+        novelInfoDao.insert(novelInfo);
+        for (NovelChapter chapter : novelChapterList) {
+            chapter.setNovelId(novelInfo.getId());
+            novelChapterDao.insert(chapter);
         }
     }
 

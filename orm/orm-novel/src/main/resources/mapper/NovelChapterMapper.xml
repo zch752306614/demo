@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.alice.novel.module.common.mapper.NovelChapterDao">
+<mapper namespace="com.alice.novel.module.common.dao.NovelChapterDao">
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.NovelChapter">
         <id column="ID" property="id"/>
         <result column="NOVEL_ID" property="novelId"/>
-        <result column="CHAPTE_NUMBER" property="chapteNumber"/>
-        <result column="CHAPTE_NAME" property="chapteName"/>
-        <result column="CHAPTER_COMTENT" property="chapterComtent"/>
+        <result column="CHAPTER_NUMBER" property="chapterNumber"/>
+        <result column="CHAPTER_NAME" property="chapterName"/>
+        <result column="CHAPTER_CONTENT" property="chapterContent"/>
         <result column="CHAPTER_PART" property="chapterPart"/>
+        <result column="CHAPTER_WORDS_COUNT" property="chapterWordsCount"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         ID
-        , NOVEL_ID, CHAPTE_NUMBER, CHAPTE_NAME, CHAPTER_COMTENT, CHAPTER_PART
+        , NOVEL_ID, CHAPTE_NUMBER, CHAPTER_NAME, CHAPTER_CONTENT, CHAPTER_PART, CHAPTER_WORDS_COUNT
     </sql>
 
 </mapper>

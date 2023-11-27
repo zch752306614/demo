@@ -1,4 +1,4 @@
-package com.alice.novel.module.common.mapper;
+package com.alice.novel.module.common.dao;
 
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

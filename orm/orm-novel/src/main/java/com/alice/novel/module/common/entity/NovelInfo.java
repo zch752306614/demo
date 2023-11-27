@@ -1,15 +1,13 @@
 package com.alice.novel.module.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -21,6 +19,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Accessors(chain = true)
 @TableName("T_NOVEL_INFO")
 public class NovelInfo extends Model<NovelInfo> {
@@ -31,7 +32,7 @@ public class NovelInfo extends Model<NovelInfo> {
      * 主键
      */
     @TableId("ID")
-    private Integer id;
+    private Long id;
 
     /**
      * 小说名称

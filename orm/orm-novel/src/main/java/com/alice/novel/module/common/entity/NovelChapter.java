@@ -1,15 +1,13 @@
 package com.alice.novel.module.common.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableField;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -21,6 +19,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Accessors(chain = true)
 @TableName("T_NOVEL_CHAPTER")
 public class NovelChapter extends Model<NovelChapter> {
@@ -31,31 +32,31 @@ public class NovelChapter extends Model<NovelChapter> {
      * 主键
      */
     @TableId("ID")
-    private Integer id;
+    private Long id;
 
     /**
      * 小说编号
      */
     @TableField("NOVEL_ID")
-    private Integer novelId;
+    private Long novelId;
 
     /**
      * 小说章节
      */
-    @TableField("CHAPTE_NUMBER")
-    private Integer chapteNumber;
+    @TableField("CHAPTER_NUMBER")
+    private Integer chapterNumber;
 
     /**
      * 小说章节名
      */
-    @TableField("CHAPTE_NAME")
-    private String chapteName;
+    @TableField("CHAPTER_NAME")
+    private String chapterName;
 
     /**
      * 小说正文
      */
-    @TableField("CHAPTER_COMTENT")
-    private String chapterComtent;
+    @TableField("CHAPTER_CONTENT")
+    private String chapterContent;
 
     /**
      * 正文分部
@@ -63,6 +64,11 @@ public class NovelChapter extends Model<NovelChapter> {
     @TableField("CHAPTER_PART")
     private Integer chapterPart;
 
+    /**
+     * 正文分部
+     */
+    @TableField("CHAPTER_WORDS_COUNT")
+    private Integer chapterWordsCount;
 
     @Override
     protected Serializable pkVal() {

@@ -9,7 +9,7 @@ import java.io.IOException;
  * @version 1.0
  * @date 2020/8/15 15:35
  */
-public class FileReadAndWrite {
+public class FileReadAndWriteUtil {
 
     public static void fileWrite(String url, String text) throws IOException {
         File file = new File(url);

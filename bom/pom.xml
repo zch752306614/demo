@@ -40,7 +40,7 @@
         <jsoup.version>1.12.1</jsoup.version>
         <pagehelper-spring-boot-starter.version>1.3.1</pagehelper-spring-boot-starter.version>
         <velocity.version>1.7</velocity.version>
-        <poi-ooxml.version>5.2.2</poi-ooxml.version>
+        <poi-ooxml.version>3.10-FINAL</poi-ooxml.version>
     </properties>
 
     <!--子模块继承后,提供作用:锁定版本+子module不用groupId和version-->
