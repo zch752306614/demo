@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/test")
+@RequestMapping(value = "/novel")
 public class NovelController {
 
     @GetMapping(value = "/getNovelist")
