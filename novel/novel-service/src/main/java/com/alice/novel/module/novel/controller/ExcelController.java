@@ -117,7 +117,7 @@ public class ExcelController {
         Document doc = Jsoup.parse(html);
 
         // 获取标题
-        Elements content = doc.getElementsByClass("content");
+        Elements content = doc.getElementsByClass("reader-main");
         Elements elements = content.get(0).getElementsByTag("h1");
         String title = elements.text();
         if (title != null) {
@@ -126,7 +126,7 @@ public class ExcelController {
 
         // 获取正文
         content = doc.getElementsByClass("content");
-        elements = content.get(0).getElementsByClass("showtxt");
+        elements = content.get(0).getElementsByTag("p");
         StringBuilder text = new StringBuilder();
         for (Element element : elements) {
             String str = element.text();
@@ -179,23 +179,31 @@ public class ExcelController {
             if (count > max) {
                 break;
             }
-            String url = baseUrl + (star + i) + ".html";
-            String url2 = baseUrl + (star + i) + "_2.html";
+            String url = baseUrl + (star + i);
             try {
-                Map<String, String> data = getNovelInfo(url);
-                Map<String, String> data2 = getNovelInfo(url2);
-                System.out.println("                            " + data.get("title"));
-                System.out.println(data.get("content"));
-                XSSFRow row = sheet.createRow(count);
-                row.createCell(0).setCellValue(url);
-                count++;
-
+                int part = 1;
+                while (true) {
+                    if(part > 1) {
+                        url += "_" + part;
+                    }
+                    url += ".html";
+                    Map<String, String> data = getNovelInfo(url);
+                    String title = data.get("title");
+                    if ("1/1".equals(title)) {
+                        break;
+                    }
+                    System.out.println("                            " + title.substring(0, title.indexOf("1/")));
+                    System.out.println(data.get("content"));
+                    XSSFRow row = sheet.createRow(count);
+                    row.createCell(0).setCellValue(url);
+                    part++;
 //                Scanner scanner = new Scanner(System.in);
 //                String str = scanner.nextLine();
-
+                }
             } catch (Exception e) {
                 System.out.println("错误链接=" + url);
             }
+            count++;
         }
 
         try {
