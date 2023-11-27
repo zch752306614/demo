@@ -14,7 +14,7 @@ public class IOTransUtil {
             int len = 0;
             while ((len = bis.read(bytes)) != -1) {
                 bos.write(bytes, 0, len);
-                System.out.println("写入第 " + i++ + "次" );
+                System.out.println("写入第 " + i++ + "次");
             }
             bis.close();
             bos.close();

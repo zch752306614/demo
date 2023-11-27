@@ -20,14 +20,14 @@ import java.util.Map;
  */
 public class Generator {
     //项目路径
-    private static String canonicalPath = "";
+    private static String canonicalPath = "/orm/orm-novel";
 
     //基本包名
     private static final String basePackage = "com.alice.novel.module.common";
     //作者
-    private static final String authorName = "fuhw";
+    private static final String authorName = "ZhangChenhuang";
     //要生成的表名
-    private static final String[] tables = {"T_NOVEL_CONTENT"};
+    private static final String[] tables = {"T_NOVEL_CHAPTER", "T_NOVEL_INFO", "T_SYS_CODE"};
     //table前缀
     private static final String prefix = "T_";
 
@@ -47,7 +47,7 @@ public class Generator {
 
         //获取项目路径
         try {
-            canonicalPath = new File("").getCanonicalPath();
+            canonicalPath = new File("").getCanonicalPath() + "/orm/orm-novel";
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,7 +77,7 @@ public class Generator {
          * 全局配置
          */
         gen.setGlobalConfig(new GlobalConfig()
-                        .setOutputDir(canonicalPath + "src/main/java/com/alice/novel/module/common")//输出目录
+                        .setOutputDir(canonicalPath + "/src/main/java")//输出目录
                         .setFileOverride(true)// 是否覆盖文件
                         .setActiveRecord(true)// 开启 activeRecord 模式
                         .setEnableCache(false)// XML 二级缓存
@@ -88,8 +88,8 @@ public class Generator {
                         // 自定义文件命名，注意 %s 会自动填充表实体属性！
                         .setMapperName("%sDao")
                         .setXmlName("%sMapper")
-                .setServiceName("%sService")
-                .setServiceImplName("%sServiceImpl")
+                        .setServiceName("%sService")
+                        .setServiceImplName("%sServiceImpl")
 //                .setControllerName("%sController")
         );
 
@@ -122,7 +122,7 @@ public class Generator {
                         // .setEntityColumnConstant(true)
                         // 【实体】是否为构建者模型（默认 false）
                         // public User setName(String name) {this.name = name; return this;}
-                         .setEntityBuilderModel(true)
+                        .setEntityBuilderModel(true)
                         // 【实体】是否为lombok模型（默认 false）<a href="https://projectlombok.org/">document</a>
                         .setEntityLombokModel(true)
                 // Boolean类型字段是否移除is前缀处理
@@ -140,8 +140,8 @@ public class Generator {
 //                .setController("controller")// 这里是控制器包名，默认 web
                         .setEntity("entity") // 设置Entity包名，默认entity
                         .setMapper("mapper") // 设置Mapper包名，默认mapper
-                .setService("service") // 设置Service包名，默认service
-                .setServiceImpl("service.impl") // 设置Service Impl包名，默认service.impl
+                        .setService("service") // 设置Service包名，默认service
+                        .setServiceImpl("service.impl") // 设置Service Impl包名，默认service.impl
                         .setXml("mapper") // 设置Mapper XML包名，默认mapper.xml
         );
 
@@ -162,7 +162,7 @@ public class Generator {
         fileOutList.add(new FileOutConfig("/templates/mapper.xml.vm") {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                return canonicalPath + "/src/test/resources/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
+                return canonicalPath + "/src/main/resources/mapper/" + tableInfo.getEntityName() + "Mapper.xml";
             }
         });
         abc.setFileOutConfigList(fileOutList);
@@ -177,11 +177,11 @@ public class Generator {
          * 模板配置
          */
         gen.setTemplate(
-                // 关闭默认 xml 生成，调整生成 至 根目录
+                // 关闭默认 xml 生成，调整生成至根目录
                 new TemplateConfig().setXml(null)
-                // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用 copy
-                // 至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
-                 .setController("")
+                        // 自定义模板配置，模板可以参考源码 /mybatis-plus/src/main/resources/template 使用 copy
+                        // 至您项目 src/main/resources/template 目录下，模板名称也可自定义如下配置：
+                        .setController("")
                 // .setEntity("...");
                 // .setMapper("...");
                 // .setXml("...");

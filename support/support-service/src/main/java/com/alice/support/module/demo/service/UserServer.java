@@ -12,17 +12,19 @@ public interface UserServer {
 
     /**
      * insert
-     * @author ZhangChenhuang
+     *
      * @param user User
      * @return int
+     * @author ZhangChenhuang
      */
     int insert(User user);
 
     /**
      * select
-     * @author ZhangChenhuang
+     *
      * @param id Integer
      * @return User
+     * @author ZhangChenhuang
      */
     User select(Integer id);
 

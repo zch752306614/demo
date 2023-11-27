@@ -8,5 +8,4 @@ package com.alice.support.module.demo.service;
 public interface CommonServer {
 
 
-
 }

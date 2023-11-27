@@ -26,7 +26,6 @@ public class ReptileController {
 
     /**
      * 笔趣阁-凡人修仙传
-     *
      */
     public static void main(String[] args) {
         URLInfoDTO urlInfoDTO = URLInfoDTO.builder()

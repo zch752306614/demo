@@ -183,7 +183,7 @@ public class ExcelController {
             try {
                 int part = 1;
                 while (true) {
-                    if(part > 1) {
+                    if (part > 1) {
                         url += "_" + part;
                     }
                     url += ".html";

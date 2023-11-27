@@ -17,10 +17,11 @@ public class DateUtil {
 
     /**
      * 将指定格式的时间字符串转换成日期
-     * @author ZhangChenhuang
-     * @param dateStr String
+     *
+     * @param dateStr   String
      * @param formatStr String
      * @return Date
+     * @author ZhangChenhuang
      */
     public static Date parseDateByFormat(String dateStr, String formatStr) {
         Date date = new Date();
@@ -43,15 +44,15 @@ public class DateUtil {
     }
 
     public static long getMinutes(String start, String end, String formatStr) {
-        return getSeconds(start, end, formatStr)/60;
+        return getSeconds(start, end, formatStr) / 60;
     }
 
     public static long getHours(String start, String end, String formatStr) {
-        return getMinutes(start, end, formatStr)/60;
+        return getMinutes(start, end, formatStr) / 60;
     }
 
     public static long getDays(String start, String end, String formatStr) {
-        return getHours(start, end, formatStr)/24;
+        return getHours(start, end, formatStr) / 24;
     }
 
     public static int getMonths(String start, String end, String formatStr) {

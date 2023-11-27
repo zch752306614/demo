@@ -4,6 +4,8 @@ import com.alice.support.module.common.designpattern.builderpattern.packing.Pack
 
 public interface Item {
     public String name();
+
     public Packing packing();
+
     public float price();
 }

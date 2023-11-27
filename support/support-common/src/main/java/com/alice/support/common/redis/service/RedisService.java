@@ -25,6 +25,7 @@ public class RedisService {
 
     /**
      * 字符串操作：添加到队列
+     *
      * @param key
      * @param value
      */
@@ -34,6 +35,7 @@ public class RedisService {
 
     /**
      * 新增或修改
+     *
      * @param key
      * @param value
      */
@@ -43,6 +45,7 @@ public class RedisService {
 
     /**
      * 字符串操作：新增或修改
+     *
      * @param key
      * @param value
      * @param time  有限时间，单位为秒
@@ -53,6 +56,7 @@ public class RedisService {
 
     /**
      * 字符串操作：取值
+     *
      * @param key
      */
     public Object getValue(String key) {
@@ -61,6 +65,7 @@ public class RedisService {
 
     /**
      * 设置有效时间
+     *
      * @param key
      * @param time
      */
@@ -70,6 +75,7 @@ public class RedisService {
 
     /**
      * 删除key
+     *
      * @param key
      */
     public void remove(String key) {
@@ -78,6 +84,7 @@ public class RedisService {
 
     /**
      * 批量移除
+     *
      * @param keys
      */
     public void removeByKeys(String keys) {
@@ -88,6 +95,7 @@ public class RedisService {
 
     /**
      * 判断key是否存在
+     *
      * @param key 键
      * @return true 存在 false不存在
      */
@@ -102,6 +110,7 @@ public class RedisService {
 
     /**
      * HashGet
+     *
      * @param key  键 不能为null
      * @param item 项 不能为null
      */
@@ -111,6 +120,7 @@ public class RedisService {
 
     /**
      * 获取hashKey对应的所有键值
+     *
      * @param key 键
      * @return 对应的多个键值
      */
@@ -120,6 +130,7 @@ public class RedisService {
 
     /**
      * HashSet
+     *
      * @param key 键
      * @param map 对应多个键值
      * @return true 成功 false 失败
@@ -136,6 +147,7 @@ public class RedisService {
 
     /**
      * HashSet 并设置时间
+     *
      * @param key  键
      * @param map  对应多个键值
      * @param time 时间(秒)
@@ -156,6 +168,7 @@ public class RedisService {
 
     /**
      * 向一张hash表中放入数据,如果不存在将创建
+     *
      * @param key   键
      * @param item  项
      * @param value 值
@@ -173,6 +186,7 @@ public class RedisService {
 
     /**
      * 向一张hash表中放入数据,如果不存在将创建
+     *
      * @param key   键
      * @param item  项
      * @param value 值
@@ -194,6 +208,7 @@ public class RedisService {
 
     /**
      * 删除hash表中的值
+     *
      * @param key  键 不能为null
      * @param item 项 可以使多个 不能为null
      */
@@ -203,6 +218,7 @@ public class RedisService {
 
     /**
      * 判断hash表中是否有该项的值
+     *
      * @param key  键 不能为null
      * @param item 项 不能为null
      * @return true 存在 false不存在
@@ -213,6 +229,7 @@ public class RedisService {
 
     /**
      * hash递增 如果不存在,就会创建一个 并把新增后的值返回
+     *
      * @param key  键
      * @param item 项
      * @param by   要增加几(大于0)
@@ -224,6 +241,7 @@ public class RedisService {
 
     /**
      * hash递减
+     *
      * @param key  键
      * @param item 项
      * @param by   要减少记(小于0)
@@ -235,6 +253,7 @@ public class RedisService {
 
     /**
      * reids主键自增
+     *
      * @param key 主键值
      * @return long 类型主键
      */
@@ -250,6 +269,7 @@ public class RedisService {
 
     /**
      * reids主键自增-不含35前缀
+     *
      * @param key 主键值
      * @return long 类型主键
      */
@@ -264,6 +284,7 @@ public class RedisService {
 
     /**
      * 若不存在则插入
+     *
      * @param key
      * @param value
      * @param seconds

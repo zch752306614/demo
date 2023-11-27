@@ -77,7 +77,8 @@ public class GlobalExceptionHandler {
     public ResponseInfo<String> exception(Throwable throwable) {
         ResponseInfo<String> responseInfo = new ResponseInfo<>();
         ExceptionDTO exceptionDTO;
-        String msg = throwable.getMessage();;
+        String msg = throwable.getMessage();
+        ;
         if (throwable instanceof BusinessException) {
             return ResponseInfo.fail(ObjectUtil.isEmpty(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg);
         } else if (throwable instanceof BusinessWarnException) {

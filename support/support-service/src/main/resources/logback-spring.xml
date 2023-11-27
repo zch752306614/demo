@@ -3,7 +3,8 @@
     <!--控制台输出-->
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%X{trace_uuid}] [%p] [%logger:%line] --%mdc{client} %msg%n</Pattern>
+            <Pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%X{trace_uuid}] [%p] [%logger:%line] --%mdc{client} %msg%n
+            </Pattern>
         </encoder>
     </appender>
 

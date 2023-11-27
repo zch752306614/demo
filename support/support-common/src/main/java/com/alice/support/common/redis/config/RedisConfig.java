@@ -19,6 +19,7 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     /**
      * RedisTemplate配置
+     *
      * @param redisConnectionFactory
      */
     @Bean

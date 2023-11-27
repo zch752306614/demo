@@ -11,7 +11,7 @@
             绝对路径（如：d:\\ehcache）
         查看路径方法：String tmpDir = System.getProperty("java.io.tmpdir");
      -->
-    <diskStore path="java.io.tmpdir" />
+    <diskStore path="java.io.tmpdir"/>
 
     <!--
         defaultCache:默认的缓存配置信息,如果不加特殊说明,则所有对象按照此配置项处理
@@ -25,10 +25,10 @@
         就算有访问，也只会存活600秒。
      -->
     <defaultCache maxElementsInMemory="10000" eternal="false"
-                  timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true" />
+                  timeToIdleSeconds="600" timeToLiveSeconds="600" overflowToDisk="true"/>
 
     <cache name="casRedis" maxElementsInMemory="100000" eternal="false"
-                  timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="true" />
+           timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="true"/>
 
 
 </ehcache>

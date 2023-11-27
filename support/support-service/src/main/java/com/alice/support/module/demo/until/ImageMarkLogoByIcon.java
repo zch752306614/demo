@@ -65,6 +65,6 @@ public class ImageMarkLogoByIcon {
         //给图片添加水印
         ImageMarkLogoByIcon.markImageByIcon(iconPath, srcImgPath, targetPath, 10, 10);
         //给图片添加水印,水印旋转-45
-        ImageMarkLogoByIcon.markImageByIcon(iconPath, srcImgPath, targetPath2, -45 , 10, 10);
+        ImageMarkLogoByIcon.markImageByIcon(iconPath, srcImgPath, targetPath2, -45, 10, 10);
     }
 }

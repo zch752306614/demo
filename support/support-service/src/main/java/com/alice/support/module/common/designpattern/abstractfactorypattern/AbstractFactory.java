@@ -5,5 +5,6 @@ import com.alice.support.module.common.designpattern.abstractfactorypattern.shap
 
 public abstract class AbstractFactory {
     public abstract Color getColor(String colorType);
+
     public abstract Shape getShape(String shapeType);
 }
