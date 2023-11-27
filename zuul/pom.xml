@@ -27,7 +27,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.alice.zhang.ZuulApplication</mainClass>
+                    <mainClass>com.alice.ZuulApplication</mainClass>
                     <fork>true</fork>
                 </configuration>
             </plugin>

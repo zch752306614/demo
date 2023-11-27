@@ -18,6 +18,8 @@
         <module>blog</module>
         <module>novel</module>
         <module>zuul</module>
+        <module>orm</module>
+        <module>orm-novel</module>
     </modules>
 
     <properties>

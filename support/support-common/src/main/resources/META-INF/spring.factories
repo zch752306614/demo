@@ -1,3 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.alice.zhang.support.common.mybatis.config.MybatisPlusConfig,\
-com.alice.zhang.support.common.redis.config.RedisConfig
+com.alice.support.common.mybatis.config.MybatisPlusConfig,\
+com.alice.support.common.redis.config.RedisConfig
