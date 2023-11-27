@@ -24,6 +24,10 @@ public class ReptileController {
         return ResponseInfo.success("novel服务访问成功！");
     }
 
+    /**
+     * 笔趣阁-凡人修仙传
+     *
+     */
     public static void main(String[] args) {
         URLInfoDTO urlInfoDTO = URLInfoDTO.builder()
                 .novelName("凡人修仙传")
