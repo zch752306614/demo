@@ -197,16 +197,17 @@ public class ReptileServiceImpl implements ReptileService {
                 }
 
             }
-            NovelChapter novelChapter = NovelChapter.builder()
-                    .chapterContent(content.toString())
-                    .chapterName(title)
-                    .chapterNumber(chapterCount)
-                    .chapterWordsCount(content.toString().length())
-                    .build();
-
-            novelChapterList.add(novelChapter);
-            chapterCount++;
             errorCount = 0;
+            if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
+                chapterCount++;
+                NovelChapter novelChapter = NovelChapter.builder()
+                        .chapterContent(content.toString())
+                        .chapterName(title)
+                        .chapterNumber(chapterCount)
+                        .chapterWordsCount(content.toString().length())
+                        .build();
+                novelChapterList.add(novelChapter);
+            }
             System.out.println(url + title);
 //            System.out.println(content);
         }
