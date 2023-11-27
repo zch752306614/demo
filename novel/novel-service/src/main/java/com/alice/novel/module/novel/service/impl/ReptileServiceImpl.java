@@ -139,7 +139,6 @@ public class ReptileServiceImpl implements ReptileService {
      */
     @Override
     public void saveNovel(URLInfoDTO urlInfoDTO) {
-        String novelName = urlInfoDTO.getNovelName();
         int endIndex = urlInfoDTO.getEndIndex();
         if (ObjectUtil.isEmpty(endIndex)) {
             endIndex = SysConstants.MAX_CHAPTER;
@@ -208,7 +207,7 @@ public class ReptileServiceImpl implements ReptileService {
             novelChapterList.add(novelChapter);
             chapterCount++;
             errorCount = 0;
-            System.out.println(title);
+            System.out.println(url + title);
 //            System.out.println(content);
         }
         NovelInfo novelInfo = NovelInfo.builder()
