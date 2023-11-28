@@ -1,4 +1,4 @@
-package com.alice.support;
+package com.alice;
 
 import com.alice.support.common.util.SpringContextHolder;
 import org.springframework.boot.SpringApplication;

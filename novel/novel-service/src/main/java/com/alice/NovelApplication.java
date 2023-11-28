@@ -23,7 +23,6 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.alice"})
-@ComponentScan(basePackages = {"com.alice.novel"})
 @EnableTransactionManagement
 public class NovelApplication {
 
