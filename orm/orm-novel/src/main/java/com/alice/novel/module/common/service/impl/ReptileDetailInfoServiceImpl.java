@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.service.impl;
 
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
-import com.alice.novel.module.common.mapper.ReptileDetailInfoDao;
+import com.alice.novel.module.common.dao.ReptileDetailInfoDao;
 import com.alice.novel.module.common.service.ReptileDetailInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

@@ -62,35 +62,38 @@ public class GlobalExceptionHandler {
         return ResponseInfo.fail(ExceptionConstants.EXCEPTION_NULL_POINTER);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseInfo<String> handleUnexpectedServer(Exception ex) {
-        log.error("系统异常：", ex);
-        return ResponseInfo.fail(ExceptionConstants.DEFAULT_ERR_MESSAGE);
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    public ResponseInfo<String> handleUnexpectedServer(Exception ex) {
+//        log.error("系统异常：", ex);
+//        return ResponseInfo.fail(ExceptionConstants.DEFAULT_ERR_MESSAGE);
+//    }
 
     /**
      * 系统异常处理
+     *
+     * @param ex Exception
+     * @return ResponseInfo<String>
      */
-    @ExceptionHandler(Throwable.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseInfo<String> exception(Throwable throwable) {
+    public ResponseInfo<String> exception(Exception ex) {
         ResponseInfo<String> responseInfo = new ResponseInfo<>();
         ExceptionDTO exceptionDTO;
-        String msg = throwable.getMessage();
-        ;
-        if (throwable instanceof BusinessException) {
-            return ResponseInfo.fail(ObjectUtil.isEmpty(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg);
-        } else if (throwable instanceof BusinessWarnException) {
-            return ResponseInfo.warm(ObjectUtil.isEmpty(msg) ? ExceptionConstants.DEFAULT_WARM_MESSAGE : msg);
+        String msg = ex.getMessage();
+
+        if (ex instanceof BusinessException) {
+            return ResponseInfo.fail(CharSequenceUtil.isBlank(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg);
+        } else if (ex instanceof BusinessWarnException) {
+            return ResponseInfo.warm(CharSequenceUtil.isBlank(msg) ? ExceptionConstants.DEFAULT_WARM_MESSAGE : msg);
         } else {
-            msg = throwable.getMessage();
+            msg = ex.getMessage();
             exceptionDTO = new ExceptionDTO();
             exceptionDTO.setErrType(ExceptionConstants.BUSINESS_EX_TYPE_SYSTEM);
             exceptionDTO.setErrCode(ExceptionConstants.BUSINESS_EX_CODE_SYSTEM_DEFAULT);
             exceptionDTO.setMessage(CharSequenceUtil.isBlank(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg);
         }
-        log.error(CharSequenceUtil.isBlank(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg, throwable);
+        log.error(CharSequenceUtil.isBlank(msg) ? ExceptionConstants.DEFAULT_ERR_MESSAGE : msg, ex);
         responseInfo.setErrorInfo(exceptionDTO);
         return responseInfo;
     }

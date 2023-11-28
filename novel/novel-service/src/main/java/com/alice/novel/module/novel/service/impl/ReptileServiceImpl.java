@@ -6,7 +6,7 @@ import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
-import com.alice.novel.module.common.mapper.ReptileInfoDao;
+import com.alice.novel.module.common.dao.ReptileInfoDao;
 import com.alice.novel.module.novel.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
