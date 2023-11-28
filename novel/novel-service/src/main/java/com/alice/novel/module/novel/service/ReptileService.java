@@ -1,6 +1,6 @@
 package com.alice.novel.module.novel.service;
 
-import com.alice.novel.module.novel.dto.URLInfoDTO;
+import com.alice.novel.module.novel.dto.ReptileInfo;
 
 import java.util.Map;
 
@@ -29,8 +29,8 @@ public interface ReptileService {
     /**
      * 保存整本小说
      *
-     * @param urlInfoDTO URLInfoDTO 路径结构信息
+     * @param reptileInfo ReptileInfo 路径结构信息
      */
-    void saveNovel(URLInfoDTO urlInfoDTO);
+    void saveNovel(ReptileInfo reptileInfo);
 
 }

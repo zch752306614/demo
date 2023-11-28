@@ -13,12 +13,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class URLInfoDTO {
+public class ReptileInfo {
 
     /**
      * 小说名称
      */
     private String novelName;
+
+    /**
+     * 小说作者
+     */
+    private String novelAuthor;
 
     /**
      * 原始路径
@@ -74,10 +79,5 @@ public class URLInfoDTO {
      * 标题分批分隔符
      */
     private String titleSeparator;
-
-    /**
-     * 小说作者
-     */
-    private String novelAuthor;
 
 }

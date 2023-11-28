@@ -5,7 +5,7 @@ import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.novel.dto.URLInfoDTO;
+import com.alice.novel.module.novel.dto.ReptileInfo;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import org.apache.http.Consts;
@@ -135,11 +135,11 @@ public class ReptileServiceImpl implements ReptileService {
     /**
      * 保存整本小说
      *
-     * @param urlInfoDTO URLInfoDTO 路径结构信息
+     * @param reptileInfo ReptileInfo 路径结构信息
      */
     @Override
-    public void saveNovel(URLInfoDTO urlInfoDTO) {
-        int endIndex = urlInfoDTO.getEndIndex();
+    public void saveNovel(ReptileInfo reptileInfo) {
+        int endIndex = reptileInfo.getEndIndex();
         if (ObjectUtil.isEmpty(endIndex)) {
             endIndex = SysConstants.MAX_CHAPTER;
         }
@@ -147,23 +147,23 @@ public class ReptileServiceImpl implements ReptileService {
         int chapterCount = 0;
         String url;
         List<NovelChapter> novelChapterList = new ArrayList<>();
-        for (int index = urlInfoDTO.getStartIndex(); index <= endIndex; index += urlInfoDTO.getInterval()) {
+        for (int index = reptileInfo.getStartIndex(); index <= endIndex; index += reptileInfo.getInterval()) {
             if (errorCount > 10) {
                 break;
             }
             String title = "";
             StringBuilder content = new StringBuilder();
-            if (urlInfoDTO.isPartFlag()) {
-                int partIndex = urlInfoDTO.getPartStartIndex();
+            if (reptileInfo.isPartFlag()) {
+                int partIndex = reptileInfo.getPartStartIndex();
                 boolean firstFlag = false;
                 String preTitle = "";
                 String preContent = "";
                 while (true) {
                     if (firstFlag) {
-                        partIndex += urlInfoDTO.getPartInterval();
-                        url = urlInfoDTO.getBaseUrl() + index + urlInfoDTO.getPartSuffix() + partIndex + urlInfoDTO.getUrlSuffix();
+                        partIndex += reptileInfo.getPartInterval();
+                        url = reptileInfo.getBaseUrl() + index + reptileInfo.getPartSuffix() + partIndex + reptileInfo.getUrlSuffix();
                     } else {
-                        url = urlInfoDTO.getBaseUrl() + index + urlInfoDTO.getUrlSuffix();
+                        url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
                     }
                     Map<String, String> data = getNovelInfo(url);
                     String titlePart = data.get("title");
@@ -176,7 +176,7 @@ public class ReptileServiceImpl implements ReptileService {
                     }
                     if (!firstFlag) {
                         firstFlag = true;
-                        title = titlePart.substring(0, Math.max(titlePart.indexOf(urlInfoDTO.getTitleSeparator()), 0));
+                        title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfo.getTitleSeparator()), 0));
                         content.append(contentPart);
                     }
                     content.append(contentPart);
@@ -185,7 +185,7 @@ public class ReptileServiceImpl implements ReptileService {
                     preContent = preTitle;
                 }
             } else {
-                url = urlInfoDTO.getBaseUrl() + index + urlInfoDTO.getUrlSuffix();
+                url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
                 Map<String, String> data = getNovelInfo(url);
                 title = data.get("title");
                 content.append(data.get("content"));
@@ -212,14 +212,14 @@ public class ReptileServiceImpl implements ReptileService {
 //            System.out.println(content);
         }
         NovelInfo novelInfo = NovelInfo.builder()
-                .novelName(urlInfoDTO.getNovelName())
-                .novelAuthor(urlInfoDTO.getNovelAuthor())
+                .novelName(reptileInfo.getNovelName())
+                .novelAuthor(reptileInfo.getNovelAuthor())
                 .novelChapterCount(chapterCount)
                 .completedFlag(SysConstants.IS_YES)
                 .build();
         novelInfoDao.insert(novelInfo);
         for (NovelChapter chapter : novelChapterList) {
-            chapter.setNovelId(novelInfo.getId());
+            chapter.setNovelInfoId(novelInfo.getId());
             novelChapterDao.insert(chapter);
         }
     }

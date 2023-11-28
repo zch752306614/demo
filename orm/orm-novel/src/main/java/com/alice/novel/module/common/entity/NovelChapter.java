@@ -38,8 +38,8 @@ public class NovelChapter extends Model<NovelChapter> {
     /**
      * 小说编号
      */
-    @TableField("NOVEL_ID")
-    private Long novelId;
+    @TableField("NOVEL_INFO_ID")
+    private Long novelInfoId;
 
     /**
      * 小说章节

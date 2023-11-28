@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.NovelChapter">
         <id column="ID" property="id"/>
-        <result column="NOVEL_ID" property="novelId"/>
+        <result column="NOVEL_INFO_ID" property="novelInfoId"/>
         <result column="CHAPTER_NUMBER" property="chapterNumber"/>
         <result column="CHAPTER_NAME" property="chapterName"/>
         <result column="CHAPTER_CONTENT" property="chapterContent"/>
@@ -16,7 +16,7 @@
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         ID
-        , NOVEL_ID, CHAPTE_NUMBER, CHAPTER_NAME, CHAPTER_CONTENT, CHAPTER_PART, CHAPTER_WORDS_COUNT
+        , NOVEL_INFO_ID, CHAPTE_NUMBER, CHAPTER_NAME, CHAPTER_CONTENT, CHAPTER_PART, CHAPTER_WORDS_COUNT
     </sql>
 
 </mapper>
