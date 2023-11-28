@@ -13,8 +13,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ID
-        , CODE, CODE_VALUE, CODE_NAME, CODE_ORDER
+        ID, CODE, CODE_VALUE, CODE_NAME, CODE_ORDER
     </sql>
 
 </mapper>

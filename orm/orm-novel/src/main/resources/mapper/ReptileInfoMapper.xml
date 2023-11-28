@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alice.novel.module.common.mapper.ReptileInfoDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.ReptileInfo">
+        <id column="ID" property="id" />
+        <result column="NOVEL_NAME" property="novelName" />
+        <result column="NOVEL_AUTHOR" property="novelAuthor" />
+        <result column="BASE_URL" property="baseUrl" />
+        <result column="URL_SUFFIX" property="urlSuffix" />
+        <result column="START_INDEX" property="startIndex" />
+        <result column="END_INDEX" property="endIndex" />
+        <result column="INTERVAL_VALUE" property="intervalValue" />
+        <result column="PART_FLAG" property="partFlag" />
+        <result column="PART_COUNT" property="partCount" />
+        <result column="PART_SUFFIX" property="partSuffix" />
+        <result column="PART_START_INDEX" property="partStartIndex" />
+        <result column="PART_INTERVAL" property="partInterval" />
+        <result column="TITLE_SEPARATOR" property="titleSeparator" />
+        <result column="DONE_FLAG" property="doneFlag" />
+        <result column="DONE_INDEX" property="doneIndex" />
+        <result column="START_TIME" property="startTime" />
+        <result column="END_TIME" property="endTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, NOVEL_NAME, NOVEL_AUTHOR, BASE_URL, URL_SUFFIX, START_INDEX, END_INDEX, INTERVAL_VALUE, PART_FLAG, PART_COUNT, PART_SUFFIX, PART_START_INDEX, PART_INTERVAL, TITLE_SEPARATOR, DONE_FLAG, DONE_INDEX, START_TIME, END_TIME
+    </sql>
+
+</mapper>
