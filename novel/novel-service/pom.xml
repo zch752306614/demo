@@ -16,19 +16,13 @@
     <dependencies>
         <dependency>
             <groupId>com.alice</groupId>
-            <artifactId>support-common</artifactId>
-            <version>${project.version}</version>
+            <artifactId>orm-novel</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alice</groupId>
-            <artifactId>orm-novel</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
