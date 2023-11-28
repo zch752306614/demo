@@ -1,4 +1,4 @@
-package com.alice.novel.module.novel.dto;
+package com.alice.novel.module.novel.dto.param;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ReptileInfo {
+public class ReptileInfoParamDTO {
 
     /**
      * 小说名称

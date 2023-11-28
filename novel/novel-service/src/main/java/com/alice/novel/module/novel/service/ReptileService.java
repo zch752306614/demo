@@ -1,7 +1,9 @@
 package com.alice.novel.module.novel.service;
 
-import com.alice.novel.module.novel.dto.ReptileInfo;
+import com.alice.novel.module.common.entity.ReptileInfo;
+import com.alice.novel.module.novel.dto.param.ReptileInfoParamDTO;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,8 +31,16 @@ public interface ReptileService {
     /**
      * 保存整本小说
      *
-     * @param reptileInfo ReptileInfo 路径结构信息
+     * @param reptileInfoParamDTO ReptileInfoParamDTO 路径结构信息
      */
-    void saveNovel(ReptileInfo reptileInfo);
+    void saveNovel(ReptileInfoParamDTO reptileInfoParamDTO);
+
+    /**
+     * 获取任务列表
+     *
+     * @param
+     * @return List<ReptileInfo>
+     */
+    List<ReptileInfo> getReptileInfoList(ReptileInfoParamDTO reptileInfoParamDTO);
 
 }

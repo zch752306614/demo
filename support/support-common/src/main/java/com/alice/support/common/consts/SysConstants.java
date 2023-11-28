@@ -21,4 +21,6 @@ public class SysConstants {
     public static final String IS_YES = "1";
 
     public static final String IS_NO = "0";
+
+    public static final String EMPTY = "";
 }

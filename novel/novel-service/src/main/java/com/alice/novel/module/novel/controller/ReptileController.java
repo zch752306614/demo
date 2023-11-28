@@ -1,6 +1,6 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.novel.dto.ReptileInfo;
+import com.alice.novel.module.novel.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.novel.module.novel.service.impl.ReptileServiceImpl;
 import com.alice.support.common.dto.ResponseInfo;
@@ -27,7 +27,7 @@ public class ReptileController {
      * 笔趣阁-凡人修仙传
      */
     public static void main(String[] args) {
-        ReptileInfo reptileInfo = ReptileInfo.builder()
+        ReptileInfoParamDTO reptileInfoParamDTO = ReptileInfoParamDTO.builder()
                 .novelName("凡人修仙传")
                 .baseUrl("https://m.ytryx.com/b3909/")
                 .urlSuffix(".html")
@@ -43,7 +43,7 @@ public class ReptileController {
                 .novelAuthor("忘语")
                 .build();
         ReptileService reptileService = new ReptileServiceImpl();
-        reptileService.saveNovel(reptileInfo);
+        reptileService.saveNovel(reptileInfoParamDTO);
     }
 
 }

@@ -1,10 +1,21 @@
 package com.alice.novel.module.novel.controller;
 
+import com.alice.novel.module.common.entity.NovelChapter;
+import com.alice.novel.module.common.entity.NovelInfo;
+import com.alice.novel.module.novel.dto.query.ChapterInfoQueryDTO;
+import com.alice.novel.module.novel.dto.query.NovelInfoQueryDTO;
+import com.alice.novel.module.novel.service.NovelService;
+import com.alice.support.common.base.controller.BaseController;
 import com.alice.support.common.dto.ResponseInfo;
+import com.alice.support.common.mybatis.page.TableDataInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Description 小说信息查询
@@ -13,16 +24,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping(value = "/novel")
-public class NovelController {
+public class NovelController extends BaseController {
 
-    @GetMapping(value = "/getNovelist")
-    public ResponseInfo<String> getNovelist() {
-        return ResponseInfo.success("novel服务访问成功！");
+    @Resource
+    private NovelService novelService;
+
+    @GetMapping(value = "/queryNovelist")
+    public ResponseInfo<TableDataInfo<List<NovelInfo>>> queryNovelist(@Validated NovelInfoQueryDTO novelInfoQueryDTO) {
+        startPage();
+        return ResponseInfo.success(getDataTable(novelService.queryNovelist(novelInfoQueryDTO)));
     }
 
-    @GetMapping(value = "/getChapterList")
-    public ResponseInfo<String> getChapterList() {
-        return ResponseInfo.success("novel服务访问成功！");
+    @GetMapping(value = "/queryChapterList")
+    public ResponseInfo<TableDataInfo<List<NovelChapter>>> queryChapterList(@Validated ChapterInfoQueryDTO chapterInfoQueryDTO) {
+        startPage();
+        return ResponseInfo.success(getDataTable(novelService.queryChapterList(chapterInfoQueryDTO)));
     }
 
 }

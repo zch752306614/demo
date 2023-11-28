@@ -5,7 +5,9 @@ import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.novel.dto.ReptileInfo;
+import com.alice.novel.module.common.entity.ReptileInfo;
+import com.alice.novel.module.common.mapper.ReptileInfoDao;
+import com.alice.novel.module.novel.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import org.apache.http.Consts;
@@ -38,6 +40,8 @@ public class ReptileServiceImpl implements ReptileService {
     private NovelInfoDao novelInfoDao;
     @Resource
     private NovelChapterDao novelChapterDao;
+    @Resource
+    private ReptileInfoDao reptileInfoDao;
 
     /**
      * 提取信息
@@ -135,11 +139,11 @@ public class ReptileServiceImpl implements ReptileService {
     /**
      * 保存整本小说
      *
-     * @param reptileInfo ReptileInfo 路径结构信息
+     * @param reptileInfoParamDTO ReptileInfoParamDTO 路径结构信息
      */
     @Override
-    public void saveNovel(ReptileInfo reptileInfo) {
-        int endIndex = reptileInfo.getEndIndex();
+    public void saveNovel(ReptileInfoParamDTO reptileInfoParamDTO) {
+        int endIndex = reptileInfoParamDTO.getEndIndex();
         if (ObjectUtil.isEmpty(endIndex)) {
             endIndex = SysConstants.MAX_CHAPTER;
         }
@@ -147,23 +151,23 @@ public class ReptileServiceImpl implements ReptileService {
         int chapterCount = 0;
         String url;
         List<NovelChapter> novelChapterList = new ArrayList<>();
-        for (int index = reptileInfo.getStartIndex(); index <= endIndex; index += reptileInfo.getInterval()) {
+        for (int index = reptileInfoParamDTO.getStartIndex(); index <= endIndex; index += reptileInfoParamDTO.getInterval()) {
             if (errorCount > 10) {
                 break;
             }
             String title = "";
             StringBuilder content = new StringBuilder();
-            if (reptileInfo.isPartFlag()) {
-                int partIndex = reptileInfo.getPartStartIndex();
+            if (reptileInfoParamDTO.isPartFlag()) {
+                int partIndex = reptileInfoParamDTO.getPartStartIndex();
                 boolean firstFlag = false;
                 String preTitle = "";
                 String preContent = "";
                 while (true) {
                     if (firstFlag) {
-                        partIndex += reptileInfo.getPartInterval();
-                        url = reptileInfo.getBaseUrl() + index + reptileInfo.getPartSuffix() + partIndex + reptileInfo.getUrlSuffix();
+                        partIndex += reptileInfoParamDTO.getPartInterval();
+                        url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getPartSuffix() + partIndex + reptileInfoParamDTO.getUrlSuffix();
                     } else {
-                        url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
+                        url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getUrlSuffix();
                     }
                     Map<String, String> data = getNovelInfo(url);
                     String titlePart = data.get("title");
@@ -176,7 +180,7 @@ public class ReptileServiceImpl implements ReptileService {
                     }
                     if (!firstFlag) {
                         firstFlag = true;
-                        title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfo.getTitleSeparator()), 0));
+                        title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfoParamDTO.getTitleSeparator()), 0));
                         content.append(contentPart);
                     }
                     content.append(contentPart);
@@ -185,7 +189,7 @@ public class ReptileServiceImpl implements ReptileService {
                     preContent = preTitle;
                 }
             } else {
-                url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
+                url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getUrlSuffix();
                 Map<String, String> data = getNovelInfo(url);
                 title = data.get("title");
                 content.append(data.get("content"));
@@ -212,8 +216,8 @@ public class ReptileServiceImpl implements ReptileService {
 //            System.out.println(content);
         }
         NovelInfo novelInfo = NovelInfo.builder()
-                .novelName(reptileInfo.getNovelName())
-                .novelAuthor(reptileInfo.getNovelAuthor())
+                .novelName(reptileInfoParamDTO.getNovelName())
+                .novelAuthor(reptileInfoParamDTO.getNovelAuthor())
                 .novelChapterCount(chapterCount)
                 .completedFlag(SysConstants.IS_YES)
                 .build();
@@ -224,4 +228,8 @@ public class ReptileServiceImpl implements ReptileService {
         }
     }
 
+    @Override
+    public List<ReptileInfo> getReptileInfoList(ReptileInfoParamDTO reptileInfoParamDTO) {
+        return null;
+    }
 }
