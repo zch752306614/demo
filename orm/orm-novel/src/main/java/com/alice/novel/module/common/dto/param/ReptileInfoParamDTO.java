@@ -1,4 +1,4 @@
-package com.alice.novel.module.novel.dto.param;
+package com.alice.novel.module.common.dto.param;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -79,5 +79,10 @@ public class ReptileInfoParamDTO {
      * 标题分批分隔符
      */
     private String titleSeparator;
+
+    /**
+     * 是否完结
+     */
+    private String completedFlag;
 
 }

@@ -32,7 +32,7 @@ public class ReptileInfo extends Model<ReptileInfo> {
      * 主键
      */
     @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 小说名称
@@ -121,8 +121,8 @@ public class ReptileInfo extends Model<ReptileInfo> {
     /**
      * 中止位置
      */
-    @TableField("DONE_INDEX")
-    private Integer doneIndex;
+    @TableField("PAUSE_INDEX")
+    private Integer pauseIndex;
 
     /**
      * 任务开始时间
@@ -135,6 +135,12 @@ public class ReptileInfo extends Model<ReptileInfo> {
      */
     @TableField("END_TIME")
     private String endTime;
+
+    /**
+     * 是否有效
+     */
+    @TableField("VALUE_FLAG")
+    private String valueFlag;
 
 
     @Override

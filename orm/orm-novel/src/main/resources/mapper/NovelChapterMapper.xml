@@ -18,4 +18,13 @@
         ID, NOVEL_INFO_ID, CHAPTE_NUMBER, CHAPTER_NAME, CHAPTER_CONTENT, CHAPTER_PART, CHAPTER_WORDS_COUNT
     </sql>
 
+    <select id="queryChapterList" resultType="com.alice.novel.module.common.entity.NovelChapter">
+        SELECT T.ID,T.CHAPTER_NUMBER,T.CHAPTER_NAME,T.CHAPTER_PART,T.CHAPTER_WORDS_COUNT
+        FROM T_NOVEL_CHAPTER T
+        WHERE NOVEL_INFO_ID = ${novelInfoId}
+        <if test="chapterId!=null and chapterId!=''">
+            AND ID=${Id}
+        </if>
+    </select>
+
 </mapper>

@@ -1,4 +1,4 @@
-package com.alice.novel.module.novel.dto.query;
+package com.alice.novel.module.common.dto.query;
 
 import lombok.Data;
 

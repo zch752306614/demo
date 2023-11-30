@@ -1,6 +1,6 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.novel.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.novel.module.novel.service.impl.ReptileServiceImpl;
 import com.alice.support.common.dto.ResponseInfo;

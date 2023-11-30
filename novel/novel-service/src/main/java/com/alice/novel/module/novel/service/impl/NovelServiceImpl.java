@@ -1,19 +1,21 @@
 package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.novel.dto.query.ChapterInfoQueryDTO;
-import com.alice.novel.module.novel.dto.query.NovelInfoQueryDTO;
+import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
+import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.novel.service.NovelService;
+import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.QueryWrapperUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +43,10 @@ public class NovelServiceImpl implements NovelService {
         NovelChapter novelChapter = new NovelChapter();
         BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
         QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
-        return novelChapterDao.selectList(queryWrapper);
+        if (SysConstants.IS_YES.equals(chapterInfoQueryDTO.getContentFlag())) {
+            return novelChapterDao.selectList(queryWrapper);
+        } else {
+            return novelChapterDao.queryChapterList(chapterInfoQueryDTO);
+        }
     }
 }

@@ -2,8 +2,8 @@ package com.alice.novel.module.novel.controller;
 
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.novel.dto.query.ChapterInfoQueryDTO;
-import com.alice.novel.module.novel.dto.query.NovelInfoQueryDTO;
+import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
+import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.novel.service.NovelService;
 import com.alice.support.common.base.controller.BaseController;
 import com.alice.support.common.dto.ResponseInfo;

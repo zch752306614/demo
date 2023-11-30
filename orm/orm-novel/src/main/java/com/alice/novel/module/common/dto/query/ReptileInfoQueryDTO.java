@@ -1,4 +1,4 @@
-package com.alice.novel.module.novel.dto.query;
+package com.alice.novel.module.common.dto.query;
 
 /**
  * @Description 爬虫任务查询入参

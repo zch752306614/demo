@@ -19,14 +19,15 @@
         <result column="PART_INTERVAL" property="partInterval" />
         <result column="TITLE_SEPARATOR" property="titleSeparator" />
         <result column="DONE_FLAG" property="doneFlag" />
-        <result column="DONE_INDEX" property="doneIndex" />
+        <result column="PAUSE_INDEX" property="pauseIndex" />
         <result column="START_TIME" property="startTime" />
         <result column="END_TIME" property="endTime" />
+        <result column="VALUE_FLAG" property="valueFlag" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ID, NOVEL_NAME, NOVEL_AUTHOR, BASE_URL, URL_SUFFIX, START_INDEX, END_INDEX, INTERVAL_VALUE, PART_FLAG, PART_COUNT, PART_SUFFIX, PART_START_INDEX, PART_INTERVAL, TITLE_SEPARATOR, DONE_FLAG, DONE_INDEX, START_TIME, END_TIME
+        ID, NOVEL_NAME, NOVEL_AUTHOR, BASE_URL, URL_SUFFIX, START_INDEX, END_INDEX, INTERVAL_VALUE, PART_FLAG, PART_COUNT, PART_SUFFIX, PART_START_INDEX, PART_INTERVAL, TITLE_SEPARATOR, DONE_FLAG, PAUSE_INDEX, START_TIME, END_TIME, VALUE_FLAG
     </sql>
 
 </mapper>
