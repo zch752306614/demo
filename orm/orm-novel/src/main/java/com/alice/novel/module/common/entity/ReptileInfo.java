@@ -47,6 +47,12 @@ public class ReptileInfo extends Model<ReptileInfo> {
     private String novelAuthor;
 
     /**
+     * 是否完结
+     */
+    @TableField("COMPLETED_FLAG")
+    private String completeFlag;
+
+    /**
      * 原始路径
      */
     @TableField("BASE_URL")

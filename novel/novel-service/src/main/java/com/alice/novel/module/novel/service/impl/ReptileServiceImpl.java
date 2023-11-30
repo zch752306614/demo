@@ -5,8 +5,10 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
+import com.alice.novel.module.common.dao.ReptileDetailInfoDao;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
+import com.alice.novel.module.common.entity.ReptileDetailInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
 import com.alice.novel.module.common.dao.ReptileInfoDao;
 import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
@@ -15,6 +17,7 @@ import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.api.R;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -44,6 +47,8 @@ public class ReptileServiceImpl implements ReptileService {
     private NovelChapterDao novelChapterDao;
     @Resource
     private ReptileInfoDao reptileInfoDao;
+    @Resource
+    private ReptileDetailInfoDao reptileDetailInfoDao;
 
     /**
      * 提取信息
@@ -177,6 +182,7 @@ public class ReptileServiceImpl implements ReptileService {
         int chapterCount = 0;
         String url = reptileInfoParamDTO.getBaseUrl();
         List<NovelChapter> novelChapterList = new ArrayList<>();
+        List<ReptileDetailInfo> reptileDetailInfoList = new ArrayList<>();
         int index = reptileInfoParamDTO.getStartIndex();
         try {
             while (index <= endIndex) {
@@ -187,11 +193,11 @@ public class ReptileServiceImpl implements ReptileService {
                 StringBuilder content = new StringBuilder();
                 if (reptileInfoParamDTO.isPartFlag()) {
                     int partIndex = reptileInfoParamDTO.getPartStartIndex();
-                    boolean firstFlag = false;
+                    boolean firstFlag = true;
                     String preTitle = "";
                     String preContent = "";
                     while (true) {
-                        if (firstFlag) {
+                        if (!firstFlag) {
                             partIndex += reptileInfoParamDTO.getPartInterval();
                             url += index + reptileInfoParamDTO.getPartSuffix() + partIndex + reptileInfoParamDTO.getUrlSuffix();
                         } else {
@@ -206,15 +212,20 @@ public class ReptileServiceImpl implements ReptileService {
                                 || preTitle.equals(titlePart) || preContent.equals(contentPart)) {
                             break;
                         }
-                        if (!firstFlag) {
-                            firstFlag = true;
+                        if (firstFlag) {
+                            firstFlag = false;
                             title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfoParamDTO.getTitleSeparator()), 0));
-                            content.append(contentPart);
                         }
                         content.append(contentPart);
                         // 记录上一次的结果
                         preTitle = titlePart;
                         preContent = preTitle;
+                        // 记录路径
+                        if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
+                            ReptileDetailInfo reptileDetailInfo = new ReptileDetailInfo();
+                            reptileDetailInfo.setReptileUrl(url);
+                            reptileDetailInfoList.add(reptileDetailInfo);
+                        }
                     }
                 } else {
                     url += index + reptileInfoParamDTO.getUrlSuffix();
@@ -227,6 +238,12 @@ public class ReptileServiceImpl implements ReptileService {
                         errorCount++;
                         index += reptileInfoParamDTO.getInterval();
                         continue;
+                    }
+                    // 记录路径
+                    ReptileDetailInfo reptileDetailInfo = new ReptileDetailInfo();
+                    if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
+                        reptileDetailInfo.setReptileUrl(url);
+                        reptileDetailInfoList.add(reptileDetailInfo);
                     }
                 }
                 errorCount = 0;
@@ -250,6 +267,11 @@ public class ReptileServiceImpl implements ReptileService {
             // 保存或更新任务信息
             reptileInfo.setDoneFlag(SysConstants.IS_YES);
             reptileInfoDao.insert(reptileInfo);
+            // 保存路径
+            for (ReptileDetailInfo reptileDetailInfo : reptileDetailInfoList) {
+                reptileDetailInfo.setReptileInfoId(reptileInfo.getId());
+                reptileDetailInfoDao.insert(reptileDetailInfo);
+            }
             // 判断小说是否存在
             NovelInfo novelInfoQuery = new NovelInfo();
             novelInfoQuery.setNovelName(reptileInfoParamDTO.getNovelName());

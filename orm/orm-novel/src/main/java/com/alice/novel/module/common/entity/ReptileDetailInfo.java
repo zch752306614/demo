@@ -38,7 +38,7 @@ public class ReptileDetailInfo extends Model<ReptileDetailInfo> {
      * 爬虫任务主键
      */
     @TableField("REPTILE_INFO_ID")
-    private Integer reptileInfoId;
+    private Long reptileInfoId;
 
     /**
      * 爬虫任务明细地址
