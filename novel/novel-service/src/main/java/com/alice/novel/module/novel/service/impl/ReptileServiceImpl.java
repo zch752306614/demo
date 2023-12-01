@@ -202,7 +202,7 @@ public class ReptileServiceImpl implements ReptileService {
                         // 记录上一次的结果
                         preTitle = titlePart;
                         preContent = preTitle;
-                        // 记录路径
+                        // 爬取成功记录路径
                         if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
                             ReptileDetailInfo reptileDetailInfo = new ReptileDetailInfo();
                             reptileDetailInfo.setReptileUrl(url);
