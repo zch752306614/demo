@@ -29,6 +29,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -148,6 +149,7 @@ public class ReptileServiceImpl implements ReptileService {
      * @param reptileInfoParamDTO 路径结构信息
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void saveNovel(ReptileInfoParamDTO reptileInfoParamDTO) {
         // 判断是否存在该小说的任务，每本小说只允许存在一条有效的任务
         ReptileInfo reptileInfoQuery = new ReptileInfo();
@@ -179,7 +181,7 @@ public class ReptileServiceImpl implements ReptileService {
         }
         int errorCount = 0;
         int chapterCount = 0;
-        String url = reptileInfoParamDTO.getBaseUrl();
+        String url;
         List<NovelChapter> novelChapterList = new ArrayList<>();
         List<ReptileDetailInfo> reptileDetailInfoList = new ArrayList<>();
         int index = reptileInfoParamDTO.getStartIndex();
@@ -198,9 +200,9 @@ public class ReptileServiceImpl implements ReptileService {
                     while (true) {
                         if (!firstFlag) {
                             partIndex += reptileInfoParamDTO.getPartInterval();
-                            url += index + reptileInfoParamDTO.getPartSuffix() + partIndex + reptileInfoParamDTO.getUrlSuffix();
+                            url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getPartSuffix() + partIndex + reptileInfoParamDTO.getUrlSuffix();
                         } else {
-                            url += index + reptileInfoParamDTO.getUrlSuffix();
+                            url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getUrlSuffix();
                         }
                         Map<String, String> data = getNovelInfo(url);
                         String titlePart = data.get("title");
@@ -227,7 +229,7 @@ public class ReptileServiceImpl implements ReptileService {
                         }
                     }
                 } else {
-                    url += index + reptileInfoParamDTO.getUrlSuffix();
+                    url = reptileInfoParamDTO.getBaseUrl() + index + reptileInfoParamDTO.getUrlSuffix();
                     Map<String, String> data = getNovelInfo(url);
                     title = data.get("title");
                     content.append(data.get("content"));
