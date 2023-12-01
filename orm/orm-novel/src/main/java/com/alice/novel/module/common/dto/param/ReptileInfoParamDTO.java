@@ -53,7 +53,7 @@ public class ReptileInfoParamDTO {
     /**
      * 分批标志
      */
-    private boolean partFlag;
+    private String partFlag;
 
     /**
      * 分批数量

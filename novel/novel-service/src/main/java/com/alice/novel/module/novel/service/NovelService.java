@@ -1,5 +1,6 @@
 package com.alice.novel.module.novel.service;
 
+import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
@@ -12,6 +13,13 @@ import java.util.List;
  * @DateTime 2023/11/28 17:40
  */
 public interface NovelService {
+
+    /**
+     * 添加小说
+     *
+     * @param reptileInfoParamDTO 要添加的小说信息
+     */
+    void addNovel(ReptileInfoParamDTO reptileInfoParamDTO);
 
     /**
      * 查询小说列表
@@ -28,4 +36,5 @@ public interface NovelService {
      * @return List<NovelChapter>
      */
     List<NovelChapter> queryChapterList(ChapterInfoQueryDTO chapterInfoQueryDTO);
+
 }

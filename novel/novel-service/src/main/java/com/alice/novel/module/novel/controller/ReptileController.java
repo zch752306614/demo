@@ -26,10 +26,4 @@ public class ReptileController {
         return ResponseInfo.success("novel服务访问成功！");
     }
 
-    @PostMapping("addNovel")
-    public ResponseInfo<String> addNovel(@RequestBody ReptileInfoParamDTO reptileInfoParamDTO) {
-        reptileService.saveNovel(reptileInfoParamDTO);
-        return ResponseInfo.success();
-    }
-
 }
