@@ -278,6 +278,7 @@ public class ReptileServiceImpl implements ReptileService {
         // 如果任务存在，继续执行当前任务
         ReptileInfo reptileInfo = new ReptileInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, reptileInfo);
+        reptileInfo.setValueFlag(SysConstants.IS_YES);
         reptileInfo.setDoneFlag(SysConstants.IS_NO);
         reptileInfo.setStartTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
         if (ObjectUtil.isNotEmpty(reptileInfoList)) {
