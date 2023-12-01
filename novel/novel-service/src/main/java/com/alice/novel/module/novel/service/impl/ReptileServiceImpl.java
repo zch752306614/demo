@@ -193,6 +193,7 @@ public class ReptileServiceImpl implements ReptileService {
                                 || preTitle.equals(titlePart) || preContent.equals(contentPart)) {
                             break;
                         }
+                        // 每章节首次爬取截取标题
                         if (firstFlag) {
                             firstFlag = false;
                             title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfo.getTitleSeparator()), 0));
