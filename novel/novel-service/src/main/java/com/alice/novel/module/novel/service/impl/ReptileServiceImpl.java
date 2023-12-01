@@ -251,12 +251,12 @@ public class ReptileServiceImpl implements ReptileService {
             // 新增爬虫明细信息
             for (ReptileDetailInfo reptileDetailInfo : reptileDetailInfoList) {
                 reptileDetailInfo.setReptileInfoId(reptileInfo.getId());
-                reptileInfoDao.insert(reptileInfo);
+                reptileDetailInfoDao.insert(reptileDetailInfo);
             }
             // 新增小说章节信息
             for (NovelChapter novelChapter : novelChapterList) {
                 novelChapter.setNovelInfoId(novelInfo.getId());
-                novelInfoDao.insert(novelInfo);
+                novelChapterDao.insert(novelChapter);
             }
         }
     }
