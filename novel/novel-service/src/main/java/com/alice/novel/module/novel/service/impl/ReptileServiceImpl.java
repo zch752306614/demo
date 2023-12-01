@@ -151,7 +151,7 @@ public class ReptileServiceImpl implements ReptileService {
      * @param novelInfo 小说信息
      */
     @Override
-    @Async("novelReptileExecutor")
+//    @Async("novelReptileExecutor")
     @Transactional(rollbackFor = Exception.class)
     public void saveNovelDetails(ReptileInfo reptileInfo, NovelInfo novelInfo) {
         // 保存明细
