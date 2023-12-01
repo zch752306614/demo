@@ -48,7 +48,7 @@ public class ReptileInfoParamDTO {
     /**
      * 间隔
      */
-    private int interval;
+    private int intervalValue;
 
     /**
      * 分批标志

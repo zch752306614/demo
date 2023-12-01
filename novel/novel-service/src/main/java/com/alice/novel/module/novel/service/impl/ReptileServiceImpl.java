@@ -17,7 +17,6 @@ import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.api.R;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -199,7 +198,7 @@ public class ReptileServiceImpl implements ReptileService {
                             title = titlePart.substring(0, Math.max(titlePart.indexOf(reptileInfo.getTitleSeparator()), 0));
                         }
                         content.append(contentPart);
-                        // 记录上一次的结果
+                        // 记录本次的结果
                         preTitle = titlePart;
                         preContent = preTitle;
                         // 爬取成功记录路径
@@ -219,7 +218,7 @@ public class ReptileServiceImpl implements ReptileService {
                             || SysConstants.TITLE_ERROR_FILTER.equals(title)
                             || SysConstants.CONTENT_ERROR_FILTER.equals(content.toString())) {
                         errorCount++;
-                        index += reptileInfo.getInterval();
+                        index += reptileInfo.getIntervalValue();
                         continue;
                     }
                     // 记录路径
@@ -241,7 +240,7 @@ public class ReptileServiceImpl implements ReptileService {
                             .build();
                     novelChapterList.add(novelChapter);
                 }
-                index += reptileInfo.getInterval();
+                index += reptileInfo.getIntervalValue();
             }
         } catch (Exception e) {
             reptileInfo.setPauseIndex(index);

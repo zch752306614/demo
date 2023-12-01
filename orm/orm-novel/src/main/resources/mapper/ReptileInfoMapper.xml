@@ -12,7 +12,7 @@
         <result column="URL_SUFFIX" property="urlSuffix" />
         <result column="START_INDEX" property="startIndex" />
         <result column="END_INDEX" property="endIndex" />
-        <result column="INTERVAL" property="interval" />
+        <result column="INTERVAL_VALUE" property="intervalValue" />
         <result column="PART_FLAG" property="partFlag" />
         <result column="PART_COUNT" property="partCount" />
         <result column="PART_SUFFIX" property="partSuffix" />
@@ -28,7 +28,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ID, NOVEL_NAME, NOVEL_AUTHOR,COMPLETED_FLAG, BASE_URL, URL_SUFFIX, START_INDEX, END_INDEX, INTERVAL, PART_FLAG, PART_COUNT, PART_SUFFIX, PART_START_INDEX, PART_INTERVAL, TITLE_SEPARATOR, DONE_FLAG, PAUSE_INDEX, START_TIME, END_TIME, VALUE_FLAG
+        ID, NOVEL_NAME, NOVEL_AUTHOR,COMPLETED_FLAG, BASE_URL, URL_SUFFIX, START_INDEX, END_INDEX, INTERVAL_VALUE, PART_FLAG, PART_COUNT, PART_SUFFIX, PART_START_INDEX, PART_INTERVAL, TITLE_SEPARATOR, DONE_FLAG, PAUSE_INDEX, START_TIME, END_TIME, VALUE_FLAG
     </sql>
 
 </mapper>

@@ -79,8 +79,8 @@ public class ReptileInfo extends Model<ReptileInfo> {
     /**
      * 间隔
      */
-    @TableField("INTERVAL")
-    private Integer interval;
+    @TableField("INTERVAL_VALUE")
+    private Integer intervalValue;
 
     /**
      * 分批标志

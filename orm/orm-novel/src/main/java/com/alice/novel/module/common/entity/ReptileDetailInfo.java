@@ -32,7 +32,7 @@ public class ReptileDetailInfo extends Model<ReptileDetailInfo> {
      * 主键
      */
     @TableId(value = "ID", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 爬虫任务主键
