@@ -50,7 +50,7 @@ public class ReptileInfo extends Model<ReptileInfo> {
      * 是否完结
      */
     @TableField("COMPLETED_FLAG")
-    private String completeFlag;
+    private String completedFlag;
 
     /**
      * 原始路径

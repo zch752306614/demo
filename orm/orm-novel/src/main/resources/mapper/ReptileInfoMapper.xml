@@ -7,7 +7,7 @@
         <id column="ID" property="id" />
         <result column="NOVEL_NAME" property="novelName" />
         <result column="NOVEL_AUTHOR" property="novelAuthor" />
-        <result column="COMPLETED_FLAG" property="completeFlag" />
+        <result column="COMPLETED_FLAG" property="completedFlag" />
         <result column="BASE_URL" property="baseUrl" />
         <result column="URL_SUFFIX" property="urlSuffix" />
         <result column="START_INDEX" property="startIndex" />

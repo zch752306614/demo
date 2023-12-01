@@ -323,6 +323,7 @@ public class ReptileServiceImpl implements ReptileService {
             BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
             novelInfoDao.insert(novelInfo);
         }
+        novelInfo.setLastUpdateTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
         return novelInfo;
     }
 
