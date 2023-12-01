@@ -30,13 +30,6 @@ public interface ReptileService {
     Map<String, String> getData(String html);
 
     /**
-     * 保存整本小说
-     *
-     * @param reptileInfoParamDTO 路径结构信息
-     */
-    void saveNovel(ReptileInfoParamDTO reptileInfoParamDTO);
-
-    /**
      * 保存小说明细
      *
      * @param reptileInfo 爬虫任务信息
