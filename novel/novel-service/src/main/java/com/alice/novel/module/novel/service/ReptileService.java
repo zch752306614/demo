@@ -43,13 +43,6 @@ public interface ReptileService {
     Long saveReptileJob(ReptileInfoParamDTO reptileInfoParamDTO);
 
     /**
-     * 添加小说
-     *
-     * @param reptileInfoParamDTO 路径结构信息
-     */
-    void addNovel(ReptileInfoParamDTO reptileInfoParamDTO);
-
-    /**
      * 获取任务列表
      *
      * @param reptileInfoParamDTO 任务信息

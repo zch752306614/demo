@@ -6,18 +6,17 @@ import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.dao.ReptileDetailInfoDao;
+import com.alice.novel.module.common.dao.ReptileInfoDao;
+import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
-import com.alice.novel.module.common.dao.ReptileInfoDao;
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.api.R;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -317,19 +316,6 @@ public class ReptileServiceImpl implements ReptileService {
         reptileInfo.setStartTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
         reptileInfoDao.insert(reptileInfo);
         return reptileInfo.getId();
-    }
-
-    /**
-     * 添加小说
-     *
-     * @param reptileInfoParamDTO 路径结构信息
-     */
-    @Override
-    public void addNovel(ReptileInfoParamDTO reptileInfoParamDTO) {
-        // 保存任务
-        Long jobId = saveReptileJob(reptileInfoParamDTO);
-        // 保存小说
-        saveNovel(reptileInfoParamDTO);
     }
 
     @Override
