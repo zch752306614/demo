@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Description 路径结构信息
@@ -50,16 +51,16 @@ public class ReptileInfoParamDTO {
     /**
      * 起点
      */
-    @NotBlank(message = "起点不能为空")
+    @NotNull(message = "起点不能为空")
     @ApiModelProperty(value = "起点", required = true)
-    private int startIndex;
+    private Integer startIndex;
 
     /**
      * 终点
      */
-    @NotBlank(message = "终点不能为空")
+    @NotNull(message = "终点不能为空")
     @ApiModelProperty(value = "终点", required = true)
-    private int endIndex;
+    private Integer endIndex;
 
     /**
      * 间隔
@@ -77,7 +78,7 @@ public class ReptileInfoParamDTO {
      * 分批数量
      */
     @ApiModelProperty(value = "分批数量")
-    private int partCount;
+    private Integer partCount;
 
     /**
      * 分批后缀
@@ -89,13 +90,13 @@ public class ReptileInfoParamDTO {
      * 分批起点
      */
     @ApiModelProperty(value = "分批起点")
-    private int partStartIndex;
+    private Integer partStartIndex;
 
     /**
      * 分批间隔
      */
     @ApiModelProperty(value = "分批间隔")
-    private int partInterval;
+    private Integer partInterval;
 
     /**
      * 标题分批分隔符
