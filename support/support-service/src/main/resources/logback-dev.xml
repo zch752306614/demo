@@ -29,7 +29,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_ROOT}/${PROJECT_NAME}/ehcache.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/app.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_ROOT}/${PROJECT_NAME}/app.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- 保留7天的日志 -->
             <maxHistory>7</maxHistory>
         </rollingPolicy>
