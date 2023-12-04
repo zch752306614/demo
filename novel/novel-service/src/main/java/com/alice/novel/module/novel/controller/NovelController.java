@@ -35,7 +35,7 @@ public class NovelController extends BaseController {
 
     @PostMapping("/addNovel")
     @ApiOperation(value = "添加小说", httpMethod = "GET")
-    public ResponseInfo<String> addNovel(@RequestBody ReptileInfoParamDTO reptileInfoParamDTO) {
+    public ResponseInfo<String> addNovel(@RequestBody @Validated ReptileInfoParamDTO reptileInfoParamDTO) {
         novelService.addNovel(reptileInfoParamDTO);
         return ResponseInfo.success();
     }
