@@ -46,6 +46,9 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovel(ReptileInfoParamDTO reptileInfoParamDTO) {
+        if (ObjectUtil.isEmpty(reptileInfoParamDTO.getIntervalValue())) {
+            reptileInfoParamDTO.setIntervalValue(1);
+        }
         ReptileInfo reptileInfo = reptileService.saveReptileInfo(reptileInfoParamDTO);
         NovelInfo novelInfo = reptileService.saveNovelInfo(reptileInfoParamDTO);
         reptileService.saveNovelDetails(reptileInfo, novelInfo);
