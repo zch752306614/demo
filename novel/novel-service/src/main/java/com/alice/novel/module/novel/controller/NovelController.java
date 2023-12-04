@@ -33,7 +33,7 @@ public class NovelController extends BaseController {
     @Resource
     private NovelService novelService;
 
-    @PostMapping("addNovel")
+    @PostMapping("/addNovel")
     @ApiOperation(value = "添加小说", httpMethod = "GET")
     public ResponseInfo<String> addNovel(@RequestBody ReptileInfoParamDTO reptileInfoParamDTO) {
         novelService.addNovel(reptileInfoParamDTO);
