@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alice.novel.module.common.dao.ReptileDetailInfoDao">
-
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.ReptileDetailInfo">
-        <id column="ID" property="id" />
-        <result column="REPTILE_INFO_ID" property="reptileInfoId" />
-        <result column="REPTILE_URL" property="reptileUrl" />
+        <id column="ID" property="id"/>
+        <result column="REPTILE_INFO_ID" property="reptileInfoId"/>
+        <result column="REPTILE_URL" property="reptileUrl"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         ID, REPTILE_INFO_ID, REPTILE_URL
     </sql>
-
 </mapper>

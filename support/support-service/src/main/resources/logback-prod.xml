@@ -2,10 +2,10 @@
 <configuration debug="true">
 
     <!-- 指定日志保存的根目录 -->
-    <property name="LOG_ROOT" value="/home/project/logs/prod" />
+    <property name="LOG_ROOT" value="/home/project/logs/prod"/>
 
     <!-- 使用 Spring Boot 的属性 -->
-    <springProperty scope="context" name="PROJECT_NAME" source="spring.application.name" />
+    <springProperty scope="context" name="PROJECT_NAME" source="spring.application.name"/>
 
     <!-- 控制台输出 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">

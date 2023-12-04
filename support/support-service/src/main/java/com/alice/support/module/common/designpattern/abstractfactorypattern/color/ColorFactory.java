@@ -1,7 +1,7 @@
 package com.alice.support.module.common.designpattern.abstractfactorypattern.color;
 
-import com.alice.support.module.common.designpattern.abstractfactorypattern.shape.Shape;
 import com.alice.support.module.common.designpattern.abstractfactorypattern.AbstractFactory;
+import com.alice.support.module.common.designpattern.abstractfactorypattern.shape.Shape;
 
 public class ColorFactory extends AbstractFactory {
     @Override

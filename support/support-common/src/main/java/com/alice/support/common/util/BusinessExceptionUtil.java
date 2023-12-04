@@ -1,7 +1,7 @@
 package com.alice.support.common.util;
 
-import com.alice.support.common.exception.BusinessException;
 import com.alice.support.common.consts.ExceptionConstants;
+import com.alice.support.common.exception.BusinessException;
 
 /**
  * @Description 统一异常处理工具类

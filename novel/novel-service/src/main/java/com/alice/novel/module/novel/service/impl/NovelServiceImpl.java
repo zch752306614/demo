@@ -5,11 +5,10 @@ import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
-import com.alice.novel.module.common.entity.NovelChapter;
-import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
-import com.alice.novel.module.common.entity.ReptileDetailInfo;
+import com.alice.novel.module.common.entity.NovelChapter;
+import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
 import com.alice.novel.module.novel.service.NovelService;
 import com.alice.novel.module.novel.service.ReptileService;
@@ -20,9 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description 小说信息查询

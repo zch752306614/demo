@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.service.impl;
 
-import com.alice.novel.module.common.entity.SysCode;
 import com.alice.novel.module.common.dao.SysCodeDao;
+import com.alice.novel.module.common.entity.SysCode;
 import com.alice.novel.module.common.service.SysCodeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

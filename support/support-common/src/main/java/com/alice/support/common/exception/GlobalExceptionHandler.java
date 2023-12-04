@@ -1,9 +1,8 @@
 package com.alice.support.common.exception;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.alice.support.common.dto.ResponseInfo;
 import com.alice.support.common.consts.ExceptionConstants;
+import com.alice.support.common.dto.ResponseInfo;
 import com.alice.support.common.exception.dto.ExceptionDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -7,5 +7,4 @@ package com.alice.novel.module.common.dto.query;
 public class ReptileInfoQueryDTO {
 
 
-
 }

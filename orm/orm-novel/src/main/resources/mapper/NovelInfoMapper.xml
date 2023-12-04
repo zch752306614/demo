@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.alice.novel.module.common.dao.NovelInfoDao">
-
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.NovelInfo">
         <id column="ID" property="id"/>
@@ -21,5 +20,4 @@
     <sql id="Base_Column_List">
         ID, NOVEL_NAME, NOVEL_AUTHOR, NOVEL_COVER, NOVEL_CHAPTER_COUNT, NOVEL_WORDS_COUNT, NOVEL_TYPE, NOVEL_ISSUE_DATE, LAST_UPDATE_TIME, COMPLETED_FLAG, NOVEL_INTRODUCTION
     </sql>
-
 </mapper>

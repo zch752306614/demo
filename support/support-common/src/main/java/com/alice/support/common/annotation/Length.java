@@ -12,6 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * 字节长度
+ *
  * @author ZDA
  */
 @Target({ElementType.FIELD})

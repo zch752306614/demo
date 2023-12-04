@@ -1,7 +1,7 @@
 package com.alice.novel.demo;
 
-import com.alice.support.common.dto.ResponseInfo;
 import com.alice.novel.demo.fallback.NovelDemoApiFallBack;
+import com.alice.support.common.dto.ResponseInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;

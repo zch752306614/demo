@@ -41,7 +41,8 @@ public class TableDataInfo<T> implements Serializable {
 
     /**
      * 分页
-     * @param t 列表数据
+     *
+     * @param t     列表数据
      * @param total 总记录数
      */
     public TableDataInfo(T t, int total) {

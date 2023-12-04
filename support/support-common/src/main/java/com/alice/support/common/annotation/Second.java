@@ -11,7 +11,6 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- *
  * @author ZDA
  */
 @Target({ElementType.FIELD})

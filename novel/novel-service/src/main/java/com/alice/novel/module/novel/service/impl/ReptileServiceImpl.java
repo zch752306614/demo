@@ -28,7 +28,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -148,7 +147,7 @@ public class ReptileServiceImpl implements ReptileService {
      * 保存小说明细
      *
      * @param reptileInfo 爬虫任务信息
-     * @param novelInfo 小说信息
+     * @param novelInfo   小说信息
      */
     @Override
 //    @Async("novelReptileExecutor")

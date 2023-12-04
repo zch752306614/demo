@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 /**
  * 邮箱格式校验
+ *
  * @author ZDA
  * @date 2021/11/20 13:51
  */
