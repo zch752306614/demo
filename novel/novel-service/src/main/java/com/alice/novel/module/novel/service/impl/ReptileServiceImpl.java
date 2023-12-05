@@ -1,9 +1,9 @@
 package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
 import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.dao.ReptileDetailInfoDao;
@@ -13,11 +13,13 @@ import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
+import com.alice.novel.module.novel.service.BQGService;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
+import com.alice.support.common.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
@@ -47,6 +49,8 @@ public class ReptileServiceImpl implements ReptileService {
     @Resource
     private RedisService redisService;
     @Resource
+    private BQGService bqgService;
+    @Resource
     private NovelInfoDao novelInfoDao;
     @Resource
     private NovelChapterDao novelChapterDao;
@@ -54,99 +58,6 @@ public class ReptileServiceImpl implements ReptileService {
     private ReptileInfoDao reptileInfoDao;
     @Resource
     private ReptileDetailInfoDao reptileDetailInfoDao;
-
-    /**
-     * 提取信息
-     *
-     * @param url String 爬取小说章节的路径
-     * @return Map<String, String>
-     */
-    @Override
-    public Map<String, String> getNovelInfo(String url) {
-        // 结果集合
-        Map<String, String> result = new HashMap<>(10);
-        try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet(url);
-
-            // 模拟浏览器浏览
-            httpGet.setHeader("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0");
-            CloseableHttpResponse response = httpclient.execute(httpGet);
-
-            //获取响应状态码
-            int statusCode = response.getStatusLine().getStatusCode();
-
-            HttpEntity entity = response.getEntity();
-
-            int responseCode = 200;
-            //如果状态响应码为200，则获取html实体内容或者json文件
-            if (statusCode == responseCode) {
-                String html = EntityUtils.toString(entity, Consts.UTF_8);
-                // 提取HTML得到商品信息结果
-                result = getData(html);
-            }
-            // 消耗掉实体
-            EntityUtils.consume(response.getEntity());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    /**
-     * 提取信息
-     *
-     * @param html 完整html文本
-     * @return Map<String, String>
-     */
-    @Override
-    public Map<String, String> getData(String html) {
-        // 获取的数据，存放在集合中
-        Map<String, String> data = new HashMap<>(10);
-
-        // 采用Jsoup解析
-        Document doc = Jsoup.parse(html);
-
-        // 获取标题
-        Elements content = doc.getElementsByClass("reader-main");
-        Elements elements = content.get(0).getElementsByTag("h1");
-        String title = elements.text();
-        if (title != null) {
-            data.put("title", title);
-        }
-
-        // 获取正文
-        content = doc.getElementsByClass("content");
-        elements = content.get(0).getElementsByTag("p");
-        StringBuilder text = new StringBuilder();
-        for (Element element : elements) {
-            String str = element.text();
-            str = str.replaceAll("\\s*", "");
-            str = str.replaceAll("记住搜索求书阁qiushuge.net提前看书。", "");
-            str = str.replaceAll(",", "，");
-            str = str.replaceAll("\\.", "。");
-            str = str.replaceAll("\"", "” ");
-            str = str.replaceAll("!", "！");
-            str = str.replaceAll(":", "：");
-            str = str.replaceAll("\\?", "？");
-            text.append("   ".toCharArray(), 0, 3);
-            int len = 0;
-            while (len < str.length()) {
-                int add = 50;
-                if (len == 0) {
-                    add = 48;
-                }
-                text.append(str, len, Math.min(len + add, str.length())).append("\n");
-                len += add;
-            }
-        }
-        data.put("content", text.toString());
-
-        //System.out.println("data=" + data);
-
-        //返回的数据
-        return data;
-    }
 
     /**
      * 保存小说明细
@@ -160,10 +71,10 @@ public class ReptileServiceImpl implements ReptileService {
     public void saveNovelDetails(ReptileInfo reptileInfo, NovelInfo novelInfo) {
         // 保存明细
         int errorCount = 0;
-        int chapterCount;
+//        int chapterCount;
         int wordCount;
-        String novelName = novelInfo.getNovelName();
-        String novelAuth = novelInfo.getNovelAuthor();
+//        String novelName = novelInfo.getNovelName();
+//        String novelAuth = novelInfo.getNovelAuthor();
         List<NovelChapter> novelChapterList = new ArrayList<>();
         List<ReptileDetailInfo> reptileDetailInfoList = new ArrayList<>();
         Integer pauseIndex = reptileInfo.getPauseIndex();
@@ -190,7 +101,7 @@ public class ReptileServiceImpl implements ReptileService {
                         } else {
                             url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
                         }
-                        Map<String, String> data = this.getNovelInfo(url);
+                        Map<String, String> data = bqgService.getNovelInfo(url);
                         String titlePart = data.get("title");
                         String contentPart = data.get("content");
                         if (ObjectUtil.isEmpty(titlePart) || ObjectUtil.isEmpty(contentPart)
@@ -218,7 +129,7 @@ public class ReptileServiceImpl implements ReptileService {
                     }
                 } else {
                     url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
-                    Map<String, String> data = getNovelInfo(url);
+                    Map<String, String> data = bqgService.getNovelInfo(url);
                     title = data.get("title");
                     content.append(data.get("content"));
                     if (ObjectUtil.isEmpty(title) || ObjectUtil.isEmpty(content)
@@ -238,12 +149,12 @@ public class ReptileServiceImpl implements ReptileService {
                 }
                 errorCount = 0;
                 if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
-                    chapterCount = redisService.getCount(novelName + "_" + novelAuth + "_chapterCount");
+                    String titleNumber = title.substring(1, title.indexOf("章"));
                     wordCount = content.toString().length();
                     NovelChapter novelChapter = NovelChapter.builder()
                             .chapterContent(content.toString())
                             .chapterName(title)
-                            .chapterNumber(chapterCount)
+                            .chapterNumber(StringUtils.convertChineseToArabic(titleNumber))
                             .chapterWordsCount(wordCount)
                             .build();
                     novelChapterList.add(novelChapter);
@@ -337,6 +248,12 @@ public class ReptileServiceImpl implements ReptileService {
         return novelInfo;
     }
 
+    /**
+     * 获取任务列表
+     *
+     * @param reptileInfoParamDTO 任务信息
+     * @return List<ReptileInfo>
+     */
     @Override
     public List<ReptileInfo> getReptileInfoList(ReptileInfoParamDTO reptileInfoParamDTO) {
         return null;

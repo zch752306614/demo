@@ -14,22 +14,6 @@ import java.util.Map;
 public interface ReptileService {
 
     /**
-     * 提取信息
-     *
-     * @param url 爬取小说章节的路径
-     * @return Map<String, String>
-     */
-    Map<String, String> getNovelInfo(String url);
-
-    /**
-     * 提取信息
-     *
-     * @param html 完整html文本
-     * @return Map<String, String>
-     */
-    Map<String, String> getData(String html);
-
-    /**
      * 保存小说明细
      *
      * @param reptileInfo 爬虫任务信息

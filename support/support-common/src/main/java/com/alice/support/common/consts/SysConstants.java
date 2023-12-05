@@ -14,7 +14,7 @@ public class SysConstants {
 
     public static final int MAX_CHAPTER = 10000;
 
-    public static final int MAX_BATCH = 100;
+    public static final int MAX_BATCH = 50;
 
     public static final String CONTENT_ERROR_FILTER = "内容缺失或章节不存在！请稍后重新尝试！\n";
 
@@ -25,4 +25,12 @@ public class SysConstants {
     public static final String IS_NO = "0";
 
     public static final String EMPTY = "";
+
+    public static final String NUMBER_ONE = "0";
+
+    public static final String NUMBER_TWO = "1";
+
+    public static final String NUMBER_THREE = "2";
+
+    public static final String NUMBER_FOUR = "3";
 }
