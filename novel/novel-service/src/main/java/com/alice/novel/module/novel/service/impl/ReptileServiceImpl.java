@@ -1,6 +1,7 @@
 package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dao.NovelChapterDao;
@@ -14,6 +15,7 @@ import com.alice.novel.module.common.entity.ReptileDetailInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
+import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -28,6 +30,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +44,8 @@ import java.util.*;
 @Service("reptileService")
 public class ReptileServiceImpl implements ReptileService {
 
+    @Resource
+    private RedisService redisService;
     @Resource
     private NovelInfoDao novelInfoDao;
     @Resource
@@ -150,12 +155,15 @@ public class ReptileServiceImpl implements ReptileService {
      * @param novelInfo   小说信息
      */
     @Override
-//    @Async("novelReptileExecutor")
+    @Async("novelReptileExecutor")
     @Transactional(rollbackFor = Exception.class)
     public void saveNovelDetails(ReptileInfo reptileInfo, NovelInfo novelInfo) {
         // 保存明细
         int errorCount = 0;
-        int chapterCount = 0;
+        int chapterCount;
+        int wordCount;
+        String novelName = novelInfo.getNovelName();
+        String novelAuth = novelInfo.getNovelAuthor();
         List<NovelChapter> novelChapterList = new ArrayList<>();
         List<ReptileDetailInfo> reptileDetailInfoList = new ArrayList<>();
         Integer pauseIndex = reptileInfo.getPauseIndex();
@@ -163,7 +171,7 @@ public class ReptileServiceImpl implements ReptileService {
         int index = ObjectUtil.isNotEmpty(pauseIndex) ? Math.max(startIndex, pauseIndex) : startIndex;
         int endIndex = reptileInfo.getEndIndex();
         try {
-            while (index <= endIndex) {
+            while (index < endIndex) {
                 if (errorCount > 10) {
                     break;
                 }
@@ -230,12 +238,13 @@ public class ReptileServiceImpl implements ReptileService {
                 }
                 errorCount = 0;
                 if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
-                    chapterCount++;
+                    chapterCount = redisService.getCount(novelName + "_" + novelAuth + "_chapterCount");
+                    wordCount = content.toString().length();
                     NovelChapter novelChapter = NovelChapter.builder()
                             .chapterContent(content.toString())
                             .chapterName(title)
                             .chapterNumber(chapterCount)
-                            .chapterWordsCount(content.toString().length())
+                            .chapterWordsCount(wordCount)
                             .build();
                     novelChapterList.add(novelChapter);
                 }
@@ -315,11 +324,13 @@ public class ReptileServiceImpl implements ReptileService {
         // 存在则更新小说信息
         if (ObjectUtil.isNotEmpty(novelInfoList)) {
             novelInfo = novelInfoList.get(0);
-            BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
+            BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo, "novelChapterCount", "novelWordsCount");
             novelInfoDao.updateById(novelInfo);
         } else {
             // 不存在则新增小说信息
             BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
+            novelInfo.setNovelWordsCount(0);
+            novelInfo.setNovelChapterCount(0);
             novelInfoDao.insert(novelInfo);
         }
         novelInfo.setLastUpdateTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));

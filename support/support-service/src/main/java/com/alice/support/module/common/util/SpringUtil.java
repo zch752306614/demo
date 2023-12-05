@@ -14,6 +14,9 @@ public class SpringUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
+    /**
+     * 容器赋值
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         if (SpringUtil.applicationContext == null) {
@@ -31,7 +34,7 @@ public class SpringUtil implements ApplicationContextAware {
     /**
      * 通过name获取Bean
      *
-     * @param name
+     * @param name 类名
      */
     public static Object getBean(String name) {
         return getApplicationContext().getBean(name);
@@ -40,8 +43,8 @@ public class SpringUtil implements ApplicationContextAware {
     /**
      * 通过class获取Bean
      *
-     * @param clazz
-     * @param <T>
+     * @param clazz 类型
+     * @return <T>
      */
     public static <T> T getBean(Class<T> clazz) {
         return getApplicationContext().getBean(clazz);
@@ -50,10 +53,9 @@ public class SpringUtil implements ApplicationContextAware {
     /**
      * 通过name,以及Clazz返回指定的Bean
      *
-     * @param name
-     * @param clazz
-     * @param <T>
-     * @return
+     * @param name 类名
+     * @param clazz 类型
+     * @return <T>
      */
     public static <T> T getBean(String name, Class<T> clazz) {
         return getApplicationContext().getBean(name, clazz);
@@ -63,7 +65,9 @@ public class SpringUtil implements ApplicationContextAware {
         return applicationContext.getEnvironment().getActiveProfiles()[0];
     }
 
-    public static String getServerAddr() {
+    public static String getServerAddress() {
         return applicationContext.getEnvironment().getProperty("spring.cloud.nacos.discovery.server-addr");
     }
+
+
 }

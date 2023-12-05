@@ -8,6 +8,7 @@ import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -293,6 +294,21 @@ public class RedisService {
     public boolean setnxAndExpire(final String key, String value, long seconds) {
         Boolean result = redisTemplate.opsForValue().setIfAbsent(key, value, seconds, TimeUnit.SECONDS);
         return null != result && result;
+    }
+
+    /**
+     * redis计数
+     *
+     * @param key 主键值
+     * @return long 类型主键
+     */
+    public Integer getCount(final String key) {
+        return (Integer) redisTemplate.execute((RedisCallback<Integer>) connection -> {
+            RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+            byte[] keys = serializer.serialize(key);
+            Assert.notNull(keys);
+            return Integer.valueOf(Objects.requireNonNull(connection.incr(keys)).toString());
+        });
     }
 
 }

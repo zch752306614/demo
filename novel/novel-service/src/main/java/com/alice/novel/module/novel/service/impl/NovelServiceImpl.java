@@ -48,7 +48,16 @@ public class NovelServiceImpl implements NovelService {
         }
         ReptileInfo reptileInfo = reptileService.saveReptileInfo(reptileInfoParamDTO);
         NovelInfo novelInfo = reptileService.saveNovelInfo(reptileInfoParamDTO);
-        reptileService.saveNovelDetails(reptileInfo, novelInfo);
+        Integer pauseIndex = reptileInfo.getPauseIndex();
+        Integer startIndex = reptileInfo.getStartIndex();
+        Integer endIndex = reptileInfo.getEndIndex();
+        startIndex = ObjectUtil.isEmpty(pauseIndex) ? startIndex : Math.max(startIndex, pauseIndex);
+        while (startIndex <= endIndex) {
+            reptileInfo.setStartIndex(startIndex);
+            reptileInfo.setEndIndex(startIndex + SysConstants.MAX_BATCH);
+            reptileService.saveNovelDetails(reptileInfo, novelInfo);
+            startIndex += SysConstants.MAX_BATCH;
+        }
     }
 
     @Override
