@@ -147,6 +147,11 @@ public class ReptileInfo extends Model<ReptileInfo> {
     @TableField("VALUE_FLAG")
     private String valueFlag;
 
+    /**
+     * 错误信息
+     */
+    @TableField("ERROR_MSG")
+    private String errorMsg;
 
     @Override
     protected Serializable pkVal() {

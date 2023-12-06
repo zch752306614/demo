@@ -1,9 +1,12 @@
 package com.alice.novel.module.novel.service;
 
+import com.alice.novel.module.common.entity.ReptileDetailInfo;
+
+import java.util.List;
 import java.util.Map;
 
 /**
- * @Description 和图书爬虫
+ * @Description 和图书爬虫（https://www.hetushu.com/index.php）
  * @DateTime 2023/12/5 14:24
  */
 public interface HTSService {
@@ -23,5 +26,14 @@ public interface HTSService {
      * @return Map<String, String>
      */
     Map<String, String> getData(String html);
+    
+    /**
+     * 获取小说每个章节的链接
+     *
+     * @param baseUrl 链接
+     * @param novelNumber 小说编号
+     * @return List<ReptileDetailInfo> 小说章节链接信息
+     */
+    List<ReptileDetailInfo> getNovelChapterLink(String baseUrl, String novelNumber);
 
 }

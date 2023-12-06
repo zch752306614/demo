@@ -3,7 +3,7 @@ package com.alice.novel.module.novel.service;
 import java.util.Map;
 
 /**
- * @Description 笔趣阁爬虫
+ * @Description 笔趣阁爬虫（https://m.ytryx.com/b3909/）
  * @DateTime 2023/12/5 14:23
  */
 public interface BQGService {

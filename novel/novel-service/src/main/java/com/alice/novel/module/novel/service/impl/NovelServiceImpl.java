@@ -15,6 +15,7 @@ import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import java.util.List;
  * @Description 小说信息查询
  * @DateTime 2023/11/28 17:40
  */
+@Slf4j
 @Service("novelService")
 public class NovelServiceImpl implements NovelService {
 
@@ -53,9 +55,11 @@ public class NovelServiceImpl implements NovelService {
         Integer endIndex = reptileInfo.getEndIndex();
         startIndex = ObjectUtil.isEmpty(pauseIndex) ? startIndex : Math.max(startIndex, pauseIndex);
         while (startIndex <= endIndex) {
-            reptileInfo.setStartIndex(startIndex);
-            reptileInfo.setEndIndex(startIndex + SysConstants.MAX_BATCH);
-            reptileService.saveNovelDetails(reptileInfo, novelInfo);
+            ReptileInfo temp = new ReptileInfo();
+            BeanUtil.copyProperties(reptileInfo, temp);
+            temp.setStartIndex(startIndex);
+            temp.setEndIndex(Math.min(startIndex + SysConstants.MAX_BATCH, endIndex));
+            reptileService.saveNovelDetails(temp, novelInfo);
             startIndex += SysConstants.MAX_BATCH;
         }
     }

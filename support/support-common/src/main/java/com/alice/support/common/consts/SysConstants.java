@@ -14,7 +14,9 @@ public class SysConstants {
 
     public static final int MAX_CHAPTER = 10000;
 
-    public static final int MAX_BATCH = 50;
+    public static final int MAX_BATCH = 10;
+
+    public static final int MSG_MAX_LEN = 500;
 
     public static final String CONTENT_ERROR_FILTER = "内容缺失或章节不存在！请稍后重新尝试！\n";
 

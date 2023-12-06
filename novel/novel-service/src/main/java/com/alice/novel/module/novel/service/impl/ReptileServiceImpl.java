@@ -18,9 +18,12 @@ import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
+import com.alice.support.common.util.ChineseAndArabicNumUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.alice.support.common.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -43,6 +46,7 @@ import java.util.*;
  * @Description 爬取小说
  * @DateTime 2023/11/27 17:27
  */
+@Slf4j
 @Service("reptileService")
 public class ReptileServiceImpl implements ReptileService {
 
@@ -79,7 +83,7 @@ public class ReptileServiceImpl implements ReptileService {
         List<ReptileDetailInfo> reptileDetailInfoList = new ArrayList<>();
         Integer pauseIndex = reptileInfo.getPauseIndex();
         Integer startIndex = reptileInfo.getStartIndex();
-        int index = ObjectUtil.isNotEmpty(pauseIndex) ? Math.max(startIndex, pauseIndex) : startIndex;
+        int index = ObjectUtil.isEmpty(pauseIndex) ? startIndex : Math.max(startIndex, pauseIndex);
         int endIndex = reptileInfo.getEndIndex();
         try {
             while (index < endIndex) {
@@ -154,19 +158,26 @@ public class ReptileServiceImpl implements ReptileService {
                     NovelChapter novelChapter = NovelChapter.builder()
                             .chapterContent(content.toString())
                             .chapterName(title)
-                            .chapterNumber(StringUtils.convertChineseToArabic(titleNumber))
+                            .chapterNumber(ChineseAndArabicNumUtil.chineseNumToArabicNum(titleNumber))
                             .chapterWordsCount(wordCount)
                             .build();
                     novelChapterList.add(novelChapter);
                 }
                 index += reptileInfo.getIntervalValue();
             }
-        } catch (Exception e) {
+            reptileInfo.setPauseIndex(endIndex);
+        } catch (Exception ex) {
             reptileInfo.setPauseIndex(index);
             reptileInfo.setDoneFlag(SysConstants.IS_NO);
+            reptileInfo.setErrorMsg(ex.getMessage().substring(0, Math.min(ex.getMessage().length(), SysConstants.MSG_MAX_LEN)));
         } finally {
             // 更新爬虫任务信息
-            reptileInfoDao.updateById(reptileInfo);
+            UpdateWrapper<ReptileInfo> updateWrapper = new UpdateWrapper<>();
+            updateWrapper.eq("ID", reptileInfo.getId())
+                    .set(reptileInfo.getPauseIndex() != null, "PAUSE_INDEX", reptileInfo.getPauseIndex())
+                    .set(reptileInfo.getDoneFlag() != null, "DONE_FLAG", reptileInfo.getDoneFlag())
+                    .set(reptileInfo.getErrorMsg() != null, "ERROR_MSG", reptileInfo.getErrorMsg());
+            reptileInfoDao.update(null, updateWrapper);
             // 新增爬虫明细信息
             for (ReptileDetailInfo reptileDetailInfo : reptileDetailInfoList) {
                 reptileDetailInfo.setReptileInfoId(reptileInfo.getId());
@@ -178,6 +189,7 @@ public class ReptileServiceImpl implements ReptileService {
                 novelChapterDao.insert(novelChapter);
             }
         }
+        log.info("Done");
     }
 
     /**
