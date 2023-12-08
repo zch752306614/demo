@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alice.novel.module.common.mapper.ReptileJobMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.alice.novel.module.common.entity.ReptileJob">
+        <id column="ID" property="id"/>
+        <result column="NOVEL_NAME" property="novelName"/>
+        <result column="NOVEL_AUTHOR" property="novelAuthor"/>
+        <result column="COMPLETED_FLAG" property="completedFlag"/>
+        <result column="BASE_URL" property="baseUrl"/>
+        <result column="NOVEL_NUBER" property="novelNuber"/>
+        <result column="URL_SUFFIX" property="urlSuffix"/>
+        <result column="DONE_FLAG" property="doneFlag"/>
+        <result column="REMARK" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        ID, NOVEL_NAME, NOVEL_AUTHOR, COMPLETED_FLAG, BASE_URL, NOVEL_NUBER, URL_SUFFIX, DONE_FLAG, REMARK
+    </sql>
+</mapper>

@@ -1,6 +1,7 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
@@ -33,10 +34,17 @@ public class NovelController extends BaseController {
     @Resource
     private NovelService novelService;
 
-    @PostMapping("/addNovel")
+    @PostMapping("/addNovelByBQG")
     @ApiOperation(value = "添加小说", httpMethod = "POST")
-    public ResponseInfo<String> addNovel(@RequestBody @Validated ReptileInfoParamDTO reptileInfoParamDTO) {
-        novelService.addNovel(reptileInfoParamDTO);
+    public ResponseInfo<String> addNovelByBQG(@RequestBody @Validated BQGReptileInfoParamDTO reptileInfoParamDTO) {
+        novelService.addNovelByBQG(reptileInfoParamDTO);
+        return ResponseInfo.success();
+    }
+
+    @PostMapping("/addNovelByHTS")
+    @ApiOperation(value = "添加小说", httpMethod = "POST")
+    public ResponseInfo<String> addNovelByHTS(@RequestBody @Validated HTSReptileInfoParamDTO reptileInfoParamDTO) {
+        novelService.addNovelByHTS(reptileInfoParamDTO);
         return ResponseInfo.success();
     }
 

@@ -27,7 +27,7 @@ public class Generator {
     //作者
     private static final String authorName = "ZhangChenhuang";
     //要生成的表名
-    private static final String[] tables = {"T_REPTILE_INFO", "T_REPTILE_DETAIL_INFO"};
+    private static final String[] tables = {"T_REPTILE_JOB", "T_REPTILE_JOB_DETAIL"};
     //table前缀
     private static final String prefix = "T_";
 
@@ -86,7 +86,7 @@ public class Generator {
                         .setOpen(false)//生成后打开文件夹
                         .setAuthor(authorName)
                         // 自定义文件命名，注意 %s 会自动填充表实体属性！
-                        .setMapperName("%sDao")
+                        .setMapperName("%sMapper")
                         .setXmlName("%sMapper")
                         .setServiceName("%sService")
                         .setServiceImplName("%sServiceImpl")

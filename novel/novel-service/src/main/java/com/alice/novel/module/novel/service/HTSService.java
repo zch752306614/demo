@@ -1,6 +1,10 @@
 package com.alice.novel.module.novel.service;
 
+import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
+import com.alice.novel.module.common.entity.ReptileJobDetail;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +38,28 @@ public interface HTSService {
      * @param novelNumber 小说编号
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */
-    List<ReptileDetailInfo> getNovelChapterLink(String baseUrl, String novelNumber);
+    List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber);
+
+    /**
+     * 保存爬虫任务
+     *
+     * @param reptileInfoParamDTO 任务信息
+     */
+    List<ReptileJobDetailResultDTO> saveReptileJob(HTSReptileInfoParamDTO reptileInfoParamDTO);
+
+    /**
+     * 保存小说信息
+     *
+     * @param reptileInfoParamDTO 爬虫信息
+     */
+    void saveNovelInfo(HTSReptileInfoParamDTO reptileInfoParamDTO);
+
+    /**
+     * 保存章节信息
+     *
+     * @param novelInfo 小说信息
+     * @param reptileJobDetailResultDTOList 爬虫任务明细信息
+     */
+    void saveChapterInfo(NovelInfo novelInfo, List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList);
 
 }

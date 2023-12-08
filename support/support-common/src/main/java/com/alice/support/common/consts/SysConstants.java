@@ -14,7 +14,7 @@ public class SysConstants {
 
     public static final int MAX_CHAPTER = 10000;
 
-    public static final int MAX_BATCH = 10;
+    public static final int MAX_BATCH = 50;
 
     public static final int MSG_MAX_LEN = 500;
 
@@ -35,4 +35,10 @@ public class SysConstants {
     public static final String NUMBER_THREE = "2";
 
     public static final String NUMBER_FOUR = "3";
+
+    public static final String STRING_DT = "dt";
+
+    public static final String STRING_DD = "dd";
+
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 }

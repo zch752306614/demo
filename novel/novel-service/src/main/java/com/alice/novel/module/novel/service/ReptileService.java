@@ -1,11 +1,10 @@
 package com.alice.novel.module.novel.service;
 
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description 爬取小说
@@ -27,7 +26,7 @@ public interface ReptileService {
      * @param reptileInfoParamDTO 任务信息
      * @return Long 任务ID
      */
-    ReptileInfo saveReptileInfo(ReptileInfoParamDTO reptileInfoParamDTO);
+    ReptileInfo saveReptileInfo(BQGReptileInfoParamDTO reptileInfoParamDTO);
 
     /**
      * 保存小说信息
@@ -35,7 +34,7 @@ public interface ReptileService {
      * @param reptileInfoParamDTO 小说信息
      * @return Long 小说ID
      */
-    NovelInfo saveNovelInfo(ReptileInfoParamDTO reptileInfoParamDTO);
+    NovelInfo saveNovelInfo(BQGReptileInfoParamDTO reptileInfoParamDTO);
 
     /**
      * 获取任务列表
@@ -43,6 +42,6 @@ public interface ReptileService {
      * @param reptileInfoParamDTO 任务信息
      * @return List<ReptileInfo>
      */
-    List<ReptileInfo> getReptileInfoList(ReptileInfoParamDTO reptileInfoParamDTO);
+    List<ReptileInfo> getReptileInfoList(BQGReptileInfoParamDTO reptileInfoParamDTO);
 
 }

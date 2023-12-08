@@ -1,5 +1,7 @@
 package com.alice.support.common.util;
 
+import cn.hutool.core.util.ObjectUtil;
+
 /**
  * @Description 汉语的数字和阿拉伯数字互转工具类
  * @DateTime 2023/12/6 17:45
@@ -17,6 +19,9 @@ public class ChineseAndArabicNumUtil {
      * @return int 阿拉伯数字
      */
     public static int chineseNumToArabicNum(String chineseNum) {
+        if (isChineseNum(chineseNum) || ObjectUtil.isEmpty(chineseNum)) {
+            return -1;
+        }
         int result = 0;
         //存放一个单位的数字如：十万
         int temp = 1;

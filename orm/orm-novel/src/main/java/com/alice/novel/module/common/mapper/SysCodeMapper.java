@@ -1,4 +1,4 @@
-package com.alice.novel.module.common.dao;
+package com.alice.novel.module.common.mapper;
 
 import com.alice.novel.module.common.entity.SysCode;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ZhangChenhuang
  * @since 2023-11-27
  */
-public interface SysCodeDao extends BaseMapper<SysCode> {
+public interface SysCodeMapper extends BaseMapper<SysCode> {
 
 }

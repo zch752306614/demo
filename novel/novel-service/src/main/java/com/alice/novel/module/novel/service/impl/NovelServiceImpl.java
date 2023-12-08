@@ -1,10 +1,14 @@
 package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.alice.novel.module.common.dao.NovelChapterDao;
-import com.alice.novel.module.common.dao.NovelInfoDao;
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.entity.ReptileJobDetail;
+import com.alice.novel.module.common.mapper.NovelChapterMapper;
+import com.alice.novel.module.common.mapper.NovelInfoMapper;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
@@ -13,6 +17,7 @@ import com.alice.novel.module.common.entity.ReptileInfo;
 import com.alice.novel.module.novel.service.NovelService;
 import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.support.common.consts.SysConstants;
+import com.alice.support.common.util.DateUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +38,11 @@ public class NovelServiceImpl implements NovelService {
     @Resource
     private ReptileService reptileService;
     @Resource
-    private NovelInfoDao novelInfoDao;
+    private NovelInfoMapper novelInfoMapper;
     @Resource
-    private NovelChapterDao novelChapterDao;
+    private NovelChapterMapper novelChapterMapper;
+    @Resource
+    private HTSServiceImpl htsService;
 
     /**
      * 添加小说
@@ -44,7 +51,7 @@ public class NovelServiceImpl implements NovelService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addNovel(ReptileInfoParamDTO reptileInfoParamDTO) {
+    public void addNovelByBQG(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         if (ObjectUtil.isEmpty(reptileInfoParamDTO.getIntervalValue())) {
             reptileInfoParamDTO.setIntervalValue(1);
         }
@@ -64,12 +71,31 @@ public class NovelServiceImpl implements NovelService {
         }
     }
 
+    /**
+     * 添加和图书小说
+     *
+     * @param reptileInfoParamDTO 要添加的小说信息
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO) {
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = htsService.saveReptileJob(reptileInfoParamDTO);
+        List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
+        NovelInfo novelInfo = new NovelInfo();
+        BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
+        novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
+        novelInfoMapper.insert(novelInfo);
+        for (List<ReptileJobDetailResultDTO> list : splitList) {
+            htsService.saveChapterInfo(novelInfo, list);
+        }
+    }
+
     @Override
     public List<NovelInfo> queryNovelist(NovelInfoQueryDTO novelInfoQueryDTO) {
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(novelInfoQueryDTO, novelInfo);
         QueryWrapper<NovelInfo> queryWrapper = QueryWrapperUtil.initParams(novelInfo);
-        return novelInfoDao.selectList(queryWrapper);
+        return novelInfoMapper.selectList(queryWrapper);
     }
 
     @Override
@@ -78,9 +104,9 @@ public class NovelServiceImpl implements NovelService {
         BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
         QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
         if (SysConstants.IS_YES.equals(chapterInfoQueryDTO.getContentFlag())) {
-            return novelChapterDao.selectList(queryWrapper);
+            return novelChapterMapper.selectList(queryWrapper);
         } else {
-            return novelChapterDao.queryChapterList(chapterInfoQueryDTO);
+            return novelChapterMapper.queryChapterList(chapterInfoQueryDTO);
         }
     }
 }

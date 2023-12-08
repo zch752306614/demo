@@ -1,6 +1,7 @@
 package com.alice.support.common.util;
 
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alice.support.common.consts.SysConstants;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,11 +27,23 @@ public class DateUtil {
     }
 
     public static Date transferDate(Date date, String pattern) {
-        if (pattern.length() == 0) {
-            pattern = "yyyy-MM-dd HH:mm:ss";
+        if (ObjectUtil.isEmpty(pattern)) {
+            pattern = SysConstants.DEFAULT_DATE_FORMAT;
         }
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String format = sdf.format(date);
+        Date parse = null;
+        try {
+            parse = sdf.parse(format);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+        }
+        return parse;
+    }
+
+    public static Date defaultFormatDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat(SysConstants.DEFAULT_DATE_FORMAT);
+        String format = sdf.format(new Date());
         Date parse = null;
         try {
             parse = sdf.parse(format);
@@ -47,10 +60,9 @@ public class DateUtil {
      * @return pattern 格式
      */
     public static Date transferDate(String date, String pattern) {
-        if (pattern.length() == 0) {
-            pattern = "yyyy-MM-dd HH:mm:ss";
+        if (ObjectUtil.isEmpty(pattern)) {
+            pattern = SysConstants.DEFAULT_DATE_FORMAT;
         }
-
         SimpleDateFormat ft = new SimpleDateFormat(pattern);
         Date newDate = null;
         try {
@@ -62,11 +74,16 @@ public class DateUtil {
     }
 
     public static String transferDateToString(Date date, String pattern) {
-        if (pattern.length() == 0) {
-            pattern = "yyyy-MM-dd HH:mm:ss";
+        if (ObjectUtil.isEmpty(pattern)) {
+            pattern = SysConstants.DEFAULT_DATE_FORMAT;
         }
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(date);
+    }
+
+    public static String defaultFormatDateToString() {
+        SimpleDateFormat sdf = new SimpleDateFormat(SysConstants.DEFAULT_DATE_FORMAT);
+        return sdf.format(new Date());
     }
 
     /**

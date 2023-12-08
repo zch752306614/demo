@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.service.impl;
 
-import com.alice.novel.module.common.dao.SysCodeDao;
 import com.alice.novel.module.common.entity.SysCode;
+import com.alice.novel.module.common.mapper.SysCodeMapper;
 import com.alice.novel.module.common.service.SysCodeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-11-27
  */
 @Service
-public class SysCodeServiceImpl extends ServiceImpl<SysCodeDao, SysCode> implements SysCodeService {
+public class SysCodeServiceImpl extends ServiceImpl<SysCodeMapper, SysCode> implements SysCodeService {
 
 }

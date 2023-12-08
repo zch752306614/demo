@@ -11,15 +11,15 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * @Description 路径结构信息
+ * @Description 笔趣阁路径结构信息
  * @DateTime 2023/11/27 17:58
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ApiModel(value = "ReptileInfoParamDTO", description = "路径结构信息")
-public class ReptileInfoParamDTO {
+@ApiModel(value = "BQGReptileInfoParamDTO", description = "路径结构信息")
+public class BQGReptileInfoParamDTO {
 
     /**
      * 小说名称

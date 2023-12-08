@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.service.impl;
 
-import com.alice.novel.module.common.dao.NovelInfoDao;
 import com.alice.novel.module.common.entity.NovelInfo;
+import com.alice.novel.module.common.mapper.NovelInfoMapper;
 import com.alice.novel.module.common.service.NovelInfoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ import org.springframework.stereotype.Service;
  * @since 2023-11-27
  */
 @Service
-public class NovelInfoServiceImpl extends ServiceImpl<NovelInfoDao, NovelInfo> implements NovelInfoService {
+public class NovelInfoServiceImpl extends ServiceImpl<NovelInfoMapper, NovelInfo> implements NovelInfoService {
 
 }

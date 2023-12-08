@@ -3,12 +3,11 @@ package com.alice.novel.module.novel.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.http.HttpUtil;
-import com.alice.novel.module.common.dao.NovelChapterDao;
-import com.alice.novel.module.common.dao.NovelInfoDao;
-import com.alice.novel.module.common.dao.ReptileDetailInfoDao;
-import com.alice.novel.module.common.dao.ReptileInfoDao;
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.mapper.NovelChapterMapper;
+import com.alice.novel.module.common.mapper.NovelInfoMapper;
+import com.alice.novel.module.common.mapper.ReptileDetailInfoMapper;
+import com.alice.novel.module.common.mapper.ReptileInfoMapper;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
@@ -20,21 +19,9 @@ import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.ChineseAndArabicNumUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
-import com.alice.support.common.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.Consts;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,13 +42,13 @@ public class ReptileServiceImpl implements ReptileService {
     @Resource
     private BQGService bqgService;
     @Resource
-    private NovelInfoDao novelInfoDao;
+    private NovelInfoMapper novelInfoMapper;
     @Resource
-    private NovelChapterDao novelChapterDao;
+    private NovelChapterMapper novelChapterMapper;
     @Resource
-    private ReptileInfoDao reptileInfoDao;
+    private ReptileInfoMapper reptileInfoMapper;
     @Resource
-    private ReptileDetailInfoDao reptileDetailInfoDao;
+    private ReptileDetailInfoMapper reptileDetailInfoMapper;
 
     /**
      * 保存小说明细
@@ -153,7 +140,7 @@ public class ReptileServiceImpl implements ReptileService {
                 }
                 errorCount = 0;
                 if (ObjectUtil.isNotEmpty(title) && ObjectUtil.isNotEmpty(content)) {
-                    String titleNumber = title.substring(1, title.indexOf("章"));
+                    String titleNumber = title.substring(title.lastIndexOf("第") + 1, title.indexOf("章"));
                     wordCount = content.toString().length();
                     NovelChapter novelChapter = NovelChapter.builder()
                             .chapterContent(content.toString())
@@ -177,16 +164,16 @@ public class ReptileServiceImpl implements ReptileService {
                     .set(reptileInfo.getPauseIndex() != null, "PAUSE_INDEX", reptileInfo.getPauseIndex())
                     .set(reptileInfo.getDoneFlag() != null, "DONE_FLAG", reptileInfo.getDoneFlag())
                     .set(reptileInfo.getErrorMsg() != null, "ERROR_MSG", reptileInfo.getErrorMsg());
-            reptileInfoDao.update(null, updateWrapper);
+            reptileInfoMapper.update(null, updateWrapper);
             // 新增爬虫明细信息
             for (ReptileDetailInfo reptileDetailInfo : reptileDetailInfoList) {
                 reptileDetailInfo.setReptileInfoId(reptileInfo.getId());
-                reptileDetailInfoDao.insert(reptileDetailInfo);
+                reptileDetailInfoMapper.insert(reptileDetailInfo);
             }
             // 新增小说章节信息
             for (NovelChapter novelChapter : novelChapterList) {
                 novelChapter.setNovelInfoId(novelInfo.getId());
-                novelChapterDao.insert(novelChapter);
+                novelChapterMapper.insert(novelChapter);
             }
         }
         log.info("Done");
@@ -198,20 +185,20 @@ public class ReptileServiceImpl implements ReptileService {
      * @param reptileInfoParamDTO 任务信息
      * @return Long 任务ID
      */
-    public ReptileInfo saveReptileInfo(ReptileInfoParamDTO reptileInfoParamDTO) {
+    public ReptileInfo saveReptileInfo(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         // 判断是否存在该小说的任务，每本小说只允许存在一条有效的任务，不存在的话新增一条任务
         ReptileInfo reptileInfoQuery = new ReptileInfo();
         reptileInfoQuery.setNovelName(reptileInfoParamDTO.getNovelName());
         reptileInfoQuery.setNovelAuthor(reptileInfoParamDTO.getNovelAuthor());
         reptileInfoQuery.setValueFlag(SysConstants.IS_YES);
         QueryWrapper<ReptileInfo> jobQueryWrapper = QueryWrapperUtil.initParams(reptileInfoQuery);
-        List<ReptileInfo> reptileInfoList = reptileInfoDao.selectList(jobQueryWrapper);
+        List<ReptileInfo> reptileInfoList = reptileInfoMapper.selectList(jobQueryWrapper);
         // 如果任务存在，继续执行当前任务
         ReptileInfo reptileInfo = new ReptileInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, reptileInfo);
         reptileInfo.setValueFlag(SysConstants.IS_YES);
         reptileInfo.setDoneFlag(SysConstants.IS_NO);
-        reptileInfo.setStartTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
+        reptileInfo.setStartTime(DateUtil.format(new Date(), SysConstants.DEFAULT_DATE_FORMAT));
         if (ObjectUtil.isNotEmpty(reptileInfoList)) {
             ReptileInfo reptileInfoOld = reptileInfoList.get(0);
             // 如果任务已完成，返回提示
@@ -222,11 +209,11 @@ public class ReptileServiceImpl implements ReptileService {
             // 旧的任务更新成无效
             for (ReptileInfo info : reptileInfoList) {
                 info.setValueFlag(SysConstants.IS_NO);
-                reptileInfoDao.updateById(info);
+                reptileInfoMapper.updateById(info);
             }
         }
         // 新增当前任务
-        reptileInfoDao.insert(reptileInfo);
+        reptileInfoMapper.insert(reptileInfo);
         return reptileInfo;
     }
 
@@ -236,25 +223,25 @@ public class ReptileServiceImpl implements ReptileService {
      * @param reptileInfoParamDTO 小说信息
      * @return Long 小说ID
      */
-    public NovelInfo saveNovelInfo(ReptileInfoParamDTO reptileInfoParamDTO) {
+    public NovelInfo saveNovelInfo(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         // 判断小说是否存在，不存在新增小说信息
         NovelInfo novelInfoQuery = new NovelInfo();
         novelInfoQuery.setNovelName(reptileInfoParamDTO.getNovelName());
         novelInfoQuery.setNovelAuthor(reptileInfoParamDTO.getNovelAuthor());
         QueryWrapper<NovelInfo> novelQueryWrapper = QueryWrapperUtil.initParams(novelInfoQuery);
-        List<NovelInfo> novelInfoList = novelInfoDao.selectList(novelQueryWrapper);
+        List<NovelInfo> novelInfoList = novelInfoMapper.selectList(novelQueryWrapper);
         NovelInfo novelInfo = new NovelInfo();
         // 存在则更新小说信息
         if (ObjectUtil.isNotEmpty(novelInfoList)) {
             novelInfo = novelInfoList.get(0);
             BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo, "novelChapterCount", "novelWordsCount");
-            novelInfoDao.updateById(novelInfo);
+            novelInfoMapper.updateById(novelInfo);
         } else {
             // 不存在则新增小说信息
             BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
             novelInfo.setNovelWordsCount(0);
             novelInfo.setNovelChapterCount(0);
-            novelInfoDao.insert(novelInfo);
+            novelInfoMapper.insert(novelInfo);
         }
         novelInfo.setLastUpdateTime(DateUtil.format(new Date(), "yyyy-MM-dd hh:mm:ss"));
         return novelInfo;
@@ -267,7 +254,7 @@ public class ReptileServiceImpl implements ReptileService {
      * @return List<ReptileInfo>
      */
     @Override
-    public List<ReptileInfo> getReptileInfoList(ReptileInfoParamDTO reptileInfoParamDTO) {
+    public List<ReptileInfo> getReptileInfoList(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         return null;
     }
 }

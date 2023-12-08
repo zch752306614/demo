@@ -1,8 +1,8 @@
-package com.alice.novel.module.common.dao;
+package com.alice.novel.module.common.mapper;
 
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alice.support.common.base.mapper.MyBaseMapper;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @author ZhangChenhuang
  * @since 2023-11-27
  */
-public interface NovelChapterDao extends BaseMapper<NovelChapter> {
+public interface NovelChapterMapper extends MyBaseMapper<NovelChapter> {
 
     List<NovelChapter> queryChapterList(ChapterInfoQueryDTO chapterInfoQueryDTO);
 

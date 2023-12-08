@@ -1,6 +1,7 @@
 package com.alice.novel.module.novel.service;
 
-import com.alice.novel.module.common.dto.param.ReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
@@ -15,12 +16,18 @@ import java.util.List;
 public interface NovelService {
 
     /**
-     * 添加小说
+     * 添加笔趣阁小说
      *
      * @param reptileInfoParamDTO 要添加的小说信息
      */
-    void addNovel(ReptileInfoParamDTO reptileInfoParamDTO);
+    void addNovelByBQG(BQGReptileInfoParamDTO reptileInfoParamDTO);
 
+    /**
+     * 添加和图书小说
+     *
+     * @param reptileInfoParamDTO 要添加的小说信息
+     */
+    void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO);
     /**
      * 查询小说列表
      *

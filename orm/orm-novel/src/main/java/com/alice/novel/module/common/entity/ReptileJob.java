@@ -12,64 +12,74 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 小说章节
+ *
  * </p>
  *
  * @author ZhangChenhuang
- * @since 2023-11-27
+ * @since 2023-12-08
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("T_NOVEL_CHAPTER")
-public class NovelChapter extends Model<NovelChapter> {
+@TableName("T_REPTILE_JOB")
+public class ReptileJob extends Model<ReptileJob> {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
 
     /**
+     * 小说名称
+     */
+    @TableField("NOVEL_NAME")
+    private String novelName;
+
+    /**
+     * 小说作者
+     */
+    @TableField("NOVEL_AUTHOR")
+    private String novelAuthor;
+
+    /**
+     * 是否完结
+     */
+    @TableField("COMPLETED_FLAG")
+    private String completedFlag;
+
+    /**
+     * 原始路径
+     */
+    @TableField("BASE_URL")
+    private String baseUrl;
+
+    /**
      * 小说编号
      */
-    @TableField("NOVEL_INFO_ID")
-    private Long novelInfoId;
+    @TableField("NOVEL_NUBER")
+    private String novelNuber;
 
     /**
-     * 小说章节编号
+     * 路径后缀
      */
-    @TableField("CHAPTER_NUMBER")
-    private Integer chapterNumber;
+    @TableField("URL_SUFFIX")
+    private String urlSuffix;
 
     /**
-     * 小说章节名
+     * 完成标志
      */
-    @TableField("CHAPTER_NAME")
-    private String chapterName;
+    @TableField("DONE_FLAG")
+    private String doneFlag;
 
     /**
-     * 小说正文
+     * 备注
      */
-    @TableField("CHAPTER_CONTENT")
-    private String chapterContent;
+    @TableField("REMARK")
+    private String remark;
 
-    /**
-     * 小说章节卷名
-     */
-    @TableField("CHAPTER_PART")
-    private String chapterPart;
-
-    /**
-     * 章节字数
-     */
-    @TableField("CHAPTER_WORDS_COUNT")
-    private Integer chapterWordsCount;
 
     @Override
     protected Serializable pkVal() {
