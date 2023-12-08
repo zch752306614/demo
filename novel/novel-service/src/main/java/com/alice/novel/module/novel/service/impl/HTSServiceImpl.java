@@ -204,6 +204,7 @@ public class HTSServiceImpl implements HTSService {
             if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
                 String content = resultMap.get("content");
                 novelChapter.setChapterContent(content);
+                novelChapter.setChapterWordsCount(content.length());
                 reptileJobDetailUpdateWrapper.set("DONE_FLAG", SysConstants.IS_YES);
             } else {
                 String msg = resultMap.get("msg");
@@ -215,8 +216,10 @@ public class HTSServiceImpl implements HTSService {
             }
             novelChapterList.add(novelChapter);
             reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
+            log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
         }
         novelChapterMapper.insertBatchSomeColumn(novelChapterList);
+        log.info("本批次爬取结束");
     }
     
     public static void main(String[] args) {
