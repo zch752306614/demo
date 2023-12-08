@@ -32,6 +32,8 @@
     </dependencies>
 
     <build>
+        <!-- 产生的构件的文件名，默认值是${artifactId}-${version}。 -->
+        <finalName>${artifactId}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -74,7 +76,7 @@
                         <imageTag>latest</imageTag>
                     </imageTags>
                     <!--基础镜像-->
-                    <baseImage>java:8</baseImage>
+                    <baseImage>openjdk:8</baseImage>
                     <!--作者信息-->
                     <maintainer>ZhangChenhuang</maintainer>
                     <!--切换到/ROOT目录-->

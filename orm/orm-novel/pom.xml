@@ -20,6 +20,8 @@
     </properties>
 
     <build>
+        <!-- 产生的构件的文件名，默认值是${artifactId}-${version}。 -->
+        <finalName>${artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>

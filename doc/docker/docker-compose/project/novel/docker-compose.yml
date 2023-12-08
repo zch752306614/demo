@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: novel-service
+    image: novel-service
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - /home/docker/mount/project/logs:/home/project/logs

@@ -1,0 +1,44 @@
+version: "3.2"
+services:
+    elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.4.2
+      container_name: elasticsearch
+      environment:
+        - "cluster.name=elasticsearch"        #设置集群名称为elasticsearch
+        - "discovery.type=single-node"        #以单一节点模式启动
+        - "bootstrap.memory_lock=true"
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"    #设置使用jvm内存大小
+      ports:
+        - 9200:9200
+      networks:
+        - "elk-net"
+    filebeat:
+      image: docker.elastic.co/beats/filebeat:7.4.2
+      volumes:
+       - type: bind
+         source: "./filebeat/2018.log"
+         target: "/2018.log"
+       - type: bind
+         source: "./filebeat/filebeat.yml"
+         target: "/usr/share/filebeat/filebeat.yml"
+      networks:
+        - "elk-net"
+      depends_on:
+        - "logstash"
+    logstash:
+      image: docker.elastic.co/logstash/logstash:7.4.2
+      container_name: logstash
+      volumes:
+        - type: bind
+          source: "./logstash/logstash_stdout.conf"
+          target: "/usr/share/logstash/pipeline/logstash.conf"
+      networks:
+        - "elk-net"
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.4.2
+        ports:
+          - "5601:5601"
+        networks: 
+          - "elk-net"
+networks:
+      elk-net:

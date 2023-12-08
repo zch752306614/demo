@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  nacos:
+    image: nacos/nacos-server:2.0.2
+    container_name: nacos
+    environment:
+      PREFER_HOST_MODE: hostname
+      MODE: standalone
+      JAVA_OPTS: -Xms512m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=256m
+      PRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: 10.0.4.7
+      MYSQL_SERVICE_DB_NAME: nacos
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_USER: root
+      MYSQL_SERVICE_PASSWORD: 520399
+    ports:
+      - "8848:8848"
+    volumes:
+      - /home/docker/mount/nacos/logs:/home/nacos/logs
+      # - /home/docker/mount/nacos/data:/home/nacos/data
+      # - /home/docker/mount/nacos/conf:/home/nacos/conf
+    restart: always
+    # depends_on:
+    #   - mysql

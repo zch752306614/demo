@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8.2.0
+    # 容器名(以后的控制都通过这个)
+    container_name: mysql
+    # 重启策略
+    restart: always
+    environment:
+      # root 密码
+      MYSQL_ROOT_PASSWORD: 520399
+      MYSQL_DATABASE: demo novel nacos
+      # 创建的普通用户名称
+      MYSQL_USER: alice
+      # 创建的普通用户密码
+      MYSQL_PASSWORD: 520399
+      # 设置容器时区为亚洲/上海（北京时间）
+      TZ: Asia/Shanghais
+      # 设置 MySQL 字符集为 utf8mb4
+      MYSQL_CHARSET: utf8mb4
+      # 设置 MySQL 排序规则为 utf8mb4_unicode_ci              
+      MYSQL_COLLATION: utf8mb4_unicode_ci
+      # 设置最大连接数为2000
+      MYSQL_MAX_CONNECTIONS: 2000
+      # 设置最大用户连接数为1000
+      MYSQL_MAX_USER_CONNECTIONS: 1000
+    ports:
+      - "3306:3306"
+    volumes:
+      # 挂载配置文件
+      - /home/docker/mount/mysql/conf.d:/etc/mysql/conf.d
+      # 挂载日志
+      - /home/docker/mount/mysql/logs:/var/log/mysql
+      # 挂载数据
+      - /home/docker/mount/mysql/data:/var/lib/mysql

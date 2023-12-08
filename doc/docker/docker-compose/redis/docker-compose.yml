@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  redis:
+    image: redis:7.0
+    container_name: redis
+    restart: always
+    user: "1000:1000"
+    ports:
+      - "6379:6379"
+    volumes:
+      - /home/docker/mount/redis/data:/data
+      - /home/docker/mount/redis/logs:/logs
+      - /home/docker/mount/redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+    # 配置文件启动
+    command: redis-server /usr/local/etc/redis/redis.conf
