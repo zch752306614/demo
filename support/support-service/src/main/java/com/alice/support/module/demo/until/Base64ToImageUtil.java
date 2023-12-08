@@ -47,6 +47,7 @@ public class Base64ToImageUtil {
             out.close();
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

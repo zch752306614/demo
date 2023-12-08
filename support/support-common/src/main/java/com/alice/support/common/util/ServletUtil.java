@@ -57,6 +57,7 @@ public class ServletUtil {
         try {
             return Objects.requireNonNull(getRequestAttributes()).getRequest();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -68,6 +69,7 @@ public class ServletUtil {
         try {
             return Objects.requireNonNull(getRequestAttributes()).getResponse();
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -84,6 +86,7 @@ public class ServletUtil {
             RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
             return (ServletRequestAttributes) attributes;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

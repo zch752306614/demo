@@ -16,12 +16,18 @@ import com.alice.novel.module.novel.service.HTSService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.ChineseAndArabicNumUtil;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +35,7 @@ import java.util.Map;
  * @Description 和图书爬虫
  * @DateTime 2023/12/5 14:28
  */
+@Slf4j
 @Service("hTSService")
 public class HTSServiceImpl implements HTSService {
 
@@ -47,19 +54,49 @@ public class HTSServiceImpl implements HTSService {
      */
     @Override
     public Map<String, String> getNovelInfo(String url) {
-        String result = HttpUtil.get(url);
-        return getData(result);
+        Map<String, String> result = new HashMap<>(10);
+        try {
+            String htmlString = HttpUtil.get(url);
+            result = getData(htmlString);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result.put("code", SysConstants.CODE_FAIL);
+            result.put("msg", ex.getMessage());
+        }
+        return result;
     }
 
     /**
      * 根据html文本提取小说信息
      *
-     * @param html 完整html文本
+     * @param htmlString 完整html文本
      * @return Map<String, String>
      */
     @Override
-    public Map<String, String> getData(String html) {
-        return null;
+    public Map<String, String> getData(String htmlString) {
+        // 获取的数据，存放在集合中
+        Map<String, String> result = new HashMap<>(10);
+        try {
+            // 使用Jsoup解析HTML
+            Document document = Jsoup.parse(htmlString);
+            // 查找id为"content"下的所有div元素
+            Elements contentDivs = document.select("#content div");
+            // 提取小说正文内容
+            StringBuilder novelContent = new StringBuilder();
+            for (Element contentDiv : contentDivs) {
+                // 排除<dfn>, <code>, <tt>, <samp>等标签下的内容
+                contentDiv.select("dfn, code, tt, samp").remove();
+                novelContent.append(contentDiv.text()).append("\n");
+            }
+            // 获取小说正文
+            result.put("code", SysConstants.CODE_SUCCESS);
+            result.put("content", novelContent.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result.put("code", SysConstants.CODE_FAIL);
+            result.put("msg", ex.getMessage());
+        }
+        return result;
     }
 
     /**
@@ -161,13 +198,16 @@ public class HTSServiceImpl implements HTSService {
             BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
             novelChapter.setNovelInfoId(novelInfo.getId());
             Map<String, String> resultMap = getNovelInfo(reptileJobDetailResultDTO.getReptileUrl());
-            if (SysConstants.NUMBER_ONE.equals(resultMap.get("code"))) {
+            if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
                 String content = resultMap.get("content");
                 novelChapter.setChapterContent(content);
                 reptileJobDetailUpdateWrapper.set("DONE_FLAG", SysConstants.IS_YES);
             } else {
+                String msg = resultMap.get("msg");
                 reptileJobDetailUpdateWrapper.set("DONE_FLAG", SysConstants.IS_NO);
-                reptileJobDetailUpdateWrapper.set("ERROR_MSG", resultMap.get("msg"));
+                if (ObjectUtil.isNotEmpty(msg)) {
+                    reptileJobDetailUpdateWrapper.set("ERROR_MSG", msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN)));
+                }
                 reptileJobDetail.setId(reptileJobDetailResultDTO.getReptileJobDetailId());
             }
             novelChapterList.add(novelChapter);
@@ -177,25 +217,23 @@ public class HTSServiceImpl implements HTSService {
     }
     
     public static void main(String[] args) {
-        String result = HttpUtil.get("https://www.hetushu.com/book/38/24991.html");
+        String htmlString = HttpUtil.get("https://www.hetushu.com/book/38/24991.html");
 
-//        String result = HttpUtil.get("https://www.hetushu.com/book/38/dir.json");
-//        JSONArray dirArray = JSON.parseArray(result);
-//        for (Object dir : dirArray) {
-//            JSONArray tempArray = JSON.parseArray(dir.toString());
-//            System.out.println(tempArray.getString(0));
-//            System.out.println(tempArray.getString(1));
-//            if (tempArray.size() > 2) {
-//                System.out.println(tempArray.getString(2));
-//            }
-//        }
-//        String chapterName = "二千四百四十五 飞升仙界（大结局）";
-//        int start = chapterName.indexOf("第") + 1;
-//        int end = chapterName.indexOf("章");
-//        if (start < end) {
-//            System.out.println(ChineseAndArabicNumUtil.chineseNumToArabicNum(chapterName.substring(start, end)));
-//        } else {
-//            System.out.println(-1);
-//        }
+        // 使用Jsoup解析HTML
+        Document document = Jsoup.parse(htmlString);
+
+        // 查找id为"content"下的所有div元素
+        Elements contentDivs = document.select("#content div");
+
+        // 提取小说正文内容
+        StringBuilder novelContent = new StringBuilder();
+        for (Element contentDiv : contentDivs) {
+            // 排除<dfn>, <code>, <tt>, <samp>等标签下的内容
+            contentDiv.select("dfn, code, tt, samp").remove();
+            novelContent.append(contentDiv.text()).append("\n");
+        }
+
+        // 打印提取的小说正文
+        System.out.println(novelContent);
     }
 }

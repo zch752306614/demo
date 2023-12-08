@@ -276,6 +276,7 @@ public class DateUtil {
 
             return var4;
         } catch (Exception var5) {
+            var5.printStackTrace();
             return "0";
         }
     }

@@ -154,6 +154,7 @@ public class ReptileServiceImpl implements ReptileService {
             }
             reptileInfo.setPauseIndex(endIndex);
         } catch (Exception ex) {
+            ex.printStackTrace();
             reptileInfo.setPauseIndex(index);
             reptileInfo.setDoneFlag(SysConstants.IS_NO);
             reptileInfo.setErrorMsg(ex.getMessage().substring(0, Math.min(ex.getMessage().length(), SysConstants.MSG_MAX_LEN)));

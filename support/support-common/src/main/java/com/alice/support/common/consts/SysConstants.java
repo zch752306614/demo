@@ -28,13 +28,19 @@ public class SysConstants {
 
     public static final String EMPTY = "";
 
-    public static final String NUMBER_ONE = "0";
+    public static final String CODE_SUCCESS = "0";
 
-    public static final String NUMBER_TWO = "1";
+    public static final String CODE_FAIL = "-1";
 
-    public static final String NUMBER_THREE = "2";
+    public static final String NUMBER_ZERO = "0";
 
-    public static final String NUMBER_FOUR = "3";
+    public static final String NUMBER_ONE = "1";
+
+    public static final String NUMBER_TWO = "2";
+
+    public static final String NUMBER_THREE = "3";
+
+    public static final String NUMBER_FOUR = "4";
 
     public static final String STRING_DT = "dt";
 
