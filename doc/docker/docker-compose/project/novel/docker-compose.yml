@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  nginx:
+  novel-service:
     container_name: novel-service
-    image: novel-service
+    image: novel-service:1.0.0
     restart: always
     ports:
       - 8001:8001
