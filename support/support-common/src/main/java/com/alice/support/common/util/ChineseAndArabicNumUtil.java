@@ -19,7 +19,7 @@ public class ChineseAndArabicNumUtil {
      * @return int 阿拉伯数字
      */
     public static int chineseNumToArabicNum(String chineseNum) {
-        if (isChineseNum(chineseNum) || ObjectUtil.isEmpty(chineseNum)) {
+        if (!isChineseNum(chineseNum) || ObjectUtil.isEmpty(chineseNum)) {
             return -1;
         }
         int result = 0;

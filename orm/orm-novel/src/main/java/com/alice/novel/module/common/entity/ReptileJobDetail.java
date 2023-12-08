@@ -1,5 +1,6 @@
 package com.alice.novel.module.common.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -29,7 +30,7 @@ public class ReptileJobDetail extends Model<ReptileJobDetail> {
     /**
      * 主键
      */
-    @TableId("ID")
+    @TableId(value = "ID", type = IdType.AUTO)
     private Long id;
 
     /**

@@ -1,4 +1,4 @@
-package com.alice.support.common.mybatis.config;
+package com.alice.support.common.mybatis.method;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;

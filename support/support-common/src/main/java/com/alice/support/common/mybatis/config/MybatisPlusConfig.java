@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan({"com.alice.**.entity", "com.alice.**.dao"})
+@MapperScan({"com.alice.**.entity", "com.alice.**.mapper"})
 public class MybatisPlusConfig {
 
     @Bean
@@ -57,9 +57,9 @@ public class MybatisPlusConfig {
         return configuration -> configuration.setUseDeprecatedExecutor(false);
     }
 
-    @Bean
-    public InsertBatchSqlInjector easySqlInjector() {
-        return new InsertBatchSqlInjector();
-    }
+//    @Bean
+//    public InsertBatchSqlInjector easySqlInjector() {
+//        return new InsertBatchSqlInjector();
+//    }
 
 }

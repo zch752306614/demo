@@ -112,12 +112,14 @@ public class HTSServiceImpl implements HTSService {
         String result = HttpUtil.get(url);
         JSONArray dirArray = JSON.parseArray(result);
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
+        String chapterPart = "";
         for (Object dir : dirArray) {
             ReptileJobDetailResultDTO reptileJobDetailResultDTO = new ReptileJobDetailResultDTO();
             JSONArray tempArray = JSON.parseArray(dir.toString());
             // 判断是否为卷名
             String str0 = tempArray.getString(0);
             if (SysConstants.STRING_DT.equals(str0)) {
+                chapterPart = tempArray.getString(1);
                 reptileJobDetailResultDTO.setChapterName(tempArray.getString(1));
                 reptileJobDetailResultDTO.setChapterNumber(-1);
             } else if (SysConstants.STRING_DD.equals(str0)) {
@@ -134,6 +136,7 @@ public class HTSServiceImpl implements HTSService {
             // 判断是否存在路径
             if (tempArray.size() > 2 && ObjectUtil.isNotEmpty(tempArray.getString(2))) {
                 String reptileUrl = baseUrl + "/" + novelNumber + "/" + tempArray.getString(2) + ".html";
+                reptileJobDetailResultDTO.setChapterPart(chapterPart);
                 reptileJobDetailResultDTO.setReptileUrl(reptileUrl);
                 reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
             }

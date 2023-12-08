@@ -1,6 +1,6 @@
 package com.alice.support.module.demo.service.Impl;
 
-import com.alice.support.module.demo.dao.UserMapper;
+import com.alice.support.module.demo.mapper.UserMapper;
 import com.alice.support.module.demo.entity.User;
 import com.alice.support.module.demo.service.UserServer;
 import org.springframework.stereotype.Service;

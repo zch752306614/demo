@@ -1,4 +1,4 @@
-package com.alice.support.module.demo.dao;
+package com.alice.support.module.demo.mapper;
 
 import com.alice.support.module.demo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
