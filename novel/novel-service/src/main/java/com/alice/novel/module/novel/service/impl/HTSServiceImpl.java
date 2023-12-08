@@ -85,7 +85,7 @@ public class HTSServiceImpl implements HTSService {
             StringBuilder novelContent = new StringBuilder();
             for (Element contentDiv : contentDivs) {
                 // 排除<dfn>, <code>, <tt>, <samp>等标签下的内容
-                contentDiv.select("dfn, code, tt, samp").remove();
+                contentDiv.select("dfn,code,tt,samp,kbd,s,var,u,bdo").remove();
                 novelContent.append(contentDiv.text()).append("\n");
             }
             // 获取小说正文
