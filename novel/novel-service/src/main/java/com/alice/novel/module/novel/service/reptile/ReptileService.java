@@ -1,17 +1,15 @@
-package com.alice.novel.module.novel.service;
+package com.alice.novel.module.novel.service.reptile;
 
-import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
-import com.alice.novel.module.common.entity.NovelInfo;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @Description 笔趣阁爬虫（https://m.ytryx.com/b3909/）
- * @DateTime 2023/12/5 14:23
+ * @Description 爬虫任务
+ * @DateTime 2023/12/11 17:37
  */
-public interface BQGService {
+public interface ReptileService {
 
     /**
      * 提取信息

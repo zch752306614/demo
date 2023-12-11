@@ -3,22 +3,21 @@ package com.alice.novel.module.novel.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.alice.novel.module.common.mapper.NovelChapterMapper;
-import com.alice.novel.module.common.mapper.NovelInfoMapper;
-import com.alice.novel.module.common.mapper.ReptileDetailInfoMapper;
-import com.alice.novel.module.common.mapper.ReptileInfoMapper;
+import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.entity.*;
+import com.alice.novel.module.common.mapper.*;
 import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
-import com.alice.novel.module.common.entity.NovelChapter;
-import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.common.entity.ReptileDetailInfo;
-import com.alice.novel.module.common.entity.ReptileInfo;
 import com.alice.novel.module.novel.service.BQGService;
-import com.alice.novel.module.novel.service.ReptileService;
+import com.alice.novel.module.novel.service.HTSService;
+import com.alice.novel.module.novel.service.ReptileJobService;
+import com.alice.novel.module.novel.service.reptile.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
 import com.alice.support.common.util.ChineseAndArabicNumUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
+import com.alice.support.common.util.SpringUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ import java.util.*;
  */
 @Slf4j
 @Service("reptileService")
-public class ReptileServiceImpl implements ReptileService {
+public class ReptileJobServiceImpl implements ReptileJobService {
 
     @Resource
     private RedisService redisService;
@@ -49,6 +48,10 @@ public class ReptileServiceImpl implements ReptileService {
     private ReptileInfoMapper reptileInfoMapper;
     @Resource
     private ReptileDetailInfoMapper reptileDetailInfoMapper;
+    @Resource
+    private ReptileJobMapper reptileJobMapper;
+    @Resource
+    private ReptileJobDetailMapper reptileJobDetailMapper;
 
     /**
      * 保存小说明细
@@ -186,6 +189,7 @@ public class ReptileServiceImpl implements ReptileService {
      * @param reptileInfoParamDTO 任务信息
      * @return Long 任务ID
      */
+    @Override
     public ReptileInfo saveReptileInfo(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         // 判断是否存在该小说的任务，每本小说只允许存在一条有效的任务，不存在的话新增一条任务
         ReptileInfo reptileInfoQuery = new ReptileInfo();
@@ -224,6 +228,7 @@ public class ReptileServiceImpl implements ReptileService {
      * @param reptileInfoParamDTO 小说信息
      * @return Long 小说ID
      */
+    @Override
     public NovelInfo saveNovelInfo(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         // 判断小说是否存在，不存在新增小说信息
         NovelInfo novelInfoQuery = new NovelInfo();
@@ -258,4 +263,81 @@ public class ReptileServiceImpl implements ReptileService {
     public List<ReptileInfo> getReptileInfoList(BQGReptileInfoParamDTO reptileInfoParamDTO) {
         return null;
     }
+
+    /**
+     * 保存爬虫任务
+     *
+     * @param reptileInfoParamDTO 爬虫信息
+     * @param tClass Class<?>
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<ReptileJobDetailResultDTO> saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass) {
+        ReptileService reptileService = (ReptileService) SpringUtil.getBean(tClass);
+        String baseUrl = reptileInfoParamDTO.getBaseUrl();
+        String novelNumber = reptileInfoParamDTO.getNovelNumber();
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileService.getNovelChapterLink(baseUrl, novelNumber);
+        List<ReptileJobDetail> reptileJobDetailList = new ArrayList<>(3000);
+        ReptileJob reptileJob = new ReptileJob();
+        BeanUtil.copyProperties(reptileInfoParamDTO, reptileJob);
+        // 保存任务信息
+        reptileJobMapper.insert(reptileJob);
+        // 保存任务明细信息
+        for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
+            ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
+            reptileJobDetail.setReptileJobId(reptileJob.getId());
+            reptileJobDetail.setReptileUrl(reptileJobDetailResultDTO.getReptileUrl());
+            reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
+            reptileJobDetailList.add(reptileJobDetail);
+        }
+        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
+        return reptileJobDetailResultDTOList;
+    }
+
+    /**
+     * 保存章节信息
+     *
+     * @param novelInfo 小说信息
+     * @param reptileJobDetailResultDTOList 爬虫任务明细信息
+     * @param tClass Class<?>
+     */
+    @Override
+    @Async("novelReptileExecutor")
+    @Transactional(rollbackFor = Exception.class)
+    public void saveChapterInfo(NovelInfo novelInfo, List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList, Class<?> tClass) {
+        ReptileService reptileService = (ReptileService) SpringUtil.getBean(tClass);
+        List<NovelChapter> novelChapterList = new ArrayList<>(SysConstants.MAX_BATCH + 10);
+        for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
+            String doneFlag;
+            String errorMsg = "";
+            ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
+            NovelChapter novelChapter = new NovelChapter();
+            BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
+            novelChapter.setNovelInfoId(novelInfo.getId());
+            Map<String, String> resultMap = reptileService.getNovelInfo(reptileJobDetailResultDTO.getReptileUrl());
+            if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
+                String content = resultMap.get("content");
+                novelChapter.setChapterContent(content);
+                novelChapter.setChapterWordsCount(content.length());
+                doneFlag = SysConstants.IS_YES;
+            } else {
+                String msg = resultMap.get("msg");
+                doneFlag = SysConstants.IS_NO;
+                if (ObjectUtil.isNotEmpty(msg)) {
+                    errorMsg = msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN));
+                }
+                reptileJobDetail.setId(reptileJobDetailResultDTO.getReptileJobDetailId());
+            }
+            novelChapterList.add(novelChapter);
+            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
+            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId())
+                    .set("DONE_FLAG", doneFlag)
+                    .set("ERROR_MSG", errorMsg);
+            reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
+            log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
+        }
+        novelChapterMapper.insertBatchSomeColumn(novelChapterList);
+        log.info("本批次爬取结束");
+    }
+
 }

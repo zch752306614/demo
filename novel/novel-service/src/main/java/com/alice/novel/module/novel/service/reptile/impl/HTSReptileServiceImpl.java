@@ -1,4 +1,4 @@
-package com.alice.novel.module.novel.service.impl;
+package com.alice.novel.module.novel.service.reptile.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -6,6 +6,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
@@ -38,8 +39,8 @@ import java.util.Map;
  * @DateTime 2023/12/5 14:28
  */
 @Slf4j
-@Service("hTSService")
-public class HTSServiceImpl implements HTSService {
+@Service
+public class HTSReptileServiceImpl implements HTSService {
 
     @Resource
     private ReptileJobMapper reptileJobMapper;
@@ -59,7 +60,7 @@ public class HTSServiceImpl implements HTSService {
         Map<String, String> result = new HashMap<>(10);
         try {
             String htmlString = HttpUtil.get(url);
-            result = getData(htmlString);
+            result = this.getData(htmlString);
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -74,7 +75,6 @@ public class HTSServiceImpl implements HTSService {
      * @param htmlString 完整html文本
      * @return Map<String, String>
      */
-    @Override
     public Map<String, String> getData(String htmlString) {
         // 获取的数据，存放在集合中
         Map<String, String> result = new HashMap<>(10);
@@ -146,106 +146,4 @@ public class HTSServiceImpl implements HTSService {
         return reptileJobDetailArrayList;
     }
 
-    /**
-     * 保存爬虫任务
-     *
-     * @param reptileInfoParamDTO 任务信息
-     */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public List<ReptileJobDetailResultDTO> saveReptileJob(HTSReptileInfoParamDTO reptileInfoParamDTO) {
-        String baseUrl = reptileInfoParamDTO.getBaseUrl();
-        String novelNumber = reptileInfoParamDTO.getNovelNumber();
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = this.getNovelChapterLink(baseUrl, novelNumber);
-        List<ReptileJobDetail> reptileJobDetailList = new ArrayList<>(3000);
-        ReptileJob reptileJob = new ReptileJob();
-        BeanUtil.copyProperties(reptileInfoParamDTO, reptileJob);
-        // 保存任务信息
-        reptileJobMapper.insert(reptileJob);
-        // 保存任务明细信息
-        for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
-            ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
-            reptileJobDetail.setReptileJobId(reptileJob.getId());
-            reptileJobDetail.setReptileUrl(reptileJobDetailResultDTO.getReptileUrl());
-            reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
-            reptileJobDetailList.add(reptileJobDetail);
-        }
-        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
-        return reptileJobDetailResultDTOList;
-    }
-
-    /**
-     * 保存小说信息
-     *
-     * @param reptileInfoParamDTO 爬虫信息
-     */
-    @Override
-    public void saveNovelInfo(HTSReptileInfoParamDTO reptileInfoParamDTO) {
-
-    }
-
-    /**
-     * 保存章节信息
-     *
-     * @param novelInfo                     小说信息
-     * @param reptileJobDetailResultDTOList 爬虫任务明细信息
-     */
-    @Async("novelReptileExecutor")
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public void saveChapterInfo(NovelInfo novelInfo, List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList) {
-        List<NovelChapter> novelChapterList = new ArrayList<>(SysConstants.MAX_BATCH + 10);
-        for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
-            String doneFlag;
-            String errorMsg = "";
-            ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
-            NovelChapter novelChapter = new NovelChapter();
-            BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
-            novelChapter.setNovelInfoId(novelInfo.getId());
-            Map<String, String> resultMap = getNovelInfo(reptileJobDetailResultDTO.getReptileUrl());
-            if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
-                String content = resultMap.get("content");
-                novelChapter.setChapterContent(content);
-                novelChapter.setChapterWordsCount(content.length());
-                doneFlag = SysConstants.IS_YES;
-            } else {
-                String msg = resultMap.get("msg");
-                doneFlag = SysConstants.IS_NO;
-                if (ObjectUtil.isNotEmpty(msg)) {
-                    errorMsg = msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN));
-                }
-                reptileJobDetail.setId(reptileJobDetailResultDTO.getReptileJobDetailId());
-            }
-            novelChapterList.add(novelChapter);
-            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
-            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId())
-                    .set("DONE_FLAG", doneFlag)
-                    .set("ERROR_MSG", errorMsg);
-            reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
-            log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
-        }
-        novelChapterMapper.insertBatchSomeColumn(novelChapterList);
-        log.info("本批次爬取结束");
-    }
-
-    public static void main(String[] args) {
-        String htmlString = HttpUtil.get("https://www.hetushu.com/book/38/24991.html");
-
-        // 使用Jsoup解析HTML
-        Document document = Jsoup.parse(htmlString);
-
-        // 查找id为"content"下的所有div元素
-        Elements contentDivs = document.select("#content div");
-
-        // 提取小说正文内容
-        StringBuilder novelContent = new StringBuilder();
-        for (Element contentDiv : contentDivs) {
-            // 排除<dfn>, <code>, <tt>, <samp>等标签下的内容
-//            contentDiv.select("dfn, code, tt, samp").remove();
-            novelContent.append(contentDiv.text()).append("\n");
-        }
-
-        // 打印提取的小说正文
-        System.out.println(novelContent);
-    }
 }

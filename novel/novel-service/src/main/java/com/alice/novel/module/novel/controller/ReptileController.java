@@ -1,6 +1,6 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.novel.service.ReptileService;
+import com.alice.novel.module.novel.service.ReptileJobService;
 import com.alice.support.common.dto.ResponseInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 public class ReptileController {
 
     @Resource
-    private ReptileService reptileService;
+    private ReptileJobService reptileJobService;
 
     @GetMapping(value = "/getUrl")
     public ResponseInfo<String> getUrl() {

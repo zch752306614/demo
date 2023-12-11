@@ -1,4 +1,4 @@
-package com.alice.support.module.common.util;
+package com.alice.support.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
