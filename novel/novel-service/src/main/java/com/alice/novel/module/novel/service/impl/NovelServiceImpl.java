@@ -56,7 +56,7 @@ public class NovelServiceImpl implements NovelService {
         novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
         novelInfoMapper.insert(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
-            reptileJobService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);
+            reptileJobService.saveChapterInfo(novelInfo, list, BQGReptileServiceImpl.class);
         }
     }
 
