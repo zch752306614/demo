@@ -290,9 +290,11 @@ public class ReptileJobServiceImpl implements ReptileJobService {
             reptileJobDetail.setReptileJobId(reptileJob.getId());
             reptileJobDetail.setReptileUrl(reptileJobDetailResultDTO.getReptileUrl());
             reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
-            reptileJobDetailList.add(reptileJobDetail);
+//            reptileJobDetailList.add(reptileJobDetail);
+            reptileJobDetailMapper.insert(reptileJobDetail);
+            reptileJobDetailResultDTO.setReptileJobDetailId(reptileJobDetail.getId());
         }
-        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
+//        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
         return reptileJobDetailResultDTOList;
     }
 
