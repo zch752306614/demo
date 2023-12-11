@@ -33,7 +33,7 @@ public class GlobalExceptionHandler {
     /**
      * 参数格式异常处理
      *
-     * @param  ex 异常信息
+     * @param ex 异常信息
      * @return ResponseInfo<String>
      */
     @ExceptionHandler({IllegalArgumentException.class})
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     /**
      * 权限不足异常处理
      *
-     * @param  ex 异常信息
+     * @param ex 异常信息
      * @return ResponseInfo<String>
      */
     @ExceptionHandler({AccessDeniedException.class})
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
     /**
      * 参数缺失异常处理
      *
-     * @param  ex 异常信息
+     * @param ex 异常信息
      * @return ResponseInfo<String>
      */
     @ExceptionHandler({MissingServletRequestParameterException.class})
@@ -78,7 +78,7 @@ public class GlobalExceptionHandler {
     /**
      * 空指针异常
      *
-     * @param  ex 异常信息
+     * @param ex 异常信息
      * @return ResponseInfo<String>
      */
     @ExceptionHandler(NullPointerException.class)

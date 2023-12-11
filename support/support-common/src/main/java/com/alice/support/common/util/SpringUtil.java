@@ -53,7 +53,7 @@ public class SpringUtil implements ApplicationContextAware {
     /**
      * 通过name,以及Clazz返回指定的Bean
      *
-     * @param name 类名
+     * @param name  类名
      * @param clazz 类型
      * @return <T>
      */

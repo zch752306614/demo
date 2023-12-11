@@ -22,7 +22,7 @@ public interface ReptileService {
     /**
      * 获取小说每个章节的链接
      *
-     * @param baseUrl 链接
+     * @param baseUrl     链接
      * @param novelNumber 小说编号
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */

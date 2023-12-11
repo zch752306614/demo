@@ -2,7 +2,6 @@ package com.alice.novel.module.common.mapper;
 
 import com.alice.novel.module.common.entity.ReptileJobDetail;
 import com.alice.support.common.base.mapper.MyBaseMapper;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>

@@ -5,7 +5,6 @@ import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.entity.ReptileInfo;
-import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
 
@@ -51,16 +50,16 @@ public interface ReptileJobService {
      * 保存爬虫任务
      *
      * @param reptileInfoParamDTO 爬虫信息
-     * @param tClass Class<?>
+     * @param tClass              Class<?>
      */
     List<ReptileJobDetailResultDTO> saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass);
 
     /**
      * 保存章节信息
      *
-     * @param novelInfo 小说信息
+     * @param novelInfo                     小说信息
      * @param reptileJobDetailResultDTOList 爬虫任务明细信息
-     * @param tClass Class<?>
+     * @param tClass                        Class<?>
      */
     void saveChapterInfo(NovelInfo novelInfo, List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList, Class<?> tClass);
 

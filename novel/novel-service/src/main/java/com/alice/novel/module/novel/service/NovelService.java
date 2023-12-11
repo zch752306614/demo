@@ -28,6 +28,7 @@ public interface NovelService {
      * @param reptileInfoParamDTO 要添加的小说信息
      */
     void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO);
+
     /**
      * 查询小说列表
      *

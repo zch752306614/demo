@@ -102,8 +102,9 @@ public class ChineseAndArabicNumUtil {
                 if (intInput % 10 == 0) {
                     return sd;
                 }
-            } else
+            } else {
                 sd += (cnArr[intInput / 10 - 1] + "十");
+            }
             sd += arabicNumToChineseNum(intInput % 10);
         } else if (si.length() == 3) {
             sd += (cnArr[intInput / 100 - 1] + "百");

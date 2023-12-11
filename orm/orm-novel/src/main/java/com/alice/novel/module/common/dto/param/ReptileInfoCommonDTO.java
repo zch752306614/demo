@@ -2,7 +2,6 @@ package com.alice.novel.module.common.dto.param;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +13,7 @@ import javax.validation.constraints.NotBlank;
  * @DateTime 2023/12/11 13:04
  */
 @Data
+@NoArgsConstructor
 @SuperBuilder
 @ApiModel(value = "ReptileInfoCommonDTO", description = "爬虫通用入参")
 public class ReptileInfoCommonDTO {

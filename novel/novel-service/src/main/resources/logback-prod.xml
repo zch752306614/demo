@@ -46,7 +46,7 @@
     </logger>
 
     <!-- 日志输出级别 -->
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="ASYNC-CONSOLE"/>
         <appender-ref ref="FILE"/>
     </root>

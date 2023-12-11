@@ -58,14 +58,9 @@ public class BQGReptileServiceImpl implements ReptileService {
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
             Elements contentDivs = document.getElementById("content").getElementsByTag("p");
-            // 提取小说正文内容
-            StringBuilder novelContent = new StringBuilder();
-            for (Element contentDiv : contentDivs) {
-                novelContent.append(contentDiv.text()).append("\n");
-            }
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", novelContent.toString());
+            result.put("content", contentDivs.toString());
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);

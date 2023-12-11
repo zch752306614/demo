@@ -270,7 +270,7 @@ public class ReptileJobServiceImpl implements ReptileJobService {
      * 保存爬虫任务
      *
      * @param reptileInfoParamDTO 爬虫信息
-     * @param tClass Class<?>
+     * @param tClass              Class<?>
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -299,9 +299,9 @@ public class ReptileJobServiceImpl implements ReptileJobService {
     /**
      * 保存章节信息
      *
-     * @param novelInfo 小说信息
+     * @param novelInfo                     小说信息
      * @param reptileJobDetailResultDTOList 爬虫任务明细信息
-     * @param tClass Class<?>
+     * @param tClass                        Class<?>
      */
     @Override
     @Async("novelReptileExecutor")
