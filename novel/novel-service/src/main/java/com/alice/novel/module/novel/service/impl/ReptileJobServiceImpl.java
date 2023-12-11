@@ -290,11 +290,11 @@ public class ReptileJobServiceImpl implements ReptileJobService {
             reptileJobDetail.setReptileJobId(reptileJob.getId());
             reptileJobDetail.setReptileUrl(reptileJobDetailResultDTO.getReptileUrl());
             reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
-//            reptileJobDetailList.add(reptileJobDetail);
-            reptileJobDetailMapper.insert(reptileJobDetail);
-            reptileJobDetailResultDTO.setReptileJobDetailId(reptileJobDetail.getId());
+            reptileJobDetailList.add(reptileJobDetail);
+//            reptileJobDetailMapper.insert(reptileJobDetail);
+//            reptileJobDetailResultDTO.setReptileJobDetailId(reptileJobDetail.getId());
         }
-//        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
+        reptileJobDetailMapper.insertBatchSomeColumn(reptileJobDetailList);
         return reptileJobDetailResultDTOList;
     }
 
@@ -314,7 +314,6 @@ public class ReptileJobServiceImpl implements ReptileJobService {
         for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
             String doneFlag;
             String errorMsg = "";
-            ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
             NovelChapter novelChapter = new NovelChapter();
             BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
             novelChapter.setNovelInfoId(novelInfo.getId());
@@ -330,14 +329,13 @@ public class ReptileJobServiceImpl implements ReptileJobService {
                 if (ObjectUtil.isNotEmpty(msg)) {
                     errorMsg = msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN));
                 }
-                reptileJobDetail.setId(reptileJobDetailResultDTO.getReptileJobDetailId());
             }
             novelChapterList.add(novelChapter);
-            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
-            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId())
-                    .set("DONE_FLAG", doneFlag)
-                    .set("ERROR_MSG", errorMsg);
-            reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
+//            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
+//            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId())
+//                    .set("DONE_FLAG", doneFlag)
+//                    .set("ERROR_MSG", errorMsg);
+//            reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
             log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
         }
         novelChapterMapper.insertBatchSomeColumn(novelChapterList);
