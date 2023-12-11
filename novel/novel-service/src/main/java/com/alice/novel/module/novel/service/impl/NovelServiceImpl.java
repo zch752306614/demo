@@ -2,19 +2,18 @@ package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
-import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
-import com.alice.novel.module.common.mapper.NovelChapterMapper;
-import com.alice.novel.module.common.mapper.NovelInfoMapper;
 import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
+import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.novel.service.BQGService;
-import com.alice.novel.module.novel.service.HTSService;
+import com.alice.novel.module.common.mapper.NovelChapterMapper;
+import com.alice.novel.module.common.mapper.NovelInfoMapper;
 import com.alice.novel.module.novel.service.NovelService;
 import com.alice.novel.module.novel.service.ReptileJobService;
+import com.alice.novel.module.novel.service.reptile.impl.BQGReptileServiceImpl;
 import com.alice.novel.module.novel.service.reptile.impl.HTSReptileServiceImpl;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.DateUtil;
@@ -41,8 +40,6 @@ public class NovelServiceImpl implements NovelService {
     private NovelInfoMapper novelInfoMapper;
     @Resource
     private NovelChapterMapper novelChapterMapper;
-    @Resource
-    private HTSReptileServiceImpl htsService;
 
     /**
      * 添加小说
@@ -52,14 +49,14 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByBQG(BQGReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, BQGService.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, BQGReptileServiceImpl.class);
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
         novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
         novelInfoMapper.insert(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
-            reptileJobService.saveChapterInfo(novelInfo, list, HTSService.class);
+            reptileJobService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);
         }
     }
 
@@ -71,14 +68,14 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, HTSService.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, HTSReptileServiceImpl.class);
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
         novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
         novelInfoMapper.insert(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
-            reptileJobService.saveChapterInfo(novelInfo, list, HTSService.class);
+            reptileJobService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);
         }
     }
 

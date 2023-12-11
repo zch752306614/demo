@@ -77,7 +77,7 @@ public class BQGReptileServiceImpl implements ReptileService {
     @Override
     public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber) {
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
-        String url = baseUrl + "/" + novelNumber + "/";
+        String url = baseUrl + "/booktxt/" + novelNumber + "/";
         String htmlString = HttpUtil.get(url);
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);

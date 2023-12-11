@@ -1,34 +1,20 @@
 package com.alice.novel.module.novel.service.reptile.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
-import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
-import com.alice.novel.module.common.entity.NovelChapter;
-import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.common.entity.ReptileJob;
-import com.alice.novel.module.common.entity.ReptileJobDetail;
-import com.alice.novel.module.common.mapper.NovelChapterMapper;
-import com.alice.novel.module.common.mapper.ReptileJobDetailMapper;
-import com.alice.novel.module.common.mapper.ReptileJobMapper;
-import com.alice.novel.module.novel.service.HTSService;
+import com.alice.novel.module.novel.service.reptile.ReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.ChineseAndArabicNumUtil;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,14 +26,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class HTSReptileServiceImpl implements HTSService {
-
-    @Resource
-    private ReptileJobMapper reptileJobMapper;
-    @Resource
-    private ReptileJobDetailMapper reptileJobDetailMapper;
-    @Resource
-    private NovelChapterMapper novelChapterMapper;
+public class HTSReptileServiceImpl implements ReptileService {
 
     /**
      * 提取信息

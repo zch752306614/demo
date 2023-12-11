@@ -3,15 +3,14 @@ package com.alice.novel.module.novel.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.entity.*;
 import com.alice.novel.module.common.mapper.*;
-import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
-import com.alice.novel.module.novel.service.BQGService;
-import com.alice.novel.module.novel.service.HTSService;
 import com.alice.novel.module.novel.service.ReptileJobService;
 import com.alice.novel.module.novel.service.reptile.ReptileService;
+import com.alice.novel.module.novel.service.reptile.impl.BQGReptileServiceImpl;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.common.util.BusinessExceptionUtil;
@@ -26,7 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description 爬取小说
@@ -39,7 +41,7 @@ public class ReptileJobServiceImpl implements ReptileJobService {
     @Resource
     private RedisService redisService;
     @Resource
-    private BQGService bqgService;
+    private BQGReptileServiceImpl bqgReptileService;
     @Resource
     private NovelInfoMapper novelInfoMapper;
     @Resource
@@ -95,7 +97,7 @@ public class ReptileJobServiceImpl implements ReptileJobService {
                         } else {
                             url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
                         }
-                        Map<String, String> data = bqgService.getNovelInfo(url);
+                        Map<String, String> data = bqgReptileService.getNovelInfo(url);
                         String titlePart = data.get("title");
                         String contentPart = data.get("content");
                         if (ObjectUtil.isEmpty(titlePart) || ObjectUtil.isEmpty(contentPart)
@@ -123,7 +125,7 @@ public class ReptileJobServiceImpl implements ReptileJobService {
                     }
                 } else {
                     url = reptileInfo.getBaseUrl() + index + reptileInfo.getUrlSuffix();
-                    Map<String, String> data = bqgService.getNovelInfo(url);
+                    Map<String, String> data = bqgReptileService.getNovelInfo(url);
                     title = data.get("title");
                     content.append(data.get("content"));
                     if (ObjectUtil.isEmpty(title) || ObjectUtil.isEmpty(content)
