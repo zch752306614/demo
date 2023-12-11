@@ -89,17 +89,18 @@ public class BQGServiceImpl implements BQGService {
         elements = content.get(0).getElementsByTag("p");
         StringBuilder text = new StringBuilder();
         for (Element element : elements) {
-            String str = element.text();
-            text.append("   ".toCharArray(), 0, 3);
-            int len = 0;
-            while (len < str.length()) {
-                int add = 50;
-                if (len == 0) {
-                    add = 48;
-                }
-                text.append(str, len, Math.min(len + add, str.length())).append("\n");
-                len += add;
-            }
+//            String str = element.text();
+//            text.append("   ".toCharArray(), 0, 3);
+//            int len = 0;
+//            while (len < str.length()) {
+//                int add = 50;
+//                if (len == 0) {
+//                    add = 48;
+//                }
+//                text.append(str, len, Math.min(len + add, str.length())).append("\n");
+//                len += add;
+//            }
+            text.append(element.text()).append("\n");
         }
         data.put("content", text.toString());
 

@@ -24,5 +24,6 @@
         <if test="chapterId!=null and chapterId!=''">
             AND ID=${Id}
         </if>
+        ORDER BY T.CHAPTER_NUMBER
     </select>
 </mapper>

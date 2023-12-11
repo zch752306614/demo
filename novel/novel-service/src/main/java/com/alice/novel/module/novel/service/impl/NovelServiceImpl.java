@@ -103,6 +103,7 @@ public class NovelServiceImpl implements NovelService {
         NovelChapter novelChapter = new NovelChapter();
         BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
         QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
+        queryWrapper.orderByAsc("CHAPTER_NUMBER");
         if (SysConstants.IS_YES.equals(chapterInfoQueryDTO.getContentFlag())) {
             return novelChapterMapper.selectList(queryWrapper);
         } else {

@@ -5,10 +5,12 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
-import com.alice.novel.module.common.entity.*;
+import com.alice.novel.module.common.entity.NovelChapter;
+import com.alice.novel.module.common.entity.NovelInfo;
+import com.alice.novel.module.common.entity.ReptileJob;
+import com.alice.novel.module.common.entity.ReptileJobDetail;
 import com.alice.novel.module.common.mapper.NovelChapterMapper;
 import com.alice.novel.module.common.mapper.ReptileJobDetailMapper;
 import com.alice.novel.module.common.mapper.ReptileJobMapper;
@@ -80,7 +82,7 @@ public class HTSServiceImpl implements HTSService {
             // 使用Jsoup解析HTML
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
-            Elements contentDivs = document.select("#content div");
+            Elements contentDivs = document.getElementById("content").getElementsByTag("div");
             // 提取小说正文内容
             StringBuilder novelContent = new StringBuilder();
             for (Element contentDiv : contentDivs) {
@@ -102,7 +104,7 @@ public class HTSServiceImpl implements HTSService {
     /**
      * 获取小说每个章节的链接
      *
-     * @param baseUrl 链接
+     * @param baseUrl     链接
      * @param novelNumber 小说编号
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */
@@ -185,7 +187,7 @@ public class HTSServiceImpl implements HTSService {
     /**
      * 保存章节信息
      *
-     * @param novelInfo 小说信息
+     * @param novelInfo                     小说信息
      * @param reptileJobDetailResultDTOList 爬虫任务明细信息
      */
     @Async("novelReptileExecutor")
@@ -194,8 +196,8 @@ public class HTSServiceImpl implements HTSService {
     public void saveChapterInfo(NovelInfo novelInfo, List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList) {
         List<NovelChapter> novelChapterList = new ArrayList<>(SysConstants.MAX_BATCH + 10);
         for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
-            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
-            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId());
+            String doneFlag;
+            String errorMsg = "";
             ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
             NovelChapter novelChapter = new NovelChapter();
             BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
@@ -205,23 +207,27 @@ public class HTSServiceImpl implements HTSService {
                 String content = resultMap.get("content");
                 novelChapter.setChapterContent(content);
                 novelChapter.setChapterWordsCount(content.length());
-                reptileJobDetailUpdateWrapper.set("DONE_FLAG", SysConstants.IS_YES);
+                doneFlag = SysConstants.IS_YES;
             } else {
                 String msg = resultMap.get("msg");
-                reptileJobDetailUpdateWrapper.set("DONE_FLAG", SysConstants.IS_NO);
+                doneFlag = SysConstants.IS_NO;
                 if (ObjectUtil.isNotEmpty(msg)) {
-                    reptileJobDetailUpdateWrapper.set("ERROR_MSG", msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN)));
+                    errorMsg = msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN));
                 }
                 reptileJobDetail.setId(reptileJobDetailResultDTO.getReptileJobDetailId());
             }
             novelChapterList.add(novelChapter);
+            UpdateWrapper<ReptileJobDetail> reptileJobDetailUpdateWrapper = new UpdateWrapper<>();
+            reptileJobDetailUpdateWrapper.eq("ID", reptileJobDetailResultDTO.getReptileJobDetailId())
+                    .set("DONE_FLAG", doneFlag)
+                    .set("ERROR_MSG", errorMsg);
             reptileJobDetailMapper.update(null, reptileJobDetailUpdateWrapper);
             log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
         }
         novelChapterMapper.insertBatchSomeColumn(novelChapterList);
         log.info("本批次爬取结束");
     }
-    
+
     public static void main(String[] args) {
         String htmlString = HttpUtil.get("https://www.hetushu.com/book/38/24991.html");
 
@@ -235,7 +241,7 @@ public class HTSServiceImpl implements HTSService {
         StringBuilder novelContent = new StringBuilder();
         for (Element contentDiv : contentDivs) {
             // 排除<dfn>, <code>, <tt>, <samp>等标签下的内容
-            contentDiv.select("dfn, code, tt, samp").remove();
+//            contentDiv.select("dfn, code, tt, samp").remove();
             novelContent.append(contentDiv.text()).append("\n");
         }
 
