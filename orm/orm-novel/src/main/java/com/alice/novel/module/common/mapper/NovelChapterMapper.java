@@ -3,6 +3,7 @@ package com.alice.novel.module.common.mapper;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.support.common.base.mapper.MyBaseMapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -16,6 +17,6 @@ import java.util.List;
  */
 public interface NovelChapterMapper extends MyBaseMapper<NovelChapter> {
 
-    List<NovelChapter> queryChapterList(ChapterInfoQueryDTO chapterInfoQueryDTO);
+    List<NovelChapter> queryChapterList(@Param("chapterInfoQueryDTO") ChapterInfoQueryDTO chapterInfoQueryDTO);
 
 }
