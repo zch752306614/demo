@@ -10,10 +10,7 @@ import com.alice.novel.module.novel.service.NovelService;
 import com.alice.support.common.base.controller.BaseController;
 import com.alice.support.common.dto.ResponseInfo;
 import com.alice.support.common.mybatis.page.TableDataInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -74,4 +71,9 @@ public class NovelController extends BaseController {
         return ResponseInfo.success(getDataTable(novelService.queryChapterList(chapterInfoQueryDTO)));
     }
 
+    @GetMapping(value = "/queryChapterListById")
+    @ApiOperation(value = "根据ID获取章节", httpMethod = "GET")
+    public ResponseInfo<List<NovelChapter>> queryChapterListById(@RequestParam @ApiParam(value = "小说章节ID", required = true) List<Long> idList) {
+        return ResponseInfo.success(novelService.queryChapterListById(idList));
+    }
 }

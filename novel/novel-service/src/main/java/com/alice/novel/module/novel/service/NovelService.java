@@ -45,4 +45,12 @@ public interface NovelService {
      */
     List<NovelChapter> queryChapterList(ChapterInfoQueryDTO chapterInfoQueryDTO);
 
+    /**
+     * 查询小说章节
+     *
+     * @param idList 小说章节ID
+     * @return List<NovelChapter>
+     */
+    List<NovelChapter> queryChapterListById(List<Long> idList);
+
 }

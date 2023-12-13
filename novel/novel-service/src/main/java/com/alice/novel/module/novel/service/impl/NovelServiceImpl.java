@@ -11,6 +11,7 @@ import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.mapper.NovelChapterMapper;
 import com.alice.novel.module.common.mapper.NovelInfoMapper;
+import com.alice.novel.module.common.service.NovelChapterService;
 import com.alice.novel.module.common.service.NovelInfoService;
 import com.alice.novel.module.novel.service.NovelService;
 import com.alice.novel.module.novel.service.ReptileService;
@@ -39,6 +40,8 @@ public class NovelServiceImpl implements NovelService {
     private ReptileService reptileService;
     @Resource
     private NovelInfoService novelInfoService;
+    @Resource
+    private NovelChapterService novelChapterService;
     @Resource
     private NovelInfoMapper novelInfoMapper;
     @Resource
@@ -101,5 +104,10 @@ public class NovelServiceImpl implements NovelService {
         } else {
             return novelChapterMapper.queryChapterList(chapterInfoQueryDTO);
         }
+    }
+
+    @Override
+    public List<NovelChapter> queryChapterListById(List<Long> idList) {
+        return novelChapterService.query().in("ID", idList).list();
     }
 }
