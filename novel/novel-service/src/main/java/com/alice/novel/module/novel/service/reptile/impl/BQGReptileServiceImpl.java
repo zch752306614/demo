@@ -2,7 +2,7 @@ package com.alice.novel.module.novel.service.reptile.impl;
 
 import cn.hutool.http.HttpUtil;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
-import com.alice.novel.module.novel.service.reptile.ReptileService;
+import com.alice.novel.module.novel.service.reptile.CommonReptileService;
 import com.alice.support.common.consts.SysConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
-public class BQGReptileServiceImpl implements ReptileService {
+public class BQGReptileServiceImpl implements CommonReptileService {
 
     /**
      * 提取信息

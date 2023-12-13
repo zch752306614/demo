@@ -11,8 +11,9 @@ import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.mapper.NovelChapterMapper;
 import com.alice.novel.module.common.mapper.NovelInfoMapper;
+import com.alice.novel.module.common.service.NovelInfoService;
 import com.alice.novel.module.novel.service.NovelService;
-import com.alice.novel.module.novel.service.ReptileJobService;
+import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.novel.module.novel.service.reptile.impl.BQGReptileServiceImpl;
 import com.alice.novel.module.novel.service.reptile.impl.HTSReptileServiceImpl;
 import com.alice.support.common.consts.SysConstants;
@@ -31,11 +32,13 @@ import java.util.List;
  * @DateTime 2023/11/28 17:40
  */
 @Slf4j
-@Service("novelService")
+@Service
 public class NovelServiceImpl implements NovelService {
 
     @Resource
-    private ReptileJobService reptileJobService;
+    private ReptileService reptileService;
+    @Resource
+    private NovelInfoService novelInfoService;
     @Resource
     private NovelInfoMapper novelInfoMapper;
     @Resource
@@ -49,14 +52,14 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByBQG(BQGReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, BQGReptileServiceImpl.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileService.saveReptileJob(reptileInfoParamDTO, BQGReptileServiceImpl.class);
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
         novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
-        novelInfoMapper.insert(novelInfo);
+        novelInfoService.save(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
-            reptileJobService.saveChapterInfo(novelInfo, list, BQGReptileServiceImpl.class);
+            reptileService.saveChapterInfo(novelInfo, list, BQGReptileServiceImpl.class);
         }
     }
 
@@ -68,14 +71,14 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobService.saveReptileJob(reptileInfoParamDTO, HTSReptileServiceImpl.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileService.saveReptileJob(reptileInfoParamDTO, HTSReptileServiceImpl.class);
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
         novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
-        novelInfoMapper.insert(novelInfo);
+        novelInfoService.save(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
-            reptileJobService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);
+            reptileService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);
         }
     }
 

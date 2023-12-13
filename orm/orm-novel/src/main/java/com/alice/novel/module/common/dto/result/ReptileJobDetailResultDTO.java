@@ -10,6 +10,11 @@ import lombok.Data;
 public class ReptileJobDetailResultDTO {
 
     /**
+     * 爬虫任务表主键
+     */
+    private Long ReptileJobId;
+
+    /**
      * 爬虫明细表主键
      */
     private Long ReptileJobDetailId;

@@ -9,7 +9,7 @@ import java.util.Map;
  * @Description 爬虫任务
  * @DateTime 2023/12/11 17:37
  */
-public interface ReptileService {
+public interface CommonReptileService {
 
     /**
      * 提取信息

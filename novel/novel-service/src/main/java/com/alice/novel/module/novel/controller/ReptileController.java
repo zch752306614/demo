@@ -1,13 +1,10 @@
 package com.alice.novel.module.novel.controller;
 
-import com.alice.novel.module.novel.service.ReptileJobService;
 import com.alice.support.common.dto.ResponseInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
 
 /**
  * @Description 爬取小说
@@ -17,9 +14,6 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping(value = "/reptile")
 public class ReptileController {
-
-    @Resource
-    private ReptileJobService reptileJobService;
 
     @GetMapping(value = "/getUrl")
     public ResponseInfo<String> getUrl() {
