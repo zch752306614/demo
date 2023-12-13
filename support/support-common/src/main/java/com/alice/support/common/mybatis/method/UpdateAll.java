@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
- * @Description TODO
+ * @Description 全量更新
  * @ClassName UpdateAll
  * @DateTime 2022/6/30 17:47
  * @Author ZhangChenhuang
