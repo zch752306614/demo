@@ -75,7 +75,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
         String url;
         if (ObjectUtil.isNotEmpty(midUrl)) {
-            url = baseUrl + "/" + midUrl+ "/" + novelNumber + "/";
+            url = baseUrl + "/" + midUrl + "/" + novelNumber + "/";
         } else {
             url = baseUrl + "/" + novelNumber + "/";
         }
@@ -94,11 +94,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             reptileJobDetailResultDTO.setChapterNumber(chapterNumber++);
             reptileJobDetailResultDTO.setChapterName(chapterName);
-            if (chapterUrl.contains(midUrl)) {
-                reptileJobDetailResultDTO.setReptileUrl(baseUrl + chapterUrl);
-            } else {
-                reptileJobDetailResultDTO.setReptileUrl(url + chapterUrl);
-            }
+            reptileJobDetailResultDTO.setReptileUrl(url + chapterUrl.replaceAll(midUrl, "").replaceAll(novelNumber, "").replace("/", ""));
             reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
         }
         return reptileJobDetailArrayList;
