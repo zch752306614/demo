@@ -57,10 +57,10 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             // 使用Jsoup解析HTML
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
-            Elements contentDivs = document.getElementById("content").getElementsByTag("p");
+            Element contentDiv = document.getElementById("chaptercontent");
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", contentDivs.toString());
+            result.put("content", contentDiv.text());
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -72,11 +72,11 @@ public class BQGReptileServiceImpl implements CommonReptileService {
     @Override
     public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber) {
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
-        String url = baseUrl + "/booktxt/" + novelNumber + "/";
+        String url = baseUrl + "/book/" + novelNumber + "/";
         String htmlString = HttpUtil.get(url);
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);
-        Elements elements = document.getElementById("list").getElementsByTag("dl").get(0).getElementsByTag("dd");
+        Elements elements = document.getElementsByClass("listmain").get(0).getElementsByTag("dl").get(0).getElementsByTag("dd");
         int chapterNumber = 1;
         for (Element element : elements) {
             ReptileJobDetailResultDTO reptileJobDetailResultDTO = new ReptileJobDetailResultDTO();

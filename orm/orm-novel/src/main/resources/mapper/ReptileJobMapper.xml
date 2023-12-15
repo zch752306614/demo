@@ -8,7 +8,7 @@
         <result column="NOVEL_AUTHOR" property="novelAuthor"/>
         <result column="COMPLETED_FLAG" property="completedFlag"/>
         <result column="BASE_URL" property="baseUrl"/>
-        <result column="NOVEL_NUBER" property="novelNuber"/>
+        <result column="NOVEL_NUMBER" property="novelNumber"/>
         <result column="URL_SUFFIX" property="urlSuffix"/>
         <result column="DONE_FLAG" property="doneFlag"/>
         <result column="REMARK" property="remark"/>
@@ -16,6 +16,6 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        ID, NOVEL_NAME, NOVEL_AUTHOR, COMPLETED_FLAG, BASE_URL, NOVEL_NUBER, URL_SUFFIX, DONE_FLAG, REMARK
+        ID, NOVEL_NAME, NOVEL_AUTHOR, COMPLETED_FLAG, BASE_URL, NOVEL_NUMBER, URL_SUFFIX, DONE_FLAG, REMARK
     </sql>
 </mapper>

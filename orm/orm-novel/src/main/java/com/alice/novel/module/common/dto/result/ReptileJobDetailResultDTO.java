@@ -12,12 +12,12 @@ public class ReptileJobDetailResultDTO {
     /**
      * 爬虫任务表主键
      */
-    private Long ReptileJobId;
+    private Long reptileJobId;
 
     /**
      * 爬虫明细表主键
      */
-    private Long ReptileJobDetailId;
+    private Long reptileJobDetailId;
 
     /**
      * 爬虫任务明细地址

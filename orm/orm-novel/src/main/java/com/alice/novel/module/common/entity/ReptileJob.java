@@ -59,8 +59,8 @@ public class ReptileJob extends Model<ReptileJob> {
     /**
      * 小说编号
      */
-    @TableField("NOVEL_NUBER")
-    private String novelNuber;
+    @TableField("NOVEL_NUMBER")
+    private String novelNumber;
 
     /**
      * 路径后缀
