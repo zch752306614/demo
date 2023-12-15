@@ -86,8 +86,13 @@ public class HTSReptileServiceImpl implements CommonReptileService {
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */
     @Override
-    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber) {
-        String url = baseUrl + "/" + novelNumber + "/dir.json";
+    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
+        String url;
+        if (ObjectUtil.isNotEmpty(midUrl)) {
+            url = baseUrl + "/" + midUrl + "/" + novelNumber + "/dir.json";
+        } else {
+            url = baseUrl + "/" + novelNumber + "/dir.json";
+        }
         String result = HttpUtil.get(url);
         JSONArray dirArray = JSON.parseArray(result);
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);

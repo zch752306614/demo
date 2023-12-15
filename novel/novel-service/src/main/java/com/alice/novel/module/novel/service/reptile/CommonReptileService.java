@@ -26,6 +26,6 @@ public interface CommonReptileService {
      * @param novelNumber 小说编号
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */
-    List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber);
+    List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String midUrl, String novelNumber);
 
 }

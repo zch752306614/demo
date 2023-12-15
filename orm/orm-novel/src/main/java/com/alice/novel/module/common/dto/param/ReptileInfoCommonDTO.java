@@ -40,7 +40,13 @@ public class ReptileInfoCommonDTO {
     private String baseUrl;
 
     /**
-     * 原始路径
+     * 中间路径
+     */
+    @ApiModelProperty(value = "中间路径", required = true)
+    private String midUrl;
+
+    /**
+     * 小说编号
      */
     @NotBlank(message = "小说编号")
     @ApiModelProperty(value = "小说编号", required = true)

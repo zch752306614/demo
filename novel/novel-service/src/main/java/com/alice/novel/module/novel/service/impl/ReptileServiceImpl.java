@@ -49,8 +49,9 @@ public class ReptileServiceImpl implements ReptileService {
     public List<ReptileJobDetailResultDTO> saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass) {
         CommonReptileService commonReptileService = (CommonReptileService) SpringUtil.getBean(tClass);
         String baseUrl = reptileInfoParamDTO.getBaseUrl();
+        String midUrl = reptileInfoParamDTO.getMidUrl();
         String novelNumber = reptileInfoParamDTO.getNovelNumber();
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = commonReptileService.getNovelChapterLink(baseUrl, novelNumber);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = commonReptileService.getNovelChapterLink(baseUrl, midUrl, novelNumber);
         ReptileJob reptileJob = new ReptileJob();
         BeanUtil.copyProperties(reptileInfoParamDTO, reptileJob);
         // 保存任务信息

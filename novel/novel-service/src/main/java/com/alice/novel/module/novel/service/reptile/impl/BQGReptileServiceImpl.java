@@ -1,5 +1,6 @@
 package com.alice.novel.module.novel.service.reptile.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.novel.service.reptile.CommonReptileService;
@@ -70,9 +71,14 @@ public class BQGReptileServiceImpl implements CommonReptileService {
     }
 
     @Override
-    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String novelNumber) {
+    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
-        String url = baseUrl + "/book/" + novelNumber + "/";
+        String url;
+        if (ObjectUtil.isNotEmpty(midUrl)) {
+            url = baseUrl + "/" + midUrl+ "/" + novelNumber + "/";
+        } else {
+            url = baseUrl + "/" + novelNumber + "/";
+        }
         String htmlString = HttpUtil.get(url);
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);
@@ -83,9 +89,16 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             Element elementA = element.getElementsByTag("a").get(0);
             String chapterUrl = elementA.attr("href");
             String chapterName = elementA.text();
+            if (!chapterUrl.contains(".html")) {
+                continue;
+            }
             reptileJobDetailResultDTO.setChapterNumber(chapterNumber++);
             reptileJobDetailResultDTO.setChapterName(chapterName);
-            reptileJobDetailResultDTO.setReptileUrl(baseUrl + chapterUrl);
+            if (chapterUrl.contains(midUrl)) {
+                reptileJobDetailResultDTO.setReptileUrl(baseUrl + chapterUrl);
+            } else {
+                reptileJobDetailResultDTO.setReptileUrl(url + chapterUrl);
+            }
             reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
         }
         return reptileJobDetailArrayList;
