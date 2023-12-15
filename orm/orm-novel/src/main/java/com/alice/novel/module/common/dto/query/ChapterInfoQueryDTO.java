@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class ChapterInfoQueryDTO {
 
     @ApiModelProperty(value = "小说章节ID")
-    private Long Id;
+    private Long id;
 
     @NotNull(message = "小说ID不能为空")
     @ApiModelProperty(value = "小说ID")

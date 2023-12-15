@@ -20,9 +20,9 @@
     <select id="queryChapterList" resultType="com.alice.novel.module.common.entity.NovelChapter">
         SELECT T.ID,T.NOVEL_INFO_ID,T.CHAPTER_NUMBER,T.CHAPTER_NAME,T.CHAPTER_PART,T.CHAPTER_WORDS_COUNT
         FROM T_NOVEL_CHAPTER T
-        WHERE T.NOVEL_INFO_ID = ${chapterInfoQueryDTO.novelInfoId}
+        WHERE T.NOVEL_INFO_ID = #{chapterInfoQueryDTO.novelInfoId}
         <if test="chapterInfoQueryDTO.id!=null and chapterInfoQueryDTO.id!=''">
-            AND T.ID=${chapterInfoQueryDTO.id}
+            AND T.ID=#{chapterInfoQueryDTO.id}
         </if>
         ORDER BY T.CHAPTER_NUMBER
     </select>
