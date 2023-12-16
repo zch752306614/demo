@@ -40,7 +40,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.alice.NovelApplication</mainClass>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
             <!--防止jks文件被mavne编译导致不可用 -->
@@ -59,41 +58,6 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
-                </configuration>
-            </plugin>
-            <!--配置部署到远程docker中-->
-            <!--一键部署-->
-            <plugin>
-                <!--启动插件-->
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <!--指定生成的镜像名-->
-                    <imageName>${project.artifactId}</imageName>
-                    <!--指定标签-->
-                    <imageTags>
-                        <imageTag>latest</imageTag>
-                    </imageTags>
-                    <!--基础镜像-->
-                    <baseImage>openjdk:8</baseImage>
-                    <!--作者信息-->
-                    <maintainer>ZhangChenhuang</maintainer>
-                    <!--切换到/ROOT目录-->
-                    <workdir>/ROOT</workdir>
-                    <cmd>["java","-version"]</cmd>
-                    <entryPoint>["java","-jar","${project.build.finalName}.jar"]</entryPoint>
-                    <!--指定远程 docker api地址-->
-                    <dockerHost>http://121.4.69.234:2375</dockerHost>
-                    <resources>
-                        <resource>
-                            <targetPath>/ROOT</targetPath>
-                            <!--用于指定需要复制的跟目录 此处配置的${project.build.directory}是 即对应 target 目录-->
-                            <directory>${project.build.directory}</directory>
-                            <!-- 需要包含的 jar包 ，这里对应的是 Dockerfile中添加的文件名　-->
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
                 </configuration>
             </plugin>
         </plugins>
