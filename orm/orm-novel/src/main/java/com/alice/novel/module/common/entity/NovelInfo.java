@@ -9,6 +9,7 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * <p>
@@ -94,6 +95,18 @@ public class NovelInfo extends Model<NovelInfo> {
      */
     @TableField("NOVEL_INTRODUCTION")
     private String novelIntroduction;
+
+    /**
+     * 小说简介
+     */
+    @TableField("CREATE_TIME")
+    private Timestamp createTime;
+
+    /**
+     * 小说简介
+     */
+    @TableField("UPDATE_TIME")
+    private Timestamp updateTime;
 
 
     @Override

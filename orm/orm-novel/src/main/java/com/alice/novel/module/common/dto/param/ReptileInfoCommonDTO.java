@@ -64,4 +64,16 @@ public class ReptileInfoCommonDTO {
     @ApiModelProperty(value = "是否完结")
     private String completedFlag;
 
+    /**
+     * 最后更新时间
+     */
+    @ApiModelProperty(value = "最后更新时间")
+    private String lastUpdateTime;
+
+    /**
+     * 小说类型
+     */
+    @ApiModelProperty(value = "小说类型")
+    private String novelType;
+
 }

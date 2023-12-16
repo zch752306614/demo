@@ -47,4 +47,11 @@ public class SysConstants {
     public static final String STRING_DD = "dd";
 
     public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
+    public static final String NOVEL_COMPLETE_FLAG_NAME_BQG = "连载中";
+
+    /**
+     * 小说封面地址根路径
+     */
+    public static final String NOVEL_COVER_BASE_URL = "";
 }

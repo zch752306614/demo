@@ -3,6 +3,7 @@ package com.alice.novel.module.novel.service.reptile.impl;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpUtil;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.novel.service.reptile.CommonReptileService;
 import com.alice.support.common.consts.SysConstants;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +59,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             // 使用Jsoup解析HTML
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
-            Element contentDiv = document.getElementById("chaptercontent");
+            Element contentDiv = document.getElementById("content");
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
             result.put("content", contentDiv.text());
@@ -71,7 +72,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
     }
 
     @Override
-    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
+    public ReptileJobResultDTO getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
         List<ReptileJobDetailResultDTO> reptileJobDetailArrayList = new ArrayList<>(3000);
         String url;
         if (ObjectUtil.isNotEmpty(midUrl)) {
@@ -82,7 +83,22 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String htmlString = HttpUtil.get(url);
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);
-        Elements elements = document.getElementsByClass("listmain").get(0).getElementsByTag("dl").get(0).getElementsByTag("dd");
+        // 获取小说信息
+        String novelName = document.getElementById("info").getElementsByTag("h1").get(0).text();
+        Elements elementsByTag = document.getElementById("info").getElementsByTag("p");
+        Element ElementByCover = document.getElementById("fmimg").getElementsByTag("img").get(0);
+        String novelAuthorP = elementsByTag.get(0).text();
+        String novelCompleteFlagP = elementsByTag.get(1).text();
+        String novelLastUpdateTimeP = elementsByTag.get(2).text();
+        String novelAuthor = novelAuthorP.substring(novelAuthorP.indexOf("：") + 1);
+        String novelCompleteFlag = novelCompleteFlagP.substring(novelCompleteFlagP.indexOf("：") + 1);
+        String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
+        String imgUrl = ElementByCover.attr("src");
+        String novelCoverUrl = baseUrl + imgUrl;
+        // 下载封面并保存到服务器
+
+        // 获取小说章节信息
+        Elements elements = document.getElementById("list").getElementsByTag("dl").get(0).getElementsByTag("dd");
         int chapterNumber = 1;
         for (Element element : elements) {
             ReptileJobDetailResultDTO reptileJobDetailResultDTO = new ReptileJobDetailResultDTO();
@@ -97,7 +113,19 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             reptileJobDetailResultDTO.setReptileUrl(url + chapterUrl.replaceAll(midUrl, "").replaceAll(novelNumber, "").replace("/", ""));
             reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
         }
-        return reptileJobDetailArrayList;
+        ReptileJobResultDTO reptileJobResultDTO = new ReptileJobResultDTO();
+        reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
+        reptileJobResultDTO.setNovelName(novelName);
+        reptileJobResultDTO.setNovelAuthor(novelAuthor);
+        reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
+        reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? "0" : "1");
+        reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl);
+        return reptileJobResultDTO;
+    }
+
+    public static void main(String[] args) {
+        String date = "最后更新：2023-12-16 18:12:35";
+        System.out.println(date.substring(date.indexOf("：") + 1));
     }
 
 }

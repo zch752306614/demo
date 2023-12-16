@@ -1,11 +1,9 @@
 package com.alice.novel.module.novel.service;
 
-import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.common.entity.NovelInfo;
-import com.alice.novel.module.common.entity.ReptileInfo;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -21,7 +19,7 @@ public interface ReptileService {
      * @param reptileInfoParamDTO 爬虫信息
      * @param tClass              Class<?>
      */
-    List<ReptileJobDetailResultDTO> saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass);
+    ReptileJobResultDTO saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass);
 
     /**
      * 保存章节信息

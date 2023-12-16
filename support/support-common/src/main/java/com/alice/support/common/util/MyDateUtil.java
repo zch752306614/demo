@@ -14,9 +14,9 @@ import java.util.*;
  * @DateTime 2023/11/30 13:49
  */
 @Slf4j
-public class DateUtil {
+public class MyDateUtil {
 
-    private DateUtil() {
+    private MyDateUtil() {
     }
 
     public static Date currentDate() {

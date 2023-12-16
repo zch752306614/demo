@@ -5,6 +5,7 @@ import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.novel.service.reptile.CommonReptileService;
 import com.alice.support.common.consts.SysConstants;
 import com.alice.support.common.util.ChineseAndArabicNumUtil;
@@ -86,7 +87,7 @@ public class HTSReptileServiceImpl implements CommonReptileService {
      * @return List<ReptileDetailInfo> 小说章节链接信息
      */
     @Override
-    public List<ReptileJobDetailResultDTO> getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
+    public ReptileJobResultDTO getNovelChapterLink(String baseUrl, String midUrl, String novelNumber) {
         String url;
         if (ObjectUtil.isNotEmpty(midUrl)) {
             url = baseUrl + "/" + midUrl + "/" + novelNumber + "/dir.json";
@@ -125,7 +126,8 @@ public class HTSReptileServiceImpl implements CommonReptileService {
                 reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
             }
         }
-        return reptileJobDetailArrayList;
+        ReptileJobResultDTO reptileJobResultDTO = new ReptileJobResultDTO();
+        return reptileJobResultDTO;
     }
 
 }

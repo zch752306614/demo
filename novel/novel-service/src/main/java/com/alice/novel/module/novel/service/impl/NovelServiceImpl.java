@@ -2,11 +2,14 @@ package com.alice.novel.module.novel.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dto.param.BQGReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.param.HTSReptileInfoParamDTO;
 import com.alice.novel.module.common.dto.query.ChapterInfoQueryDTO;
 import com.alice.novel.module.common.dto.query.NovelInfoQueryDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.common.entity.NovelChapter;
 import com.alice.novel.module.common.entity.NovelInfo;
 import com.alice.novel.module.common.mapper.NovelChapterMapper;
@@ -18,7 +21,7 @@ import com.alice.novel.module.novel.service.ReptileService;
 import com.alice.novel.module.novel.service.reptile.impl.BQGReptileServiceImpl;
 import com.alice.novel.module.novel.service.reptile.impl.HTSReptileServiceImpl;
 import com.alice.support.common.consts.SysConstants;
-import com.alice.support.common.util.DateUtil;
+import com.alice.support.common.util.MyDateUtil;
 import com.alice.support.common.util.QueryWrapperUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
@@ -55,11 +58,32 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByBQG(BQGReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileService.saveReptileJob(reptileInfoParamDTO, BQGReptileServiceImpl.class);
+        ReptileJobResultDTO reptileJobResultDTO = reptileService.saveReptileJob(reptileInfoParamDTO, BQGReptileServiceImpl.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobResultDTO.getReptileJobDetailResultDTOList();
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
-        novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelName())) {
+            novelInfo.setNovelName(reptileJobResultDTO.getNovelName());
+        }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelAuthor())) {
+            novelInfo.setNovelAuthor(reptileJobResultDTO.getNovelAuthor());
+        }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getCompletedFlag())) {
+            novelInfo.setCompletedFlag(reptileJobResultDTO.getCompletedFlag());
+        }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelType())) {
+            novelInfo.setNovelType(reptileJobResultDTO.getNovelType());
+        }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getLastUpdateTime())) {
+            novelInfo.setLastUpdateTime(reptileJobResultDTO.getLastUpdateTime());
+        }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelCover())) {
+            novelInfo.setNovelCover(reptileJobResultDTO.getNovelCover());
+        }
+        novelInfo.setCreateTime(DateUtil.dateSecond().toTimestamp());
+        novelInfo.setUpdateTime(DateUtil.dateSecond().toTimestamp());
+
         novelInfoService.save(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
             reptileService.saveChapterInfo(novelInfo, list, BQGReptileServiceImpl.class);
@@ -74,11 +98,12 @@ public class NovelServiceImpl implements NovelService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addNovelByHTS(HTSReptileInfoParamDTO reptileInfoParamDTO) {
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileService.saveReptileJob(reptileInfoParamDTO, HTSReptileServiceImpl.class);
+        ReptileJobResultDTO reptileJobResultDTO = reptileService.saveReptileJob(reptileInfoParamDTO, HTSReptileServiceImpl.class);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobResultDTO.getReptileJobDetailResultDTOList();
         List<List<ReptileJobDetailResultDTO>> splitList = CollUtil.split(reptileJobDetailResultDTOList, SysConstants.MAX_BATCH);
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(reptileInfoParamDTO, novelInfo);
-        novelInfo.setLastUpdateTime(DateUtil.defaultFormatDateToString());
+        novelInfo.setLastUpdateTime(MyDateUtil.defaultFormatDateToString());
         novelInfoService.save(novelInfo);
         for (List<ReptileJobDetailResultDTO> list : splitList) {
             reptileService.saveChapterInfo(novelInfo, list, HTSReptileServiceImpl.class);

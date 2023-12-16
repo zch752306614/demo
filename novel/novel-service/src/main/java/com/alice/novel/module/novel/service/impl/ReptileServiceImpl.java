@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.alice.novel.module.common.dto.param.ReptileInfoCommonDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
+import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.common.entity.*;
 import com.alice.novel.module.common.service.NovelChapterService;
 import com.alice.novel.module.common.service.ReptileJobDetailService;
@@ -46,12 +47,13 @@ public class ReptileServiceImpl implements ReptileService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<ReptileJobDetailResultDTO> saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass) {
+    public ReptileJobResultDTO saveReptileJob(ReptileInfoCommonDTO reptileInfoParamDTO, Class<?> tClass) {
         CommonReptileService commonReptileService = (CommonReptileService) SpringUtil.getBean(tClass);
         String baseUrl = reptileInfoParamDTO.getBaseUrl();
         String midUrl = reptileInfoParamDTO.getMidUrl();
         String novelNumber = reptileInfoParamDTO.getNovelNumber();
-        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = commonReptileService.getNovelChapterLink(baseUrl, midUrl, novelNumber);
+        ReptileJobResultDTO reptileJobResultDTO = commonReptileService.getNovelChapterLink(baseUrl, midUrl, novelNumber);
+        List<ReptileJobDetailResultDTO> reptileJobDetailResultDTOList = reptileJobResultDTO.getReptileJobDetailResultDTOList();
         ReptileJob reptileJob = new ReptileJob();
         BeanUtil.copyProperties(reptileInfoParamDTO, reptileJob);
         // 保存任务信息
@@ -60,7 +62,7 @@ public class ReptileServiceImpl implements ReptileService {
         for (ReptileJobDetailResultDTO reptileJobDetailResultDTO : reptileJobDetailResultDTOList) {
             reptileJobDetailResultDTO.setReptileJobId(reptileJob.getId());
         }
-        return reptileJobDetailResultDTOList;
+        return reptileJobResultDTO;
     }
 
     /**
