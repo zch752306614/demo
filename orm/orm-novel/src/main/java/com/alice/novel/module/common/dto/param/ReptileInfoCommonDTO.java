@@ -22,14 +22,14 @@ public class ReptileInfoCommonDTO {
      * 小说名称
      */
 //    @NotBlank(message = "小说名称不能为空")
-    @ApiModelProperty(value = "小说名称", required = true)
+//    @ApiModelProperty(value = "小说名称", required = true)
     private String novelName;
 
     /**
      * 小说作者
      */
 //    @NotBlank(message = "小说作者不能为空")
-    @ApiModelProperty(value = "小说作者", required = true)
+//    @ApiModelProperty(value = "小说作者", required = true)
     private String novelAuthor;
 
     /**
