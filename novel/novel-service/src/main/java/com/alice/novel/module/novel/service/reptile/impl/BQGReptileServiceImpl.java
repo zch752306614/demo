@@ -59,10 +59,11 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             // 使用Jsoup解析HTML
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
-            Element contentDiv = document.getElementById("content");
+            Element contentDiv = document.getElementById("chaptercontent");
+            String contentText = contentDiv.text();
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", contentDiv.text());
+            result.put("content", "<p>" + contentText.replaceAll("<br>", "</p><p>") + "</p>");
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -84,21 +85,24 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);
         // 获取小说信息
-        String novelName = document.getElementById("info").getElementsByTag("h1").get(0).text();
-        Elements elementsByTag = document.getElementById("info").getElementsByTag("p");
-        Element ElementByCover = document.getElementById("fmimg").getElementsByTag("img").get(0);
-        String novelAuthorP = elementsByTag.get(0).text();
-        String novelCompleteFlagP = elementsByTag.get(1).text();
-        String novelLastUpdateTimeP = elementsByTag.get(2).text();
+        Element info = document.getElementsByClass("info").get(0);
+        Element cover = info.getElementsByClass("cover").get(0);
+        Element small = info.getElementsByClass("small").get(0);
+        Element intro = info.getElementsByClass("intro").get(0);
+        Elements spanBySmall = small.getElementsByTag("span");
+        String novelName = info.getElementsByTag("h1").get(0).text();
+        String novelAuthorP = spanBySmall.get(0).text();
+        String novelCompleteFlagP = spanBySmall.get(1).text();
+        String novelLastUpdateTimeP = spanBySmall.get(2).text();
         String novelAuthor = novelAuthorP.substring(novelAuthorP.indexOf("：") + 1);
         String novelCompleteFlag = novelCompleteFlagP.substring(novelCompleteFlagP.indexOf("：") + 1);
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
-        String imgUrl = ElementByCover.attr("src");
-        String novelCoverUrl = baseUrl + imgUrl;
+        String novelIntro = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
+        String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
         // 下载封面并保存到服务器
 
         // 获取小说章节信息
-        Elements elements = document.getElementById("list").getElementsByTag("dl").get(0).getElementsByTag("dd");
+        Elements elements = document.getElementById("listmain").getElementsByTag("dl").get(0).getElementsByTag("dd");
         int chapterNumber = 1;
         for (Element element : elements) {
             ReptileJobDetailResultDTO reptileJobDetailResultDTO = new ReptileJobDetailResultDTO();
@@ -117,15 +121,11 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
         reptileJobResultDTO.setNovelName(novelName);
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
+        reptileJobResultDTO.setNovelIntro(novelIntro);
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? "0" : "1");
-        reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl);
+        reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/")));
         return reptileJobResultDTO;
-    }
-
-    public static void main(String[] args) {
-        String date = "最后更新：2023-12-16 18:12:35";
-        System.out.println(date.substring(date.indexOf("：") + 1));
     }
 
 }

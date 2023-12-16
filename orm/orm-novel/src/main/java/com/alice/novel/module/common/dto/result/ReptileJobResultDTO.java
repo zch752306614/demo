@@ -33,6 +33,11 @@ public class ReptileJobResultDTO {
     private String novelType;
 
     /**
+     * 小说简介
+     */
+    private String novelIntro;
+
+    /**
      * 小说封面地址
      */
     private String novelCover;
