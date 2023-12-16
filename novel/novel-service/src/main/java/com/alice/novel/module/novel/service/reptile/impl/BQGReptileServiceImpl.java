@@ -60,7 +60,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
             Element contentDiv = document.getElementById("chaptercontent");
-            String contentText = contentDiv.text();
+            String contentText = contentDiv.toString();
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
             result.put("content", "<p>" + contentText.replaceAll("<br>", "</p><p>") + "</p>");
@@ -97,12 +97,12 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String novelAuthor = novelAuthorP.substring(novelAuthorP.indexOf("：") + 1);
         String novelCompleteFlag = novelCompleteFlagP.substring(novelCompleteFlagP.indexOf("：") + 1);
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
-        String novelIntro = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
+        String novelIntroduction = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
         String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
         // 下载封面并保存到服务器
 
         // 获取小说章节信息
-        Elements elements = document.getElementById("listmain").getElementsByTag("dl").get(0).getElementsByTag("dd");
+        Elements elements = document.getElementsByClass("listmain").get(0).getElementsByTag("dl").get(0).getElementsByTag("dd");
         int chapterNumber = 1;
         for (Element element : elements) {
             ReptileJobDetailResultDTO reptileJobDetailResultDTO = new ReptileJobDetailResultDTO();
@@ -121,7 +121,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
         reptileJobResultDTO.setNovelName(novelName);
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
-        reptileJobResultDTO.setNovelIntro(novelIntro);
+        reptileJobResultDTO.setNovelIntroduction(novelIntroduction);
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? "0" : "1");
         reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/")));

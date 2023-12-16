@@ -75,6 +75,9 @@ public class NovelServiceImpl implements NovelService {
         if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelType())) {
             novelInfo.setNovelType(reptileJobResultDTO.getNovelType());
         }
+        if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getNovelIntroduction())) {
+            novelInfo.setNovelIntroduction(reptileJobResultDTO.getNovelIntroduction());
+        }
         if (ObjectUtil.isNotEmpty(reptileJobResultDTO.getLastUpdateTime())) {
             novelInfo.setLastUpdateTime(reptileJobResultDTO.getLastUpdateTime());
         }

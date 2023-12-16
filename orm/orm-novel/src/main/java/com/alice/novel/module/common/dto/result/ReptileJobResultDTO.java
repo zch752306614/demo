@@ -35,7 +35,7 @@ public class ReptileJobResultDTO {
     /**
      * 小说简介
      */
-    private String novelIntro;
+    private String novelIntroduction;
 
     /**
      * 小说封面地址
