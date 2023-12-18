@@ -6,12 +6,16 @@ import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.novel.service.reptile.CommonReptileService;
 import com.alice.support.common.consts.SysConstants;
+import com.alice.support.common.util.MyStringUtils;
+import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,10 +64,19 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             Document document = Jsoup.parse(htmlString);
             // 查找id为"content"下的所有div元素
             Element contentDiv = document.getElementById("chaptercontent");
-            String contentText = contentDiv.toString();
+            List<Node> chapterContentNodes = contentDiv.childNodes();
+            StringBuilder content = new StringBuilder();
+            for (Node chapterContentNode : chapterContentNodes) {
+                if (ObjectUtil.isNotEmpty(chapterContentNode)) {
+                    String contentStr = chapterContentNode.toString();
+                    if (!MyStringUtils.containsAny(contentStr, "请收藏本站：", "<p class")) {
+                        content.append(contentStr.replaceAll("<br>", "</p><p>"));
+                    }
+                }
+            }
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", "<p>" + contentText.replaceAll("<br>", "</p><p>") + "</p>");
+            result.put("content", "<p>" + content + "</p>");
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -128,4 +141,25 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         return reptileJobResultDTO;
     }
 
+    public static void main(String[] args) {
+        String url = "https://www.bqgi.cc/book/10376/1.html";
+        String htmlString = HttpUtil.get(url);
+        // 使用Jsoup解析HTML
+        Document document = Jsoup.parse(htmlString);
+        // 查找id为"content"下的所有div元素
+        Element chapterContentDiv = document.getElementById("chaptercontent");
+        List<Node> chapterContentNodes = document.getElementById("chaptercontent").childNodes();
+        StringBuilder content = new StringBuilder();
+        content.append("<p>");
+        for (Node chapterContentNode : chapterContentNodes) {
+            if (ObjectUtil.isNotEmpty(chapterContentNode)) {
+                String contentStr = chapterContentNode.toString();
+                if (!MyStringUtils.containsAny(contentStr, "请收藏本站：", "<p class")) {
+                    content.append(contentStr.replaceAll("<br>", "</p><p>"));
+                }
+            }
+        }
+        content.append("</p>");
+        System.out.println(content.toString().replaceAll(" ", "").replaceAll("　", "").replaceAll("<p></p>", "").replaceAll("\n", ""));
+    }
 }
