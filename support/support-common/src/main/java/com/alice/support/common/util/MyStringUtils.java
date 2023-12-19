@@ -1,5 +1,7 @@
 package com.alice.support.common.util;
 
+import com.alice.support.common.consts.SysConstants;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,9 +37,9 @@ public class MyStringUtils {
      * @param mainString 原字符串
      * @return searchStrings 需要移除的内容
      */
-    private static String removeStrings(String mainString, String... stringsToRemove) {
+    public static String removeStrings(String mainString, String... stringsToRemove) {
         for (String stringToRemove : stringsToRemove) {
-            mainString = mainString.replaceAll(stringToRemove, "");
+            mainString = mainString.replaceAll(stringToRemove, SysConstants.EMPTY);
         }
         return mainString;
     }
@@ -48,9 +50,9 @@ public class MyStringUtils {
      * @param mainString 原字符串
      * @return stringsToRemove 需要移除的内容
      */
-    private static String removeStrings(String mainString, List<String> stringsToRemove) {
+    public static String removeStrings(String mainString, List<String> stringsToRemove) {
         for (String stringToRemove : stringsToRemove) {
-            mainString = mainString.replaceAll(stringToRemove, "");
+            mainString = mainString.replaceAll(stringToRemove, SysConstants.EMPTY);
         }
         return mainString;
     }

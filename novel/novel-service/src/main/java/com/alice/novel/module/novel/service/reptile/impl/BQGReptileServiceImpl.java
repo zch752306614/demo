@@ -127,7 +127,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             reptileJobDetailResultDTO.setChapterNumber(chapterNumber++);
             reptileJobDetailResultDTO.setChapterName(chapterName);
-            reptileJobDetailResultDTO.setReptileUrl(url + chapterUrl.replaceAll(midUrl, "").replaceAll(novelNumber, "").replace("/", ""));
+            reptileJobDetailResultDTO.setReptileUrl(MyStringUtils.removeStrings(url + chapterUrl, midUrl, novelNumber, "/"));
             reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
         }
         ReptileJobResultDTO reptileJobResultDTO = new ReptileJobResultDTO();
@@ -136,7 +136,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
         reptileJobResultDTO.setNovelIntroduction(novelIntroduction);
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
-        reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? "0" : "1");
+        reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? SysConstants.IS_NO : SysConstants.IS_YES);
         reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/")));
         return reptileJobResultDTO;
     }
