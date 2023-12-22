@@ -75,7 +75,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", "<p>" + content + "</p>");
+            result.put("content", "<p>" + MyStringUtils.removeStrings(content.toString(), "<p></p>") + "</p>");
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
