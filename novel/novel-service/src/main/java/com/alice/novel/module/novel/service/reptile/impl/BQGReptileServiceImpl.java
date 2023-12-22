@@ -127,7 +127,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             reptileJobDetailResultDTO.setChapterNumber(chapterNumber++);
             reptileJobDetailResultDTO.setChapterName(chapterName);
-            reptileJobDetailResultDTO.setReptileUrl(MyStringUtils.removeStrings(url + chapterUrl, midUrl, novelNumber, "/"));
+            reptileJobDetailResultDTO.setReptileUrl(url + MyStringUtils.removeStrings(chapterUrl, midUrl, novelNumber, "/"));
             reptileJobDetailArrayList.add(reptileJobDetailResultDTO);
         }
         ReptileJobResultDTO reptileJobResultDTO = new ReptileJobResultDTO();
