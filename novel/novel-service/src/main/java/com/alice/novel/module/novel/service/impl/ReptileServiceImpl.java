@@ -84,29 +84,38 @@ public class ReptileServiceImpl implements ReptileService {
             ReptileJobDetail reptileJobDetail = new ReptileJobDetail();
             BeanUtil.copyProperties(reptileJobDetailResultDTO, novelChapter);
             BeanUtil.copyProperties(reptileJobDetailResultDTO, reptileJobDetail);
-            novelChapter.setNovelInfoId(novelInfo.getId());
-            Map<String, String> resultMap = commonReptileService.getNovelInfo(reptileJobDetailResultDTO.getReptileUrl());
-            if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
-                String content = resultMap.get("content");
-                novelChapter.setChapterContent(content);
-                novelChapter.setChapterWordsCount(content.length());
-                reptileJobDetail.setDoneFlag(SysConstants.IS_YES);
-            } else {
-                String msg = resultMap.get("msg");
-                reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
-                if (ObjectUtil.isNotEmpty(msg)) {
-                    reptileJobDetail.setErrorMsg(msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN)));
+            try {
+                novelChapter.setNovelInfoId(novelInfo.getId());
+                Map<String, String> resultMap = commonReptileService.getNovelInfo(reptileJobDetailResultDTO.getReptileUrl());
+                if (SysConstants.CODE_SUCCESS.equals(resultMap.get("code"))) {
+                    String content = resultMap.get("content");
+                    novelChapter.setChapterContent(content);
+                    novelChapter.setChapterWordsCount(content.length());
+                    reptileJobDetail.setDoneFlag(SysConstants.IS_YES);
+                    log.info(String.format("爬取成功[url=%s]", reptileJobDetailResultDTO.getReptileUrl()));
+                } else {
+                    String msg = resultMap.get("msg");
+                    reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
+                    if (ObjectUtil.isNotEmpty(msg)) {
+                        reptileJobDetail.setErrorMsg(msg.substring(0, Math.min(msg.length(), SysConstants.MSG_MAX_LEN)));
+                    }
+                    log.info(String.format("爬取失败[url=%s]，失败原因[msg=%s]", reptileJobDetailResultDTO.getReptileUrl(), msg));
                 }
+            } catch (Exception ex) {
+                String errMsg = reptileJobDetail.getErrorMsg() + (ObjectUtil.isNotEmpty(reptileJobDetail.getErrorMsg()) ? "|" : SysConstants.EMPTY) + ex.getMessage();
+                reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
+                reptileJobDetail.setErrorMsg(errMsg.substring(0, Math.min(errMsg.length(), SysConstants.MSG_MAX_LEN)));
+                log.info(String.format("爬取失败[url=%s]，失败原因[msg=%s]", reptileJobDetailResultDTO.getReptileUrl(), errMsg));
             }
             novelChapterList.add(novelChapter);
             reptileJobDetailList.add(reptileJobDetail);
-            log.info(String.format("爬取成功url=%s", reptileJobDetailResultDTO.getReptileUrl()));
         }
+
         try {
             novelChapterService.saveBatch(novelChapterList);
         } catch (Exception ex) {
             for (ReptileJobDetail reptileJobDetail : reptileJobDetailList) {
-                String errMsg = ex.getMessage();
+                String errMsg = reptileJobDetail.getErrorMsg() + (ObjectUtil.isNotEmpty(reptileJobDetail.getErrorMsg()) ? "|" : SysConstants.EMPTY) + ex.getMessage();
                 reptileJobDetail.setDoneFlag(SysConstants.IS_NO);
                 reptileJobDetail.setErrorMsg(errMsg.substring(0, Math.min(errMsg.length(), SysConstants.MSG_MAX_LEN)));
             }
