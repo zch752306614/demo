@@ -50,7 +50,7 @@ public class SysConstants {
 
     public static final String NOVEL_COMPLETE_FLAG_NAME_BQG = "连载";
 
-    public static final String SERVICE_IP = "121.4.69.234";
+    public static final String SERVICE_IP = "http://121.4.69.234";
 
     public static final String SAVE_NOVEL_COVER_BASE_URL = "/home/docker/mount/nginx/project/file/novel";
 

@@ -111,8 +111,8 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
         String novelIntroduction = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
         String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
-        String savaUrl = SysConstants.SERVICE_IP + SysConstants.SAVE_NOVEL_COVER_BASE_URL + "/" + imgUrl.substring(imgUrl.lastIndexOf("/"));
-        String showUrl = SysConstants.SERVICE_IP + SysConstants.SHOW_NOVEL_COVER_BASE_URL + "/" + imgUrl.substring(imgUrl.lastIndexOf("/"));
+        String savaUrl = SysConstants.SERVICE_IP + SysConstants.SAVE_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
+        String showUrl = SysConstants.SERVICE_IP + SysConstants.SHOW_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
         // 下载封面并保存到服务器
         MyFileUtils.downloadFile(imgUrl, savaUrl);
         // 获取小说章节信息
