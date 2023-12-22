@@ -6,8 +6,8 @@ import com.alice.novel.module.common.dto.result.ReptileJobDetailResultDTO;
 import com.alice.novel.module.common.dto.result.ReptileJobResultDTO;
 import com.alice.novel.module.novel.service.reptile.CommonReptileService;
 import com.alice.support.common.consts.SysConstants;
+import com.alice.support.common.util.MyFileUtils;
 import com.alice.support.common.util.MyStringUtils;
-import com.github.pagehelper.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,7 +15,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,8 +111,10 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
         String novelIntroduction = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
         String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
+        String savaUrl = SysConstants.SERVICE_IP + SysConstants.SAVE_NOVEL_COVER_BASE_URL + "/" + imgUrl.substring(imgUrl.lastIndexOf("/"));
+        String showUrl = SysConstants.SERVICE_IP + SysConstants.SHOW_NOVEL_COVER_BASE_URL + "/" + imgUrl.substring(imgUrl.lastIndexOf("/"));
         // 下载封面并保存到服务器
-
+        MyFileUtils.downloadFile(imgUrl, savaUrl);
         // 获取小说章节信息
         Elements elements = document.getElementsByClass("listmain").get(0).getElementsByTag("dl").get(0).getElementsByTag("dd");
         int chapterNumber = 1;
@@ -137,7 +138,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setNovelIntroduction(novelIntroduction);
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? SysConstants.IS_NO : SysConstants.IS_YES);
-        reptileJobResultDTO.setNovelCover(SysConstants.NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/")));
+        reptileJobResultDTO.setNovelCover(showUrl);
         return reptileJobResultDTO;
     }
 

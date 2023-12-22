@@ -50,8 +50,10 @@ public class SysConstants {
 
     public static final String NOVEL_COMPLETE_FLAG_NAME_BQG = "连载";
 
-    /**
-     * 小说封面地址根路径
-     */
-    public static final String NOVEL_COVER_BASE_URL = "";
+    public static final String SERVICE_IP = "121.4.69.234";
+
+    public static final String SAVE_NOVEL_COVER_BASE_URL = "/home/docker/mount/nginx/project/file/novel";
+
+    public static final String SHOW_NOVEL_COVER_BASE_URL = "/images/novel";
+
 }
