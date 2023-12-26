@@ -109,7 +109,8 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String novelAuthor = novelAuthorP.substring(novelAuthorP.indexOf("：") + 1);
         String novelCompleteFlag = novelCompleteFlagP.substring(novelCompleteFlagP.indexOf("：") + 1);
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
-        String novelIntroduction = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
+        String novelIntroductionText = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
+        String novelIntroduction = MyStringUtils.removeStrings(novelIntroductionText, " ", "　", "展开全部>>");
         String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
         String savaUrl = SysConstants.SAVE_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
         String showUrl = SysConstants.SERVICE_IP + SysConstants.SHOW_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
@@ -135,7 +136,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
         reptileJobResultDTO.setNovelName(novelName);
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
-        reptileJobResultDTO.setNovelIntroduction(novelIntroduction.replaceAll("　", ""));
+        reptileJobResultDTO.setNovelIntroduction(novelIntroduction.substring(0, Math.max(novelIntroduction.lastIndexOf("4w0-"), novelIntroduction.length())));
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? SysConstants.IS_NO : SysConstants.IS_YES);
         reptileJobResultDTO.setNovelCover(showUrl);
