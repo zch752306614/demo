@@ -75,7 +75,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", "<p>" + MyStringUtils.removeStrings(content.toString(), "<p></p>") + "</p>");
+            result.put("content", "<p>" + MyStringUtils.removeStrings(content.toString(), "　", " ", "\n", "<p></p>") + "</p>");
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -111,7 +111,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         String novelLastUpdateTime = novelLastUpdateTimeP.substring(novelLastUpdateTimeP.indexOf("：") + 1);
         String novelIntroduction = intro.getElementsByTag("dl").get(0).getElementsByTag("dd").get(0).text();
         String imgUrl = cover.getElementsByTag("img").get(0).attr("src");
-        String savaUrl = SysConstants.SERVICE_IP + SysConstants.SAVE_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
+        String savaUrl = SysConstants.SAVE_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
         String showUrl = SysConstants.SERVICE_IP + SysConstants.SHOW_NOVEL_COVER_BASE_URL + imgUrl.substring(imgUrl.lastIndexOf("/"));
         // 下载封面并保存到服务器
         MyFileUtils.downloadFile(imgUrl, savaUrl);
@@ -143,7 +143,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
     }
 
     public static void main(String[] args) {
-        String url = "https://www.bqgi.cc/book/10376/1.html";
+        String url = "https://www.bqgi.cc/book/9311/6.html";
         String htmlString = HttpUtil.get(url);
         // 使用Jsoup解析HTML
         Document document = Jsoup.parse(htmlString);
@@ -156,11 +156,11 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             if (ObjectUtil.isNotEmpty(chapterContentNode)) {
                 String contentStr = chapterContentNode.toString();
                 if (!MyStringUtils.containsAny(contentStr, "请收藏本站：", "<p class")) {
-                    content.append(contentStr.replaceAll("<br>", "</p><p>"));
+                    content.append(contentStr.replaceAll("　", "").replaceAll(" ", "").replaceAll("<br>", "</p><p>"));
                 }
             }
         }
         content.append("</p>");
-        System.out.println(content.toString().replaceAll(" ", "").replaceAll("　", "").replaceAll("<p></p>", "").replaceAll("\n", ""));
+        System.out.println(content.toString().replaceAll("\n", "").replaceAll("<p></p>", ""));
     }
 }
