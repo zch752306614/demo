@@ -135,7 +135,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
         reptileJobResultDTO.setNovelName(novelName);
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
-        reptileJobResultDTO.setNovelIntroduction(novelIntroduction);
+        reptileJobResultDTO.setNovelIntroduction(novelIntroduction.replaceAll("　", ""));
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? SysConstants.IS_NO : SysConstants.IS_YES);
         reptileJobResultDTO.setNovelCover(showUrl);
