@@ -75,7 +75,7 @@ public class BQGReptileServiceImpl implements CommonReptileService {
             }
             // 获取小说正文
             result.put("code", SysConstants.CODE_SUCCESS);
-            result.put("content", "<p>" + MyStringUtils.removeStrings(content.toString(), "　", " ", "\n", "<p></p>") + "</p>");
+            result.put("content", MyStringUtils.removeStrings("<p>" + content + "</p>", "　", " ", "\n", "<p></p>"));
         } catch (Exception ex) {
             ex.printStackTrace();
             result.put("code", SysConstants.CODE_FAIL);
@@ -136,7 +136,8 @@ public class BQGReptileServiceImpl implements CommonReptileService {
         reptileJobResultDTO.setReptileJobDetailResultDTOList(reptileJobDetailArrayList);
         reptileJobResultDTO.setNovelName(novelName);
         reptileJobResultDTO.setNovelAuthor(novelAuthor);
-        reptileJobResultDTO.setNovelIntroduction(novelIntroduction.substring(0, Math.max(novelIntroduction.lastIndexOf("4w0-"), novelIntroduction.length())));
+        int index = novelIntroduction.lastIndexOf("4w0-");
+        reptileJobResultDTO.setNovelIntroduction(novelIntroduction.substring(0, index > 0 ? index : novelIntroduction.length()));
         reptileJobResultDTO.setLastUpdateTime(novelLastUpdateTime);
         reptileJobResultDTO.setCompletedFlag(SysConstants.NOVEL_COMPLETE_FLAG_NAME_BQG.equals(novelCompleteFlag) ? SysConstants.IS_NO : SysConstants.IS_YES);
         reptileJobResultDTO.setNovelCover(showUrl);
@@ -146,22 +147,31 @@ public class BQGReptileServiceImpl implements CommonReptileService {
     public static void main(String[] args) {
         String url = "https://www.bqgi.cc/book/9311/6.html";
         String htmlString = HttpUtil.get(url);
-        // 使用Jsoup解析HTML
-        Document document = Jsoup.parse(htmlString);
-        // 查找id为"content"下的所有div元素
-        Element chapterContentDiv = document.getElementById("chaptercontent");
-        List<Node> chapterContentNodes = document.getElementById("chaptercontent").childNodes();
-        StringBuilder content = new StringBuilder();
-        content.append("<p>");
-        for (Node chapterContentNode : chapterContentNodes) {
-            if (ObjectUtil.isNotEmpty(chapterContentNode)) {
-                String contentStr = chapterContentNode.toString();
-                if (!MyStringUtils.containsAny(contentStr, "请收藏本站：", "<p class")) {
-                    content.append(contentStr.replaceAll("　", "").replaceAll(" ", "").replaceAll("<br>", "</p><p>"));
+        // 获取的数据，存放在集合中
+        Map<String, String> result = new HashMap<>(10);
+        try {
+            // 使用Jsoup解析HTML
+            Document document = Jsoup.parse(htmlString);
+            // 查找id为"content"下的所有div元素
+            Element contentDiv = document.getElementById("chaptercontent");
+            List<Node> chapterContentNodes = contentDiv.childNodes();
+            StringBuilder content = new StringBuilder();
+            for (Node chapterContentNode : chapterContentNodes) {
+                if (ObjectUtil.isNotEmpty(chapterContentNode)) {
+                    String contentStr = chapterContentNode.toString();
+                    if (!MyStringUtils.containsAny(contentStr, "请收藏本站：", "<p class")) {
+                        content.append(contentStr.replaceAll("<br>", "</p><p>"));
+                    }
                 }
             }
+            // 获取小说正文
+            result.put("code", SysConstants.CODE_SUCCESS);
+            result.put("content", MyStringUtils.removeStrings("<p>" + content + "</p>", "　", " ", "\n", "<p></p>"));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result.put("code", SysConstants.CODE_FAIL);
+            result.put("msg", ex.getMessage());
         }
-        content.append("</p>");
-        System.out.println(content.toString().replaceAll("\n", "").replaceAll("<p></p>", ""));
+        System.out.println(result);
     }
 }
