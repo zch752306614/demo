@@ -24,7 +24,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping(value = "/novel")
+@RequestMapping(value = "/api/novelManage")
 @Api(value = "小说管理（novel）", tags = "小说管理（novel）")
 public class NovelController extends BaseController {
 
