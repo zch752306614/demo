@@ -7,6 +7,7 @@
         <groupId>com.alice</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <artifactId>zuul</artifactId>
@@ -24,6 +25,7 @@
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>2.3.0.RELEASE</version>
                     <configuration>
                         <executable>true</executable>
                     </configuration>

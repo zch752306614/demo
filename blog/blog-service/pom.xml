@@ -28,9 +28,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.0.RELEASE</version>
                 <configuration>
                     <mainClass>com.alice.BlogApplication</mainClass>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
             <!--防止jks文件被mavne编译导致不可用 -->
