@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <artifactId>zuul</artifactId>
+    <artifactId>zuul-service</artifactId>
     <name>zuul-service</name>
 
     <dependencies>
@@ -39,7 +39,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <mainClass>com.alice.ZuulApplication</mainClass>
-                    <fork>true</fork>
                 </configuration>
             </plugin>
             <!--防止jks文件被mavne编译导致不可用 -->
