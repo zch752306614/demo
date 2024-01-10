@@ -123,11 +123,11 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public List<NovelChapter> queryChapterList(ChapterInfoQueryDTO chapterInfoQueryDTO) {
-        NovelChapter novelChapter = new NovelChapter();
-        BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
-        QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
-        queryWrapper.orderByAsc("CHAPTER_NUMBER");
         if (SysConstants.IS_YES.equals(chapterInfoQueryDTO.getContentFlag())) {
+            NovelChapter novelChapter = new NovelChapter();
+            BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
+            QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
+            queryWrapper.orderByAsc("CHAPTER_NUMBER");
             return novelChapterMapper.selectList(queryWrapper);
         } else {
             return novelChapterMapper.queryChapterList(chapterInfoQueryDTO);
@@ -137,5 +137,20 @@ public class NovelServiceImpl implements NovelService {
     @Override
     public List<NovelChapter> queryChapterListById(List<Long> idList) {
         return novelChapterService.query().in("ID", idList).list();
+    }
+
+    @Override
+    public List<NovelChapter> queryChapterListByConditions(ChapterInfoQueryDTO chapterInfoQueryDTO) {
+        if (SysConstants.IS_YES.equals(chapterInfoQueryDTO.getContentFlag())) {
+            NovelChapter novelChapter = new NovelChapter();
+            BeanUtil.copyProperties(chapterInfoQueryDTO, novelChapter);
+            QueryWrapper<NovelChapter> queryWrapper = QueryWrapperUtil.initParams(novelChapter);
+            queryWrapper.in(ObjectUtil.isNotEmpty(chapterInfoQueryDTO.getIdList()), "ID", chapterInfoQueryDTO.getIdList())
+                    .in(ObjectUtil.isNotEmpty(chapterInfoQueryDTO.getChapterNumberList()), "CHAPTER_NUMBER", chapterInfoQueryDTO.getChapterNumberList())
+                    .orderByAsc("CHAPTER_NUMBER");
+            return novelChapterMapper.selectList(queryWrapper);
+        } else {
+            return novelChapterMapper.queryChapterList(chapterInfoQueryDTO);
+        }
     }
 }

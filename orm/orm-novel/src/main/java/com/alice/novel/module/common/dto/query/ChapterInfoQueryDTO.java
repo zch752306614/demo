@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @Description 查询小说章节入参
@@ -23,5 +24,11 @@ public class ChapterInfoQueryDTO {
 
     @ApiModelProperty(value = "是否获取正文标识")
     private String contentFlag;
+
+    @ApiModelProperty(value = "小说章节ID列表")
+    private List<Long> idList;
+
+    @ApiModelProperty(value = "小说章节编号列表")
+    private List<Long> chapterNumberList;
 
 }

@@ -16,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -75,5 +76,11 @@ public class NovelController extends BaseController {
     @ApiOperation(value = "根据ID获取章节", httpMethod = "GET")
     public ResponseInfo<List<NovelChapter>> queryChapterListById(@RequestParam @ApiParam(value = "小说章节ID", required = true) List<Long> idList) {
         return ResponseInfo.success(novelService.queryChapterListById(idList));
+    }
+
+    @GetMapping(value = "/queryChapterListByConditions")
+    @ApiOperation(value = "根据条件获取章节", httpMethod = "GET")
+    public ResponseInfo<List<NovelChapter>> queryChapterListByConditions(@Validated ChapterInfoQueryDTO chapterInfoQueryDTO) {
+        return ResponseInfo.success(novelService.queryChapterListByConditions(chapterInfoQueryDTO));
     }
 }

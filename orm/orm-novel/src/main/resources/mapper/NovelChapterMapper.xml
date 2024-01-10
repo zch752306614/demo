@@ -24,6 +24,18 @@
         <if test="chapterInfoQueryDTO.id!=null and chapterInfoQueryDTO.id!=''">
             AND T.ID=#{chapterInfoQueryDTO.id}
         </if>
+        <if test="chapterInfoQueryDTO.idList!=null and chapterInfoQueryDTO.idList.size()>0">
+            AND T.ID IN
+            <foreach collection="chapterInfoQueryDTO.idList" item="id" index="index" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="chapterInfoQueryDTO.chapterNumberList!=null and chapterInfoQueryDTO.chapterNumberList.size()>0">
+            AND T.CHAPTER_NUMBER IN
+            <foreach collection="chapterInfoQueryDTO.chapterNumberList" item="chapterNumber" index="index" open="(" close=")" separator=",">
+                #{chapterNumber}
+            </foreach>
+        </if>
         ORDER BY T.CHAPTER_NUMBER
     </select>
 </mapper>
