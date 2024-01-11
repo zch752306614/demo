@@ -9,8 +9,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>business-support-zuul</artifactId>
-    <name>business-support-zuul ${project.version}</name>
+    <artifactId>business-support-user</artifactId>
+    <name>business-support-user ${project.version}</name>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -19,10 +19,6 @@
             <artifactId>business-support-core</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-zuul</artifactId>
         </dependency>
     </dependencies>
 

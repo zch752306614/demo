@@ -3,19 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>demo</artifactId>
+        <artifactId>business-feign</artifactId>
         <groupId>com.alice</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>business-feign</artifactId>
-    <name>business-feign ${project.version}</name>
-    <packaging>pom</packaging>
+    <artifactId>business-feign-user</artifactId>
+    <name>business-feign-user ${project.version}</name>
+    <packaging>jar</packaging>
 
-    <modules>
-        <module>business-feign-novel</module>
-        <module>business-feign-user</module>
-    </modules>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

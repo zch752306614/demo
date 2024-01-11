@@ -16,6 +16,7 @@
     <modules>
         <module>business-support-core</module>
         <module>business-support-zuul</module>
+        <module>business-support-user</module>
     </modules>
 
 </project>
