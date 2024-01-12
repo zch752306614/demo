@@ -19,13 +19,13 @@ public class MyBaseEntity extends Model {
     /**
      * 创建时间
      */
-    @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     private Timestamp createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "UPDATE_TIME", fill = FieldFill.UPDATE)
+    @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     private Timestamp updateTime;
 
 }
