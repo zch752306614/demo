@@ -1,15 +1,13 @@
 package com.alice.novel.module.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alice.support.common.base.entity.MyBaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * <p>
@@ -20,10 +18,13 @@ import java.io.Serializable;
  * @since 2023-11-28
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("T_REPTILE_INFO")
-public class ReptileInfo extends Model<ReptileInfo> {
+public class ReptileInfo extends MyBaseEntity {
 
     private static final long serialVersionUID = 1L;
 

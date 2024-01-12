@@ -1,7 +1,7 @@
 package com.alice.support.common.base.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.baomidou.mybatisplus.extension.service.IService;
+import com.baomidou.mybatisplus.core.toolkit.Constants;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Collection;
@@ -22,14 +22,6 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
     int insertBatchSomeColumn(Collection<T> entityList);
 
     /**
-     * 批量更新 仅适用于mysql
-     *
-     * @param entityList 实体集合
-     * @return int
-     */
-    int updateBatchSomeColumn(Collection<T> entityList);
-
-    /**
      * 自定义批量插入
      *
      * @param list 插入的数据
@@ -45,5 +37,20 @@ public interface MyBaseMapper<T> extends BaseMapper<T> {
      */
     int updateBatch(@Param("list") List<T> list);
 
+    /**
+     * 自定义全量更新
+     *
+     * @param entity 实体数据
+     * @return int
+     */
+    int updateAll(@Param(Constants.ENTITY) T entity);
+
+    /**
+     * 自定义全量更新，条件为主键
+     *
+     * @param entity 实体数据
+     * @return int
+     */
+    int updateAllById(@Param(Constants.ENTITY) T entity);
 }
 

@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.mapper;
 
 import com.alice.novel.module.common.entity.ReptileDetailInfo;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alice.support.common.base.mapper.MyBaseMapper;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ZhangChenhuang
  * @since 2023-11-28
  */
-public interface ReptileDetailInfoMapper extends BaseMapper<ReptileDetailInfo> {
+public interface ReptileDetailInfoMapper extends MyBaseMapper<ReptileDetailInfo> {
 
 }

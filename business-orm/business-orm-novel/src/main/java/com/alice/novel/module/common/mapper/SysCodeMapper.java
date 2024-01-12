@@ -1,7 +1,7 @@
 package com.alice.novel.module.common.mapper;
 
 import com.alice.novel.module.common.entity.SysCode;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.alice.support.common.base.mapper.MyBaseMapper;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author ZhangChenhuang
  * @since 2023-11-27
  */
-public interface SysCodeMapper extends BaseMapper<SysCode> {
+public interface SysCodeMapper extends MyBaseMapper<SysCode> {
 
 }

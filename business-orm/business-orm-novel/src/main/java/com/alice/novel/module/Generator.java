@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class Generator {
     //项目路径
-    private static String canonicalPath = "/orm/orm-novel";
+    private static String canonicalPath = "/business-orm/business-orm-novel";
 
     //基本包名
     private static final String basePackage = "com.alice.novel.module.common";
@@ -47,7 +47,7 @@ public class Generator {
 
         //获取项目路径
         try {
-            canonicalPath = new File("").getCanonicalPath() + "/orm/orm-novel";
+            canonicalPath = new File("").getCanonicalPath() + "/business-orm/business-orm-novel";
         } catch (IOException e) {
             e.printStackTrace();
         }

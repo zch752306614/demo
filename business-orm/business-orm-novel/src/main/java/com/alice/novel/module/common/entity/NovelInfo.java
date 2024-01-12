@@ -1,9 +1,7 @@
 package com.alice.novel.module.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alice.support.common.base.entity.MyBaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -20,13 +18,13 @@ import java.sql.Timestamp;
  * @since 2023-11-27
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("T_NOVEL_INFO")
-public class NovelInfo extends Model<NovelInfo> {
+public class NovelInfo extends MyBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -95,19 +93,6 @@ public class NovelInfo extends Model<NovelInfo> {
      */
     @TableField("NOVEL_INTRODUCTION")
     private String novelIntroduction;
-
-    /**
-     * 小说简介
-     */
-    @TableField("CREATE_TIME")
-    private Timestamp createTime;
-
-    /**
-     * 小说简介
-     */
-    @TableField("UPDATE_TIME")
-    private Timestamp updateTime;
-
 
     @Override
     protected Serializable pkVal() {

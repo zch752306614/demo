@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.injector.methods.InsertBatchSomeColumn
 import java.util.List;
 
 /**
- * @Description TODO
+ * @Description MySql注入器
  * @ClassName MySqlInjector
  * @DateTime 2022/6/30 17:34
  * @Author ZhangChenhuang

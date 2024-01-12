@@ -1,14 +1,13 @@
 package com.alice.novel.module.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alice.support.common.base.entity.MyBaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * <p>
@@ -19,13 +18,13 @@ import java.io.Serializable;
  * @since 2023-11-27
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("T_SYS_CODE")
-public class SysCode extends Model<SysCode> {
+public class SysCode extends MyBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -58,7 +57,6 @@ public class SysCode extends Model<SysCode> {
      */
     @TableField("CODE_ORDER")
     private Integer codeOrder;
-
 
     @Override
     protected Serializable pkVal() {

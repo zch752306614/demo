@@ -1,15 +1,13 @@
 package com.alice.novel.module.common.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.alice.support.common.base.entity.MyBaseEntity;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 /**
  * <p>
@@ -20,10 +18,13 @@ import java.io.Serializable;
  * @since 2023-12-08
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 @TableName("T_REPTILE_JOB_DETAIL")
-public class ReptileJobDetail extends Model<ReptileJobDetail> {
+public class ReptileJobDetail extends MyBaseEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -56,7 +57,6 @@ public class ReptileJobDetail extends Model<ReptileJobDetail> {
      */
     @TableField("ERROR_MSG")
     private String errorMsg;
-
 
     @Override
     protected Serializable pkVal() {
