@@ -15,13 +15,15 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        this.strictInsertFill(metaObject, "createTime", Timestamp.class, new Timestamp(System.currentTimeMillis()));
-        this.strictInsertFill(metaObject, "updateTime", Timestamp.class, new Timestamp(System.currentTimeMillis()));
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        this.strictInsertFill(metaObject, "createTime", Timestamp.class, now);
+        this.strictInsertFill(metaObject, "updateTime", Timestamp.class, now);
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        this.strictUpdateFill(metaObject, "updateTime", Timestamp.class, new Timestamp(System.currentTimeMillis()));
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        this.strictUpdateFill(metaObject, "updateTime", Timestamp.class, now);
     }
 
 }
