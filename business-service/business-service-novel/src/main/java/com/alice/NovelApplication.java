@@ -19,7 +19,7 @@ import org.springframework.web.client.RestTemplate;
  * @DateTime 2022/9/23 0023 17:26
  */
 @EnableAsync
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.alice"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.alice"})
 @EnableTransactionManagement
