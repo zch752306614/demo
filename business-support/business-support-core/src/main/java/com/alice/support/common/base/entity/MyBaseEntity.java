@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MyBaseEntity extends Model {
+public class MyBaseEntity extends Model<MyBaseEntity> {
 
     /**
      * 创建时间
