@@ -1,5 +1,6 @@
 package com.alice.support.common.redis.service;
 
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -32,6 +34,37 @@ public class RedisService {
      */
     public Long pushToList(String key, String value) {
         return redisTemplate.opsForList().leftPush(key, value);
+    }
+
+    public void rightPushAll(String key, List<Object> list) {
+        redisTemplate.opsForList().rightPushAll(key, list);
+    }
+
+    public void rightPushAll(String key, String... value) {
+        redisTemplate.opsForList().rightPushAll(key, value);
+    }
+
+    public Object leftPop(String key) {
+        return redisTemplate.opsForList().leftPop(key);
+    }
+
+    public long getListSize(String key) {
+        return redisTemplate.opsForList().size(key);
+    }
+
+    public List<Object> readFromRedisList(String key) {
+        return redisTemplate.opsForList().range(key, 0, -1);
+    }
+
+    /**
+     * 清除数组缓存
+     */
+    public void clearList(String listKey) {
+        ListOperations<String, String> listOps = redisTemplate.opsForList();
+        while (listOps.size(listKey) > 0) {
+            String key = listOps.leftPop(listKey);
+            this.removeByKeys(key);
+        }
     }
 
     /**
