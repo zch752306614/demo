@@ -19,14 +19,14 @@ import org.springframework.web.client.RestTemplate;
  * @DateTime 2022/9/23 0023 17:26
  */
 @EnableAsync
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.alice"})
 @EnableDiscoveryClient
 @EnableFeignClients(basePackages = {"com.alice"})
 @EnableTransactionManagement
-public class SupportApplication {
+public class DemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SupportApplication.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 
     @Bean

@@ -43,6 +43,7 @@
         <guava.version>31.1-jre</guava.version>
         <jedis.version>4.2.3</jedis.version>
         <gson.version>2.10.1</gson.version>
+        <redisson-spring-boot-starter.version>3.17.4</redisson-spring-boot-starter.version>
     </properties>
 
     <!--子模块继承后,提供作用:锁定版本+子module不用groupId和version-->
@@ -205,6 +206,11 @@
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redisson-spring-boot-starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
