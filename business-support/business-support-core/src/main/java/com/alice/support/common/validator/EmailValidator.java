@@ -1,7 +1,7 @@
 package com.alice.support.common.validator;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alice.support.common.annotation.Email;
+import com.alice.support.common.annotation.valid.Email;
 import lombok.SneakyThrows;
 
 import javax.validation.ConstraintValidator;

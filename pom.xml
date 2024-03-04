@@ -22,7 +22,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.alice</groupId>
-                <artifactId>bom</artifactId>
+                <artifactId>business-bom</artifactId>
                 <version>1.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>

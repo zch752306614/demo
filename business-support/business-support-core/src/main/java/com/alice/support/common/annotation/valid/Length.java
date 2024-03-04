@@ -1,6 +1,6 @@
-package com.alice.support.common.annotation;
+package com.alice.support.common.annotation.valid;
 
-import com.alice.support.common.validator.EmailValidator;
+import com.alice.support.common.validator.LengthValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -11,16 +11,20 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * 邮箱格式校验
+ * 字节长度
  *
  * @author ZDA
  */
 @Target({ElementType.FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = EmailValidator.class)
-public @interface Email {
+@Constraint(validatedBy = LengthValidator.class)
+public @interface Length {
 
-    String message() default "邮箱格式有误";
+    int min() default 0;
+
+    int max() default 2147483647;
+
+    String message() default "{org.hibernate.validator.constraints.Length.message}";
 
     Class<?>[] groups() default {};
 

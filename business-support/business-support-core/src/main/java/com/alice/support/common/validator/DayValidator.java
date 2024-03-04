@@ -1,7 +1,7 @@
 package com.alice.support.common.validator;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alice.support.common.annotation.Day;
+import com.alice.support.common.annotation.valid.Day;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

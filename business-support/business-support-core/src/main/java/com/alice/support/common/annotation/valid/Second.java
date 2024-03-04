@@ -1,4 +1,4 @@
-package com.alice.support.common.annotation;
+package com.alice.support.common.annotation.valid;
 
 import com.alice.support.common.validator.SecondValidator;
 
