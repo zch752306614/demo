@@ -1,15 +1,15 @@
 package com.alice.support.module.demo.controller;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.alice.novel.demo.NovelDemoApi;
+import com.alice.support.common.annotation.business.GlobalBusinessLock;
 import com.alice.support.common.dto.ResponseInfo;
 import com.alice.support.module.common.redis.service.RLockService;
 import com.alice.support.module.demo.entity.User;
 import com.alice.support.module.demo.service.UserServer;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -71,11 +71,11 @@ public class MyTestController {
         }
     }
 
-    @GetMapping("/testLock")
-    public String testLock() {
-        for (int i = 0; i < 10000; i++) {
-            rLockService.getLock(i);
-        }
+    @GlobalBusinessLock(lockField = "aac002:userid", leaseTime = 10, waitTime = 5)
+    @PostMapping("/testLock")
+    public String testLock(@RequestBody TestDTO testDTO) {
+        ThreadUtil.sleep(1000);
+        System.out.println("接口访问成功");
         return "success";
     }
 }

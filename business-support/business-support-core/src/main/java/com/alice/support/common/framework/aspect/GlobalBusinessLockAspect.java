@@ -82,19 +82,18 @@ public class GlobalBusinessLockAspect {
 
         // 如果key为空，则使用pathId和用户Id以及入参中lockField的值作为key
         Object[] args = joinPoint.getArgs();
-        // 获取指定入参
-        Object paramField = null;
-        for (Object arg : args) {
-            if (arg.getClass().getName().equals(paramName)) {
-                paramField = arg;
-                break;
-            }
-        }
         String lockField = globalBusinessLock.lockField();
-        // 指定入参为空时直接赋值字段名
-        if (null == paramField) {
+        if (ObjectUtil.isEmpty(args)) {
             return redisKey + ":" + lockField;
         }
+        // 获取指定入参，不指定则获取第一个入参
+        Object paramField;
+        if (ObjectUtil.isNotEmpty(paramName)) {
+            paramField = ReflectUtil.getField(args[0].getClass(), paramName);
+        } else {
+            paramField = args[0];
+        }
+        // 指定入参为空时直接赋值字段名
         String[] split = lockField.split(":");
         for (String fieldName : split) {
             if ("userId".equalsIgnoreCase(fieldName)) {

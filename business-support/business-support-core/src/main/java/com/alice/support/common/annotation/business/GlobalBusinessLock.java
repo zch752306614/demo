@@ -24,7 +24,7 @@ public @interface GlobalBusinessLock {
      */
     String lockField() default "";
 
-    String paramName();
+    String paramName() default "";
 
     /**
      * 默认过期时间0（自动续期），大于0不会自动续期，根据需求执行赋值
