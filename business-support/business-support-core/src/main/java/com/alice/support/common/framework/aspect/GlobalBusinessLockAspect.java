@@ -29,11 +29,8 @@ public class GlobalBusinessLockAspect {
     @Resource
     private RedissonService redissonService;
 
-    public GlobalBusinessLockAspect() {
-    }
-
     @Around(value = "@annotation(globalBusinessLock)", argNames = "joinPoint, globalBusinessLock")
-    public Object beforeMethod(ProceedingJoinPoint joinPoint, GlobalBusinessLock globalBusinessLock) throws Throwable {
+    public Object aroundMethod(ProceedingJoinPoint joinPoint, GlobalBusinessLock globalBusinessLock) throws Throwable {
         String paramName = globalBusinessLock.paramName();
         // 获取redisKey
         String redisKey = this.getRedisKey(joinPoint, globalBusinessLock, paramName);
@@ -59,6 +56,7 @@ public class GlobalBusinessLockAspect {
                 redissonService.unLock(rLock);
                 log.info("释放分布式锁成功，redisKey=" + redisKey);
             }
+            log.info("接口调用结束，redisKey=" + redisKey);
         }
         return result;
     }
