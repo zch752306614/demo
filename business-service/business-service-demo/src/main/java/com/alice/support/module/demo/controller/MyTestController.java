@@ -1,17 +1,23 @@
 package com.alice.support.module.demo.controller;
 
 import cn.hutool.core.thread.ThreadUtil;
+import com.alice.blog.fallback.BlogDemoApi;
+import com.alice.blog.module.demo.detail.FeignTestDTO;
+import com.alice.blog.module.demo.detail.FeignTestDetailDTO;
 import com.alice.novel.demo.NovelDemoApi;
 import com.alice.support.common.annotation.business.GlobalBusinessLock;
 import com.alice.support.common.dto.ResponseInfo;
 import com.alice.support.module.common.redis.service.RLockService;
 import com.alice.support.module.demo.entity.User;
 import com.alice.support.module.demo.service.UserServer;
+import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Description TODO
@@ -25,6 +31,8 @@ public class MyTestController {
 
     @Resource
     private NovelDemoApi novelDemoApi;
+    @Resource
+    private BlogDemoApi blogDemoApi;
 
     @Resource
     private UserServer userServer;
@@ -37,6 +45,47 @@ public class MyTestController {
 
     @GetMapping(value = "/test")
     public ResponseInfo<String> demoTest() {
+        FeignTestDTO feignTestDTO = new FeignTestDTO();
+        List<FeignTestDetailDTO> feignTestDetailDTOList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            FeignTestDetailDTO feignTestDetailDTO = new FeignTestDetailDTO();
+            feignTestDetailDTO.setA1("测试数据");
+            feignTestDetailDTO.setA2("测试数据");
+            feignTestDetailDTO.setA3("测试数据");
+            feignTestDetailDTO.setA4("测试数据");
+            feignTestDetailDTO.setA5("测试数据");
+            feignTestDetailDTO.setA6("测试数据");
+            feignTestDetailDTO.setA7("测试数据");
+            feignTestDetailDTO.setA8("测试数据");
+            feignTestDetailDTO.setA9("测试数据");
+            feignTestDetailDTO.setA10("测试数据");
+            feignTestDetailDTO.setA11("测试数据");
+            feignTestDetailDTO.setA12("测试数据");
+            feignTestDetailDTO.setA13("测试数据");
+            feignTestDetailDTO.setA14("测试数据");
+            feignTestDetailDTO.setA15("测试数据");
+            feignTestDetailDTO.setA16("测试数据");
+            feignTestDetailDTO.setA17("测试数据");
+            feignTestDetailDTO.setA18("测试数据");
+            feignTestDetailDTO.setA19("测试数据");
+            feignTestDetailDTO.setA20("测试数据");
+            feignTestDetailDTO.setA21("测试数据");
+            feignTestDetailDTO.setA22("测试数据");
+            feignTestDetailDTO.setA23("测试数据");
+            feignTestDetailDTO.setA24("测试数据");
+            feignTestDetailDTO.setA25("测试数据");
+            feignTestDetailDTO.setA26("测试数据");
+            feignTestDetailDTO.setA27("测试数据");
+            feignTestDetailDTO.setA28("测试数据");
+            feignTestDetailDTO.setA29("测试数据");
+            feignTestDetailDTO.setA30("测试数据");
+            feignTestDetailDTOList.add(feignTestDetailDTO);
+        }
+        feignTestDTO.setFeignTestDetailDTOList(feignTestDetailDTOList);
+        long objectSize = ObjectSizeCalculator.getObjectSize(feignTestDTO);
+        System.out.println(objectSize);
+        ResponseInfo<String> stringResponseInfo = blogDemoApi.DemoTest(feignTestDTO);
+        System.out.println(stringResponseInfo.getMessage());
         return ResponseInfo.success();
     }
 

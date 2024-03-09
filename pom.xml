@@ -16,6 +16,7 @@
         <module>business-orm</module>
         <module>business-service</module>
         <module>business-support</module>
+        <module>business-feign/business-feign-blog/business-feign-blog-core</module>
     </modules>
 
     <dependencyManagement>

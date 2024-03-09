@@ -16,6 +16,7 @@
     <modules>
         <module>business-feign-novel</module>
         <module>business-feign-user</module>
+        <module>business-feign-blog</module>
     </modules>
 
 </project>
