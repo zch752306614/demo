@@ -344,4 +344,15 @@ public class RedisService {
         });
     }
 
+    /**
+     * 获取键的剩余有效时间（秒）
+     *
+     * @param key String
+     * @return long 剩余有效时间
+     */
+    public Long getExpire(String key) {
+        return redisTemplate.getExpire(key, TimeUnit.SECONDS);
+    }
+
+
 }

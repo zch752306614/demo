@@ -1,5 +1,6 @@
 package com.alice.support.module.demo.service.Impl;
 
+import cn.hutool.core.thread.ThreadUtil;
 import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.module.demo.entity.User;
 import com.alice.support.module.demo.mapper.UserMapper;
@@ -35,8 +36,10 @@ public class UserServerImpl implements UserServer {
     @Async("daemonExecutor")
     @Override
     public void expireKey(String key, long time) {
-        while (redisService.hasKey(key)) {
+        while (redisService.hasKey(key) && redisService.getExpire(key) < 10) {
+            ThreadUtil.sleep(5000);
             redisService.expire(key, time);
+            System.out.println("守护线程续期成功");
         }
     }
 }

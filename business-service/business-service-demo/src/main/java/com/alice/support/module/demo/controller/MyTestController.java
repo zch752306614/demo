@@ -140,7 +140,7 @@ public class MyTestController {
         }
         redisService.putValue(key, "1");
         userServer.expireKey(key, 10);
-        ThreadUtil.sleep(5000);
+        ThreadUtil.sleep(20000);
         System.out.println("接口访问成功");
         redisService.remove(key);
         return "success";
