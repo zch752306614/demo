@@ -28,4 +28,6 @@ public interface UserServer {
      */
     User select(Integer id);
 
+    void expireKey(String key, long time);
+
 }

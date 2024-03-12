@@ -7,6 +7,7 @@ import com.alice.blog.module.demo.detail.FeignTestDetailDTO;
 import com.alice.novel.demo.NovelDemoApi;
 import com.alice.support.common.annotation.business.GlobalBusinessLock;
 import com.alice.support.common.dto.ResponseInfo;
+import com.alice.support.common.redis.service.RedisService;
 import com.alice.support.module.common.redis.service.RLockService;
 import com.alice.support.module.demo.entity.User;
 import com.alice.support.module.demo.service.UserServer;
@@ -42,6 +43,9 @@ public class MyTestController {
 
     @Resource
     private RLockService rLockService;
+
+    @Resource
+    private RedisService redisService;
 
     @GetMapping(value = "/test")
     public ResponseInfo<String> demoTest() {
@@ -125,6 +129,20 @@ public class MyTestController {
     public String testLock(@RequestBody TestDTO testDTO) {
         ThreadUtil.sleep(5000);
         System.out.println("接口访问成功");
+        return "success";
+    }
+
+    @PostMapping("/testDaemon")
+    public String testDaemon() {
+        String key = "testDaemon";
+        if (redisService.hasKey(key)) {
+            return "false";
+        }
+        redisService.putValue(key, "1");
+        userServer.expireKey(key, 10);
+        ThreadUtil.sleep(5000);
+        System.out.println("接口访问成功");
+        redisService.remove(key);
         return "success";
     }
 }
