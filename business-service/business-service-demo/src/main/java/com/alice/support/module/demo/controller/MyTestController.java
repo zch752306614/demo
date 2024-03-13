@@ -127,8 +127,8 @@ public class MyTestController {
     @GlobalBusinessLock(lockField = "aac002:userid", leaseTime = 10000, waitTime = 2000)
     @PostMapping("/testLock")
     public String testLock(@RequestBody TestDTO testDTO) {
-        ThreadUtil.sleep(5000);
-        System.out.println("接口访问成功");
+        ThreadUtil.sleep(50000);
+        System.out.println("接口testLock访问成功");
         return "success";
     }
 
@@ -141,7 +141,7 @@ public class MyTestController {
         redisService.putValue(key, "1");
         userServer.expireKey(key, 10);
         ThreadUtil.sleep(20000);
-        System.out.println("接口访问成功");
+        System.out.println("接口testDaemon访问成功");
         redisService.remove(key);
         return "success";
     }
