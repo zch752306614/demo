@@ -42,7 +42,13 @@ public class GlobalBusinessLockAspect {
         RLock rLock = null;
         try {
             log.info("尝试获取分布式锁，redisKey=" + redisKey);
-            rLock = redissonService.tryLock(redisKey, leaseTime, waitTime, TimeUnit.MILLISECONDS, true);
+            if (waitTime > 0) {
+                // 在规定时间内阻塞
+                rLock = redissonService.tryLock(redisKey, leaseTime, waitTime, TimeUnit.MILLISECONDS, true);
+            } else {
+                // 阻塞
+                rLock = redissonService.lock(redisKey, leaseTime, TimeUnit.MILLISECONDS, true);
+            }
             if (null == rLock) {
                 BusinessExceptionUtil.dataEx(message);
             }

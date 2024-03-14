@@ -13,4 +13,6 @@ public class TestDTO {
 
     String userid;
 
+    String aaz002;
+
 }

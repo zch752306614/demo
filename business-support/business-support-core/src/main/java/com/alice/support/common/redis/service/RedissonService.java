@@ -45,15 +45,15 @@ public class RedissonService {
      * 获取锁失败一会直等待,直到获取锁
      *
      * @param key 锁的key值
-     * @param lockTime 锁的时间，等于0会自动续期，大于0不会自动续期
+     * @param leaseTime 锁的时间，等于0会自动续期，大于0不会自动续期
      * @param unit 单位
      * @param fair 是否公平锁
      * @return RLock
      */
-    public RLock lock(String key, long lockTime, TimeUnit unit, boolean fair) {
+    public RLock lock(String key, long leaseTime, TimeUnit unit, boolean fair) {
         RLock lock = getLock(key, fair);
-        if (lockTime > 0L) {
-            lock.lock(lockTime, unit);
+        if (leaseTime > 0L) {
+            lock.lock(leaseTime, unit);
         } else {
             lock.lock();
         }
@@ -65,15 +65,15 @@ public class RedissonService {
      * 获取锁失败一会直等待,直到获取锁
      *
      * @param key 锁的key值
-     * @param lockTime 锁的时间，等于0会自动续期，大于0不会自动续期
+     * @param leaseTime 锁的时间，等于0会自动续期，大于0不会自动续期
      * @param unit 单位
      * @param fair 是否公平锁
      * @return RLock
      */
-    public RLock lockAsync(String key, long lockTime, TimeUnit unit, boolean fair) {
+    public RLock lockAsync(String key, long leaseTime, TimeUnit unit, boolean fair) {
         RLock lock = getLock(key, fair);
-        if (lockTime > 0L) {
-            lock.lockAsync(lockTime, unit);
+        if (leaseTime > 0L) {
+            lock.lockAsync(leaseTime, unit);
         } else {
             lock.lockAsync();
         }
@@ -104,7 +104,7 @@ public class RedissonService {
     public RLock tryLock(String key, long leaseTime, long waitTime, TimeUnit unit, boolean fair) throws Exception {
         RLock lock = getLock(key, fair);
         // leaseTime>0不支持自动续期，leaseTime<0具有Watch Dog 自动延期机制 默认续30s 每隔30/3=10 秒续到30s
-        boolean lockAcquired = leaseTime > 0L ? lock.tryLock(waitTime, leaseTime, unit) : lock.tryLock(waitTime, unit);
+        boolean lockAcquired = lock.tryLock(waitTime, leaseTime, unit);
         if (lockAcquired) {
             return lock;
         }
@@ -127,16 +127,16 @@ public class RedissonService {
      * 尝试获取锁，获取不到超时异常
      *
      * @param key 锁的key值
-     * @param tryTime 尝试获取锁的时间
-     * @param lockTime 锁的时间，等于0会自动续期，大于0不会自动续期
+     * @param waitTime 尝试获取锁的时间
+     * @param leaseTime 锁的时间，等于0会自动续期，大于0不会自动续期
      * @param unit 单位
      * @param fair 是否公平锁
      * @return RLock
      */
-    public RLock tryLockAsync(String key, long tryTime, long lockTime, TimeUnit unit, boolean fair) throws Exception {
+    public RLock tryLockAsync(String key, long waitTime, long leaseTime, TimeUnit unit, boolean fair) throws Exception {
         RLock lock = getLock(key, fair);
-        // lockTime>0不支持自动续期，lockTime<0具有Watch Dog 自动延期机制 默认续30s 每隔30/3=10 秒续到30s
-        RFuture<Boolean> lockAcquired = lockTime > 0L ? lock.tryLockAsync(tryTime, lockTime, unit) : lock.tryLockAsync(tryTime, unit);
+        // leaseTime>0不支持自动续期，leaseTime<0具有Watch Dog 自动延期机制 默认续30s 每隔30/3=10 秒续到30s
+        RFuture<Boolean> lockAcquired = leaseTime > 0L ? lock.tryLockAsync(waitTime, leaseTime, unit) : lock.tryLockAsync(waitTime, unit);
         if (lockAcquired.isSuccess()) {
             return lock;
         }

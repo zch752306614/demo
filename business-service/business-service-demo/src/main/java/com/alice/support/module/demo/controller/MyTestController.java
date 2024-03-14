@@ -124,11 +124,12 @@ public class MyTestController {
         }
     }
 
-    @GlobalBusinessLock(lockField = "aac002:userid", leaseTime = 10000, waitTime = 2000)
+    @GlobalBusinessLock(lockField = "aac002:userid", leaseTime = -1, waitTime = 21000)
     @PostMapping("/testLock")
     public String testLock(@RequestBody TestDTO testDTO) {
-        ThreadUtil.sleep(50000);
-        System.out.println("接口testLock访问成功");
+        System.out.println(testDTO.getAaz002() + "接口testLock访问成功");
+        ThreadUtil.sleep(20000);
+        System.out.println(testDTO.getAaz002() + "接口testLock访问结束");
         return "success";
     }
 
