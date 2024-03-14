@@ -95,8 +95,8 @@ public class RedissonService {
      * 尝试获取锁，获取不到超时异常
      *
      * @param key 锁的key值
-     * @param leaseTime 尝试获取锁的时间
-     * @param waitTime 锁的时间，等于0会自动续期，大于0不会自动续期
+     * @param leaseTime 锁的时间，等于0会自动续期，大于0不会自动续期
+     * @param waitTime 尝试获取锁的时间
      * @param unit 单位
      * @param fair 是否公平锁
      * @return RLock
