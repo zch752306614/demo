@@ -118,8 +118,8 @@ public class NovelServiceImpl implements NovelService {
         NovelInfo novelInfo = new NovelInfo();
         BeanUtil.copyProperties(novelInfoQueryDTO, novelInfo);
         QueryWrapper<NovelInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.like("NOVEL_AUTHOR", novelInfoQueryDTO.getNovelAuthor());
-        queryWrapper.like("NOVEL_NAME", novelInfoQueryDTO.getNovelName());
+        queryWrapper.like(ObjectUtil.isNotEmpty(novelInfoQueryDTO.getNovelAuthor()), "NOVEL_AUTHOR", novelInfoQueryDTO.getNovelAuthor());
+        queryWrapper.like(ObjectUtil.isNotEmpty(novelInfoQueryDTO.getNovelName()), "NOVEL_NAME", novelInfoQueryDTO.getNovelName());
         return novelInfoMapper.selectList(queryWrapper);
     }
 
