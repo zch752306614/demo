@@ -115,8 +115,6 @@ public class NovelServiceImpl implements NovelService {
 
     @Override
     public List<NovelInfo> queryNovelist(NovelInfoQueryDTO novelInfoQueryDTO) {
-        NovelInfo novelInfo = new NovelInfo();
-        BeanUtil.copyProperties(novelInfoQueryDTO, novelInfo);
         String novelName = novelInfoQueryDTO.getNovelName();
         String novelAuthor = novelInfoQueryDTO.getNovelAuthor();
         String searchName = novelInfoQueryDTO.getSearchName();
