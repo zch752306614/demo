@@ -106,7 +106,7 @@ public class AutoDeploy {
             Properties config = new Properties();
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
-
+            session.connect();
             // FTP 上传
             uploadFile(session, localJarPath, remoteJarPath);
 
@@ -132,7 +132,6 @@ public class AutoDeploy {
         ChannelSftp channelSftp = null;
 
         try {
-            session.connect();
             channelSftp = (ChannelSftp) session.openChannel("sftp");
             channelSftp.connect();
 
