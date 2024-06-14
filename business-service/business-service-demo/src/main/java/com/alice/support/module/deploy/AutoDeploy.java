@@ -1,16 +1,20 @@
 package com.alice.support.module.deploy;
 
+import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPSClient;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Zhang Chenhuang
@@ -81,9 +85,9 @@ public class AutoDeploy {
         Integer port = (Integer) project.get("ftpPort");
         String ftpUsername = (String) project.get("ftpUsername");
         String ftpPassword = (String) project.get("ftpPassword");
-        String remoteRootPath = (String) project.get("remoteRootPath");
+        String remoteRootPath = (String) project.get("remoteJarPath");
         String startupScript = (String) project.get("startupScript");
-
+        Session session = null;
         try {
             // 执行 Maven 打包
 //            executeMavenPackage();
@@ -94,15 +98,28 @@ public class AutoDeploy {
             // 拼接远程路径
             String remoteJarPath = remoteRootPath + "/" + uploadedFileName;
 
+            // 创建session连接
+            JSch jsch = new JSch();
+            session = jsch.getSession(ftpUsername, ftpServer, port);
+            session.setPassword(ftpPassword);
+            // 跳过主机密钥检查
+            Properties config = new Properties();
+            config.put("StrictHostKeyChecking", "no");
+            session.setConfig(config);
+
             // FTP 上传
-            uploadFile(ftpServer, port, ftpUsername, ftpPassword, localJarPath, remoteJarPath);
+            uploadFile(session, localJarPath, remoteJarPath);
 
             // 执行启动脚本
-            executeStartupScript(startupScript);
+            executeUpdateScript(session, startupScript);
 
             System.out.println("Deployment of project " + projectName + " completed successfully!");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+            if (session != null && session.isConnected()) {
+                session.disconnect();
+            }
         }
     }
 
@@ -111,49 +128,44 @@ public class AutoDeploy {
         return file.getName();
     }
 
-    private static void uploadFile(String server, Integer port, String username, String password, String localFilePath,
-                                   String remoteFilePath) throws IOException {
-        FTPSClient ftpsClient = new FTPSClient();
+    private static void uploadFile(Session session, String localFilePath, String remoteFilePath) throws Exception {
+        ChannelSftp channelSftp = null;
+
         try {
-            ftpsClient.connect(server, port);
-            ftpsClient.login(username, password);
-            ftpsClient.enterLocalPassiveMode();
-            ftpsClient.setFileType(FTPSClient.BINARY_FILE_TYPE);
+            session.connect();
+            channelSftp = (ChannelSftp) session.openChannel("sftp");
+            channelSftp.connect();
 
             // 检查远程路径是否存在，如果不存在则创建
-            createRemoteDirectory(ftpsClient, remoteFilePath);
+            createRemoteDirectory(channelSftp, remoteFilePath);
 
             File localFile = new File(localFilePath);
-            InputStream inputStream = new FileInputStream(localFile);
+            InputStream inputStream = Files.newInputStream(localFile.toPath());
 
             System.out.println("Start uploading file " + localFilePath + " to " + remoteFilePath);
-            boolean done = ftpsClient.storeFile(remoteFilePath, inputStream);
+            channelSftp.put(inputStream, remoteFilePath);
             inputStream.close();
-            if (done) {
-                System.out.println("File uploaded successfully.");
-            } else {
-                System.out.println("Failed to upload file.");
-            }
+            System.out.println("File uploaded successfully.");
         } finally {
-            // 注销并断开与服务器的连接
-            try {
-                if (ftpsClient.isConnected()) {
-                    ftpsClient.logout();
-                    ftpsClient.disconnect();
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
+            // 断开连接
+            if (channelSftp != null && channelSftp.isConnected()) {
+                channelSftp.disconnect();
             }
         }
     }
 
-    private static void createRemoteDirectory(FTPSClient ftpsClient, String remoteFilePath) throws IOException {
+    private static void createRemoteDirectory(ChannelSftp channelSftp, String remoteFilePath) throws Exception {
         String[] directories = remoteFilePath.split("/");
+        StringBuilder path = new StringBuilder("/");
+
         for (String directory : directories) {
-            if (!directory.isEmpty()) {
-                if (!ftpsClient.changeWorkingDirectory(directory)) {
-                    ftpsClient.makeDirectory(directory);
-                    ftpsClient.changeWorkingDirectory(directory);
+            if (!directory.isEmpty() && !directory.contains(".")) {
+                path.append(directory).append("/");
+                try {
+                    channelSftp.cd(path.toString());
+                } catch (Exception e) {
+                    channelSftp.mkdir(path.toString());
+                    channelSftp.cd(path.toString());
                 }
             }
         }
@@ -186,30 +198,25 @@ public class AutoDeploy {
         }
     }
 
-    private static void executeStartupScript(String scriptPath) throws IOException {
-        System.out.println("Executing startup script: " + scriptPath);
-        ProcessBuilder pb = new ProcessBuilder(scriptPath);
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
-
-        // 打印启动脚本输出信息
-        InputStream inputStream = process.getInputStream();
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while ((bytesRead = inputStream.read(buffer)) != -1) {
-            System.out.print(new String(buffer, 0, bytesRead));
-        }
-
-        // 等待启动脚本执行完成
+    private static void executeUpdateScript(Session session, String scriptPath) throws Exception {
+        ChannelExec channelExec = null;
         try {
-            int exitCode = process.waitFor();
-            if (exitCode == 0) {
-                System.out.println("Startup script executed successfully.");
+            channelExec = (ChannelExec) session.openChannel("exec");
+            channelExec.setCommand("sh " + scriptPath);
+            channelExec.setErrStream(System.err);
+            channelExec.setOutputStream(System.out);
+            channelExec.connect();
+
+            int exitStatus = channelExec.getExitStatus();
+            if (exitStatus == 0) {
+                System.out.println("Update script executed successfully.");
             } else {
-                System.out.println("Failed to execute startup script. Exit code: " + exitCode);
+                System.out.println("Update script execution failed with exit status: " + exitStatus);
             }
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
+        } finally {
+            if (channelExec != null && channelExec.isConnected()) {
+                channelExec.disconnect();
+            }
         }
     }
 
