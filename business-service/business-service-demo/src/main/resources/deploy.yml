@@ -1,0 +1,15 @@
+- name: zuul
+  localJarPath: E:\Project\Idea\alice\demo\business-support\business-support-zuul\target\business-support-zuul.jar
+  ftpServer: ftp.example.com
+  ftpUsername: root
+  ftpPassword: Zch520399.
+  remoteJarPath: /home/docker/deploy/zuul
+  startupScript: /home/docker/deploy/novel/deploy.sh
+
+- name: novel
+  localJarPath: E:\Project\Idea\alice\demo\business-service\business-service-novel\target\business-service-novel.jar
+  ftpServer: ftp.example.com
+  ftpUsername: root
+  ftpPassword: Zch520399.
+  remoteJarPath: /home/docker/deploy/novel
+  startupScript: /home/docker/deploy/novel/deploy.sh
