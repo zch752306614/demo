@@ -1,12 +1,6 @@
 package com.alice.support.module.deploy;
 
-import com.jcraft.jsch.ChannelExec;
-import com.jcraft.jsch.ChannelSftp;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPSClient;
+import com.jcraft.jsch.*;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -111,7 +105,13 @@ public class AutoDeploy {
             uploadFile(session, localJarPath, remoteJarPath);
 
             // 执行启动脚本
-            executeUpdateScript(session, startupScript);
+//            executeUpdateScript(session, startupScript);
+
+            // 设置脚本文件为可执行
+            executeRemoteCommand(session, "chmod +x " + startupScript);
+
+            // 执行脚本文件
+            executeRemoteCommand(session, "sh " + startupScript);
 
             System.out.println("Deployment of project " + projectName + " completed successfully!");
         } catch (Exception ex) {
@@ -206,6 +206,12 @@ public class AutoDeploy {
             channelExec.setOutputStream(System.out);
             channelExec.connect();
 
+            // 等待命令完成
+            int count = 0;
+            while (channelExec.getExitStatus() == -1 && count < 60) {
+                count++;
+                Thread.sleep(1000);
+            }
             int exitStatus = channelExec.getExitStatus();
             if (exitStatus == 0) {
                 System.out.println("Update script executed successfully.");
@@ -217,6 +223,40 @@ public class AutoDeploy {
                 channelExec.disconnect();
             }
         }
+    }
+
+    private static void executeRemoteCommand(Session session, String command) throws JSchException, InterruptedException, IOException {
+        ChannelExec channelExec = (ChannelExec) session.openChannel("exec");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream errorStream = new ByteArrayOutputStream();
+        channelExec.setCommand(command);
+        channelExec.setOutputStream(outputStream);
+        channelExec.setErrStream(errorStream);
+
+        channelExec.connect();
+
+        // 等待命令完成
+        int count = 0;
+        while (channelExec.getExitStatus() == -1 && count < 60) {
+            count++;
+            Thread.sleep(1000);
+        }
+
+        int exitStatus = channelExec.getExitStatus();
+        String output = new String(outputStream.toByteArray());
+        String errorOutput = new String(errorStream.toByteArray());
+
+        System.out.println("Command: " + command);
+        System.out.println("Output: " + output);
+        System.err.println("Error output: " + errorOutput);
+
+        if (exitStatus == 0) {
+            System.out.println("Command executed successfully.");
+        } else {
+            System.err.println("Command execution failed with exit status: " + exitStatus);
+        }
+
+        channelExec.disconnect();
     }
 
     private static List<Map<String, Object>> readYamlConfig(String filePath) throws IOException {
