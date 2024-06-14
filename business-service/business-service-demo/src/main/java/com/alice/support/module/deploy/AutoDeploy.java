@@ -1,7 +1,10 @@
 package com.alice.support.module.deploy;
 
+import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.JSch;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPSClient;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -18,7 +21,7 @@ public class AutoDeploy {
     public static void demo() {
         try {
             // 定义要执行的命令
-            String command = "cmd.exe /c dir"; // 示例命令：列出当前目录下的文件和子目录
+            String command = "cmd.exe /c dir";
 
             // 创建 ProcessBuilder 对象并设置命令
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -50,8 +53,8 @@ public class AutoDeploy {
         List<String> serverNameList = new ArrayList<String>();
 //        serverNameList.add("zuul");
         serverNameList.add("novel");
-//        deploy(serverNameList);
-        demo();
+        deploy(serverNameList);
+//        demo();
     }
 
     private static void deploy(List<String> serverNameList) {
@@ -75,6 +78,7 @@ public class AutoDeploy {
         String projectName = (String) project.get("name");
         String localJarPath = (String) project.get("localJarPath");
         String ftpServer = (String) project.get("ftpServer");
+        Integer port = (Integer) project.get("ftpPort");
         String ftpUsername = (String) project.get("ftpUsername");
         String ftpPassword = (String) project.get("ftpPassword");
         String remoteRootPath = (String) project.get("remoteRootPath");
@@ -91,7 +95,7 @@ public class AutoDeploy {
             String remoteJarPath = remoteRootPath + "/" + uploadedFileName;
 
             // FTP 上传
-            uploadFile(ftpServer, ftpUsername, ftpPassword, localJarPath, remoteJarPath);
+            uploadFile(ftpServer, port, ftpUsername, ftpPassword, localJarPath, remoteJarPath);
 
             // 执行启动脚本
             executeStartupScript(startupScript);
@@ -107,23 +111,23 @@ public class AutoDeploy {
         return file.getName();
     }
 
-    private static void uploadFile(String server, String username, String password, String localFilePath,
+    private static void uploadFile(String server, Integer port, String username, String password, String localFilePath,
                                    String remoteFilePath) throws IOException {
-        FTPClient ftpClient = new FTPClient();
+        FTPSClient ftpsClient = new FTPSClient();
         try {
-            ftpClient.connect(server);
-            ftpClient.login(username, password);
-            ftpClient.enterLocalPassiveMode();
-            ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+            ftpsClient.connect(server, port);
+            ftpsClient.login(username, password);
+            ftpsClient.enterLocalPassiveMode();
+            ftpsClient.setFileType(FTPSClient.BINARY_FILE_TYPE);
 
             // 检查远程路径是否存在，如果不存在则创建
-            createRemoteDirectory(ftpClient, remoteFilePath);
+            createRemoteDirectory(ftpsClient, remoteFilePath);
 
             File localFile = new File(localFilePath);
             InputStream inputStream = new FileInputStream(localFile);
 
             System.out.println("Start uploading file " + localFilePath + " to " + remoteFilePath);
-            boolean done = ftpClient.storeFile(remoteFilePath, inputStream);
+            boolean done = ftpsClient.storeFile(remoteFilePath, inputStream);
             inputStream.close();
             if (done) {
                 System.out.println("File uploaded successfully.");
@@ -131,20 +135,25 @@ public class AutoDeploy {
                 System.out.println("Failed to upload file.");
             }
         } finally {
-            if (ftpClient.isConnected()) {
-                ftpClient.logout();
-                ftpClient.disconnect();
+            // 注销并断开与服务器的连接
+            try {
+                if (ftpsClient.isConnected()) {
+                    ftpsClient.logout();
+                    ftpsClient.disconnect();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         }
     }
 
-    private static void createRemoteDirectory(FTPClient ftpClient, String remoteFilePath) throws IOException {
+    private static void createRemoteDirectory(FTPSClient ftpsClient, String remoteFilePath) throws IOException {
         String[] directories = remoteFilePath.split("/");
         for (String directory : directories) {
             if (!directory.isEmpty()) {
-                if (!ftpClient.changeWorkingDirectory(directory)) {
-                    ftpClient.makeDirectory(directory);
-                    ftpClient.changeWorkingDirectory(directory);
+                if (!ftpsClient.changeWorkingDirectory(directory)) {
+                    ftpsClient.makeDirectory(directory);
+                    ftpsClient.changeWorkingDirectory(directory);
                 }
             }
         }

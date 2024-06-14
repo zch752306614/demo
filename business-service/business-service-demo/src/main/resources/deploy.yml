@@ -1,14 +1,16 @@
 - name: zuul
   localJarPath: E:\Project\Idea\alice\demo\business-support\business-support-zuul\target\business-support-zuul.jar
-  ftpServer: ftp.example.com
+  ftpServer: 121.4.69.234
   ftpUsername: root
+  ftpPort: 22
   ftpPassword: Zch520399.
   remoteJarPath: /home/docker/deploy/zuul
   startupScript: /home/docker/deploy/novel/deploy.sh
 
 - name: novel
   localJarPath: E:\Project\Idea\alice\demo\business-service\business-service-novel\target\business-service-novel.jar
-  ftpServer: ftp.example.com
+  ftpServer: 121.4.69.234
+  ftpPort: 22
   ftpUsername: root
   ftpPassword: Zch520399.
   remoteJarPath: /home/docker/deploy/novel
